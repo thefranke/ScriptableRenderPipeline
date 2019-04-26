@@ -70,6 +70,7 @@ namespace UnityEditor.VFX
         }
 
         public override void FillDescs(
+            VFXCompilationStatus status,
             List<VFXGPUBufferDesc> outBufferDescs,
             List<VFXTemporaryGPUBufferDesc> outTemporaryBufferDescs,
             List<VFXEditorSystemDesc> outSystemDescs,
