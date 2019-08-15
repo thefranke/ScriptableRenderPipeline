@@ -118,8 +118,11 @@ All_{{ project.name }}:
     - .yamato/upm-ci-{{ project.name | downcase }}.yml#{{ project.name }}_{{ platform.name }}_{{ testplatform.name }}_{{ editor.version }}
   {% endif %}
   
-  {% elsif platform.name == "OSX"  and testplatform.name == "editmode" %}
+  {% elsif platform.name == "OSX" and testplatform.name == "editmode" %}
   
+  {% elsif platform.name == "OSX" and testplatform.name == "playmode" %}
+  // Disabling Mac Metal playmode-in-editor from running in CI
+  // to free up the builders (plus running in player still runs the graphics tests)
   {% else %}
     - .yamato/upm-ci-{{ project.name | downcase }}.yml#{{ project.name }}_{{ platform.name }}_{{ testplatform.name }}_{{ editor.version }}
   {% endif %}
