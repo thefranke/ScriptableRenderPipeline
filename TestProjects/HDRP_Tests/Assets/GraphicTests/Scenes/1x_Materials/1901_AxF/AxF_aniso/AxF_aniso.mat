@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: AxF
+  m_Name: AxF_aniso
   m_Shader: {fileID: 4800000, guid: 6510c57cccce5674092bdc0dd1ae98c1, type: 3}
   m_ShaderKeywords: _AXF_BRDF_TYPE_SVBRDF
   m_LightmapFlags: 4
@@ -49,7 +49,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ClearcoatNormalMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 481881c281a1bc34baabf6325ce75fd3, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _CoatMaskMap:
@@ -97,15 +97,15 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SVBRDF_AlphaMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: da98555b47c72774aaaa1a377ab6dd28, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SVBRDF_AnisoRotationMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 945c815f42356ee4e9485a897d105664, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SVBRDF_ClearcoatColorMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: fcecce6d2c9be8d418a27f0658a2210d, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SVBRDF_ClearcoatIORMap:
@@ -113,11 +113,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SVBRDF_DiffuseColorMap:
-        m_Texture: {fileID: 2800000, guid: a7f306e86e58c3041b4285309c87d1f0, type: 3}
+        m_Texture: {fileID: 2800000, guid: 55e5f2f516942c947aad73b9c7ea4b70, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SVBRDF_FresnelMap:
-        m_Texture: {fileID: 2800000, guid: fc599304469f28c4db6329688455c5a1, type: 3}
+        m_Texture: {fileID: 2800000, guid: f73f8498382300948a49be1f1d1277b7, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SVBRDF_HeightMap:
@@ -125,15 +125,15 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SVBRDF_NormalMap:
-        m_Texture: {fileID: 2800000, guid: 72c21bad8ebd4a043882b302f9837ae3, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SVBRDF_SpecularColorMap:
-        m_Texture: {fileID: 2800000, guid: b8c45873933e80f4baf625fb96de8131, type: 3}
+        m_Texture: {fileID: 2800000, guid: a6b1f2364b11e2040b9219b9eae03a17, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SVBRDF_SpecularLobeMap:
-        m_Texture: {fileID: 2800000, guid: b534c1312691b1844941f92e1279dba1, type: 3}
+        m_Texture: {fileID: 2800000, guid: 574f5e7d422a0144198b004fbabf654f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecularColorMap:
@@ -224,7 +224,7 @@ Material:
     - _EnableGeometricSpecularAA: 0
     - _EnableSpecularOcclusion: 0
     - _EnergyConservingSpecularColor: 1
-    - _Flags: 0
+    - _Flags: 1
     - _HdrpVersion: 2
     - _HeightAmplitude: 0.02
     - _HeightCenter: 0.5
@@ -241,8 +241,8 @@ Material:
     - _IridescenceThickness: 1
     - _LinkDetailsWithBase: 1
     - _MaterialID: 1
-    - _MaterialTilingU: 5
-    - _MaterialTilingV: 5
+    - _MaterialTilingU: 2
+    - _MaterialTilingV: 2
     - _Metallic: 0
     - _NormalMapSpace: 0
     - _NormalScale: 1

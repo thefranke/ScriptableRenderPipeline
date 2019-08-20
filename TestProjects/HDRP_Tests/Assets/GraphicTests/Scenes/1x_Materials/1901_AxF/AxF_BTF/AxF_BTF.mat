@@ -7,9 +7,9 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: AxF
+  m_Name: AxF_BTF
   m_Shader: {fileID: 4800000, guid: 6510c57cccce5674092bdc0dd1ae98c1, type: 3}
-  m_ShaderKeywords: _AXF_BRDF_TYPE_SVBRDF
+  m_ShaderKeywords: _AXF_BRDF_TYPE_BTF
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -113,11 +113,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SVBRDF_DiffuseColorMap:
-        m_Texture: {fileID: 2800000, guid: a7f306e86e58c3041b4285309c87d1f0, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SVBRDF_FresnelMap:
-        m_Texture: {fileID: 2800000, guid: fc599304469f28c4db6329688455c5a1, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SVBRDF_HeightMap:
@@ -125,15 +125,15 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SVBRDF_NormalMap:
-        m_Texture: {fileID: 2800000, guid: 72c21bad8ebd4a043882b302f9837ae3, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SVBRDF_SpecularColorMap:
-        m_Texture: {fileID: 2800000, guid: b8c45873933e80f4baf625fb96de8131, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SVBRDF_SpecularLobeMap:
-        m_Texture: {fileID: 2800000, guid: b534c1312691b1844941f92e1279dba1, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecularColorMap:
@@ -174,7 +174,7 @@ Material:
     - _AlphaDstBlend: 0
     - _AlphaSrcBlend: 1
     - _Anisotropy: 0
-    - _AxF_BRDFType: 0
+    - _AxF_BRDFType: 2
     - _BlendMode: 0
     - _CarPaint2_BRDFColorMapScale: 1
     - _CarPaint2_BTFFlakeMapScale: 1
@@ -241,8 +241,8 @@ Material:
     - _IridescenceThickness: 1
     - _LinkDetailsWithBase: 1
     - _MaterialID: 1
-    - _MaterialTilingU: 5
-    - _MaterialTilingV: 5
+    - _MaterialTilingU: 1
+    - _MaterialTilingV: 1
     - _Metallic: 0
     - _NormalMapSpace: 0
     - _NormalScale: 1
@@ -255,7 +255,7 @@ Material:
     - _RefractionModel: 0
     - _SSRefractionProjectionModel: 0
     - _SVBRDF_BRDFType: 0
-    - _SVBRDF_BRDFVariants: 2
+    - _SVBRDF_BRDFVariants: 0
     - _SVBRDF_HeightMapMaxMM: 0
     - _SVBRDF_SpecularLobeMapScale: 1
     - _Smoothness: 0.5
