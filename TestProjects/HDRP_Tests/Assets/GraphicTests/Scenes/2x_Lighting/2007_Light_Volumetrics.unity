@@ -2654,7 +2654,7 @@ PrefabInstance:
     - target: {fileID: 5489785850083597078, guid: adc7a3141c583ce49b9022be98bd5d96,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -2.44
       objectReference: {fileID: 0}
     - target: {fileID: 5489785850083597078, guid: adc7a3141c583ce49b9022be98bd5d96,
         type: 3}
@@ -2725,6 +2725,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_CharacterSize
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 710908310637035638, guid: adc7a3141c583ce49b9022be98bd5d96,
+        type: 3}
+      propertyPath: platformApis.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 710908310637035638, guid: adc7a3141c583ce49b9022be98bd5d96,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: adc7a3141c583ce49b9022be98bd5d96, type: 3}
