@@ -13,6 +13,7 @@ namespace UnityEngine.Rendering.HighDefinition
             UpgradeFrameSettingsToStruct,
             AddFrameSettingSpecularLighting, // Not use anymore
             AddReflectionFrameSetting,
+            AddFadeDistance,
         }
 
         protected static readonly MigrationDescription<Version, HDProbe> k_Migration = MigrationDescription.New(
@@ -65,7 +66,9 @@ namespace UnityEngine.Rendering.HighDefinition
             MigrationStep.New(Version.AddReflectionFrameSetting, (HDProbe data) =>
             {
                 FrameSettings.MigrateToNoReflectionSettings(ref data.m_ProbeSettings.camera.renderingPathCustomFrameSettings);
-            })
+            }),
+            MigrationStep.New(Version.AddFadeDistance, (HDProbe data)
+                => data.fadeDistance = 10000f)
         );
 
         [SerializeField]

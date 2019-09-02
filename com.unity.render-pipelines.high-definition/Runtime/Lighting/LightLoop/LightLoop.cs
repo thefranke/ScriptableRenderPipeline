@@ -1677,10 +1677,13 @@ namespace UnityEngine.Rendering.HighDefinition
             if (envIndex == int.MinValue)
                 return false;
 
+            float distanceToCamera = Vector3.Magnitude(probe.transform.position - camera.transform.position);
+            float distanceFade = HDUtils.ComputeLinearDistanceFade(distanceToCamera, probe.fadeDistance);
+
             InfluenceVolume influence = probe.influenceVolume;
             envLightData.lightLayers = probe.lightLayersAsUInt;
             envLightData.influenceShapeType = influence.envShape;
-            envLightData.weight = probe.weight;
+            envLightData.weight = distanceFade * probe.weight;
             envLightData.multiplier = probe.multiplier * m_indirectLightingController.indirectSpecularIntensity.value;
             envLightData.influenceExtents = influence.extents;
             switch (influence.envShape)

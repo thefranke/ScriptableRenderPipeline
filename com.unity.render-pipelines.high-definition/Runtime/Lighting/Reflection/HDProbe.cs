@@ -172,6 +172,9 @@ namespace UnityEngine.Rendering.HighDefinition
         /// <summary>Weight for blending amongst probes (non PBR parameter).</summary>
         public float weight
         { get => m_ProbeSettings.lighting.weight; set => m_ProbeSettings.lighting.weight = value; }
+        /// <summary>Distance at which reflection smoothly fadeout before HDRP cut it completely.</summary>
+        public float fadeDistance
+        { get => m_ProbeSettings.lighting.fadeDistance; set => m_ProbeSettings.lighting.fadeDistance = value; }
 
         // Proxy
         /// <summary>ProxyVolume currently used by this probe.</summary>
