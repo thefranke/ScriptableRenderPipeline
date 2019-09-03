@@ -92,13 +92,13 @@ namespace UnityEngine.Rendering.HighDefinition
                 fadeDistance = 10000f
             };
 
-            /// <summary>A multiplier applied to the radiance of the probe.</summary>
+            /// <summary>A multiplier applied to the radiance of the Probe.</summary>
             public float multiplier;
-            /// <summary>A weight applied to the influence of the probe.</summary>
+            /// <summary>A weight applied to the influence of the Probe.</summary>
             public float weight;
-            /// <summary>An enum flags to select light layer this probe interact on.</summary>
+            /// <summary>An enum flag to select which Light Layers this Probe interacts with.</summary>
             public LightLayerEnum lightLayer;
-            /// <summary>The distance at wich reflection smouthly fadeout before HDRP cut it completely.</summary>
+            /// <summary>The distance at which reflections smoothly fade out before HDRP cut them completely.</summary>
             public float fadeDistance;
         }
 
