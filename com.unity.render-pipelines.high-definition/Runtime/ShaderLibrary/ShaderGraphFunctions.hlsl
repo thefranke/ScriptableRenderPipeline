@@ -25,8 +25,12 @@ float3 shadergraph_HDSampleSceneColor(float2 uv)
 
 float3 shadergraph_HDBakedGI(float3 positionWS, float3 normalWS, float2 uvStaticLightmap, float2 uvDynamicLightmap, bool applyScaling)
 {
+#if !VFX_SHADERGRAPH
     float3 positionRWS = GetCameraRelativePositionWS(positionWS);
     return SampleBakedGI(positionRWS, normalWS, uvStaticLightmap, uvDynamicLightmap);
+#else
+    return (float3)0.0f; //Not yet supported
+#endif
 }
 
 // Always include Shader Graph version
