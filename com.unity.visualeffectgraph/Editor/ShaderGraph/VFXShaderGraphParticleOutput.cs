@@ -207,6 +207,10 @@ namespace UnityEditor.VFX
                         if (!string.IsNullOrEmpty(portInfo.referenceName))
                             yield return $"HAS_SHADERGRAPH_PARAM_{portInfo.referenceName.ToUpper()}";
                     }
+
+                    //Wrong : should ask for shader requirements
+                    yield return "REQUIRE_DEPTH_TEXTURE";
+                    yield return "REQUIRE_OPAQUE_TEXTURE";
                 }
             }
         }
@@ -342,7 +346,16 @@ public override IEnumerable<KeyValuePair<string, VFXShaderWriter>> additionalRep
                     {
                         GraphCode graphCode = kvPass.Value;
 
-                        yield return new KeyValuePair<string, VFXShaderWriter>("${SHADERGRAPH_PIXEL_CODE_" + kvPass.Key.ToUpper() + "}", new VFXShaderWriter("#include \"Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl\"\n" + graphCode.code));
+                        var include = "#include \"Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl\"\n";
+                        //This is wrong
+                        if (!isBlendModeOpaque)
+                            include += "#define _SURFACE_TYPE_TRANSPARENT\n";
+
+                        include += "#define SHADERPASS WRONG\n";
+                        include += "#include \"Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderGraphFunctions.hlsl\"\n";
+
+                        yield return new KeyValuePair<string, VFXShaderWriter>("${SHADERGRAPH_PIXEL_CODE_" + kvPass.Key.ToUpper() + "}",
+                            new VFXShaderWriter(include + graphCode.code));
 
                         var callSG = new VFXShaderWriter("//Call Shader Graph\n");
                         callSG.builder.AppendLine($"{shaderGraph.inputStructName} INSG = ({shaderGraph.inputStructName})0;");
@@ -411,9 +424,15 @@ public override IEnumerable<KeyValuePair<string, VFXShaderWriter>> additionalRep
                             if ((graphCode.requirements.requiresPosition & NeededCoordinateSpace.AbsoluteWorld) != 0)
                                 callSG.builder.AppendLine("INSG.AbsoluteWorldSpacePosition = GetAbsolutePositionWS(WorldSpacePosition);");
 
-                            if(graphCode.requirements.requiresScreenPosition)
-                                callSG.builder.AppendLine("INSG.ScreenPosition = ComputeScreenPos(TransformWorldToHClip(i.posWS), _ProjectionParams.x);");
-
+                            if (graphCode.requirements.requiresScreenPosition)
+                            {
+                                //This is wrong
+                                callSG.builder.AppendLine("#if VFX_WORLD_SPACE");
+                                callSG.builder.AppendLine("INSG.ScreenPosition = ComputeScreenPos(TransformWorldToHClip(GetAbsolutePositionWS(WorldSpacePosition)), _ProjectionParams.x);");
+                                callSG.builder.AppendLine("#else");
+                                callSG.builder.AppendLine("INSG.ScreenPosition = ComputeScreenPos(TransformWorldToHClip(WorldSpacePosition), _ProjectionParams.x);");
+                                callSG.builder.AppendLine("#endif");
+                            }
 
                             if (graphCode.requirements.requiresViewDir != NeededCoordinateSpace.None)
                             {
