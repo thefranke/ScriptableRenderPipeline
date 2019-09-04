@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using UnityEditor.AssetImporters;
 using UnityEditor;
 using UnityEngine;
@@ -20,8 +20,8 @@ namespace UnityEditor.Rendering.HighDefinition
 
         public void OnPreprocessMaterialDescription(MaterialDescription description, Material material, AnimationClip[] clips)
         {
-            var lowerCasePath = Path.GetExtension(assetPath).ToLower();
-            if (lowerCasePath != ".fbx")
+            var lowerCaseExtension = Path.GetExtension(assetPath).ToLower();
+            if (lowerCaseExtension != ".fbx" && lowerCaseExtension != ".obj" && lowerCaseExtension != ".blend" && lowerCaseExtension != ".mb" && lowerCaseExtension != ".ma" && lowerCaseExtension != ".max")
                 return;
 
                 var shader = Shader.Find("HDRP/Lit");
@@ -83,15 +83,15 @@ namespace UnityEditor.Rendering.HighDefinition
                     material.renderQueue = -1;
                 }
 
-                if (description.TryGetProperty("DiffuseColor", out textureProperty))
-                {
-                    Color diffuseColor = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-                    if (description.TryGetProperty("DiffuseFactor", out floatProperty))
-                        diffuseColor *= floatProperty;
-                    diffuseColor.a = opacity;
+            if (description.TryGetProperty("DiffuseColor", out textureProperty) && textureProperty.texture!=null)
+            {
+                Color diffuseColor = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+                if (description.TryGetProperty("DiffuseFactor", out floatProperty))
+                    diffuseColor *= floatProperty;
+                diffuseColor.a = opacity;
 
                     SetMaterialTextureProperty("_BaseColorMap", material, textureProperty);
-                    material.SetColor("_BaseColor", PlayerSettings.colorSpace == ColorSpace.Gamma ? diffuseColor.gamma : diffuseColor);
+                    material.SetColor("_BaseColor", PlayerSettings.colorSpace == ColorSpace.Linear ? diffuseColor.gamma : diffuseColor);
                 }
                 else if (description.TryGetProperty("DiffuseColor", out vectorProperty))
                 {
@@ -99,7 +99,7 @@ namespace UnityEditor.Rendering.HighDefinition
                     if (description.TryGetProperty("DiffuseFactor", out floatProperty))
                         diffuseColor *= floatProperty;
                     diffuseColor.a = opacity;
-                    material.SetColor("_BaseColor", PlayerSettings.colorSpace == ColorSpace.Gamma ? diffuseColor.gamma : diffuseColor);
+                    material.SetColor("_BaseColor", PlayerSettings.colorSpace == ColorSpace.Linear ? diffuseColor.gamma : diffuseColor);
                 }
 
                 if (description.TryGetProperty("Bump", out textureProperty) && textureProperty.texture != null)
@@ -155,7 +155,7 @@ namespace UnityEditor.Rendering.HighDefinition
 
                 material.SetFloat("_Glossiness", 0.0f);
 
-                if (PlayerSettings.colorSpace == ColorSpace.Gamma)
+                if (PlayerSettings.colorSpace == ColorSpace.Linear)
                     RemapAndTransformColorCurves(description, clips, "DiffuseColor", "_BaseColor", ConvertFloatLinearToGamma);
                 else
                     RemapColorCurves(description, clips, "DiffuseColor", "_BaseColor");
@@ -243,12 +243,7 @@ namespace UnityEditor.Rendering.HighDefinition
                 }
             }
         }
-
-        static float ConvertFloatMultiply(float value, float multiplier)
-        {
-            return value * multiplier;
-        }
-
+        
         static float ConvertFloatLinearToGamma(float value)
         {
             return Mathf.LinearToGammaSpace(value);

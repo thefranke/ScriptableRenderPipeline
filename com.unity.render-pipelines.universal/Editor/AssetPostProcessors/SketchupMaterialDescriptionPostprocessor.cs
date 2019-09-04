@@ -34,21 +34,18 @@ namespace UnityEditor.Rendering.Universal
             Vector4 vectorProperty;
             TexturePropertyDescription textureProperty;
 
-            if (description.TryGetProperty("DiffuseColor", out vectorProperty))
-            {
-                vectorProperty.x = Mathf.GammaToLinearSpace(vectorProperty.x);
-                vectorProperty.y = Mathf.GammaToLinearSpace(vectorProperty.y);
-                vectorProperty.z = Mathf.GammaToLinearSpace(vectorProperty.z);
-                material.SetColor("_BaseColor", vectorProperty);
-                material.SetColor("_Color", vectorProperty);
-            }
-
-            if (description.TryGetProperty("DiffuseMap", out textureProperty))
+            if (description.TryGetProperty("DiffuseMap", out textureProperty) && textureProperty.texture!=null)
             {
                 SetMaterialTextureProperty("_BaseMap", material, textureProperty);
                 SetMaterialTextureProperty("_MainTex", material, textureProperty);
                 material.SetColor("_BaseColor", new Color(1.0f, 1.0f, 1.0f, 1.0f));
                 material.SetColor("_Color", new Color(1.0f, 1.0f, 1.0f, 1.0f));
+            }
+            else if (description.TryGetProperty("DiffuseColor", out vectorProperty))
+            {
+                Color diffuseColor = vectorProperty;
+                material.SetColor("_BaseColor", PlayerSettings.colorSpace == ColorSpace.Linear ? diffuseColor.gamma : diffuseColor);
+                material.SetColor("_Color", PlayerSettings.colorSpace == ColorSpace.Linear ? diffuseColor.gamma : diffuseColor);
             }
 
             if (description.TryGetProperty("IsTransparent", out floatProperty) && floatProperty == 1.0f)
@@ -60,6 +57,7 @@ namespace UnityEditor.Rendering.Universal
                 material.SetInt("_ZWrite", 0);
                 material.EnableKeyword("_ALPHAPREMULTIPLY_ON");
                 material.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
+                material.SetInt("_Surface", 1);
             }
             else
             {
@@ -72,6 +70,7 @@ namespace UnityEditor.Rendering.Universal
                 material.DisableKeyword("_ALPHABLEND_ON");
                 material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
                 material.renderQueue = -1;
+                material.SetInt("_Surface", 0);
             }
         }
 

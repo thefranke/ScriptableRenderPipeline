@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using UnityEngine;
 using UnityEditor.AssetImporters;
 
@@ -73,8 +73,8 @@ namespace UnityEditor.Rendering.HighDefinition
 
             Color diffuseColor = vectorProperty;
 
-            material.SetColor("_Color", diffuseColor.linear);
-            material.SetColor("_BaseColor", diffuseColor.linear);
+            material.SetColor("_Color", PlayerSettings.colorSpace == ColorSpace.Linear ? diffuseColor.gamma : diffuseColor);
+            material.SetColor("_BaseColor", PlayerSettings.colorSpace == ColorSpace.Linear ? diffuseColor.gamma : diffuseColor);
 
             if (description.TryGetProperty("EmissiveColor", out vectorProperty))
             {
@@ -97,52 +97,6 @@ namespace UnityEditor.Rendering.HighDefinition
                     material.EnableKeyword("_NORMALMAP_TANGENT_SPACE");
                 }
             }
-        }
-
-        static float ConvertFloatOneMinus(float value)
-        {
-            return 1.0f - value;
-        }
-
-        static void RemapTransparencyCurves(MaterialDescription description, AnimationClip[] clips)
-        {
-            // For some reason, Opacity is never animated, we have to use TransparencyFactor and TransparentColor
-            for (int i = 0; i < clips.Length; i++)
-            {
-                bool foundTransparencyCurve = false;
-                AnimationCurve curve;
-                if (description.TryGetAnimationCurve(clips[i].name, "TransparencyFactor", out curve))
-                {
-                    ConvertKeys(curve, ConvertFloatOneMinus);
-                    clips[i].SetCurve("", typeof(Material), "_BaseColor.a", curve);
-                    foundTransparencyCurve = true;
-                }
-                else if (description.TryGetAnimationCurve(clips[i].name, "TransparentColor.x", out curve))
-                {
-                    ConvertKeys(curve, ConvertFloatOneMinus);
-                    clips[i].SetCurve("", typeof(Material), "_BaseColor.a", curve);
-                    foundTransparencyCurve = true;
-                }
-
-                if (foundTransparencyCurve && !description.HasAnimationCurveInClip(clips[i].name, "DiffuseColor"))
-                {
-                    Vector4 diffuseColor;
-                    description.TryGetProperty("DiffuseColor", out diffuseColor);
-                    clips[i].SetCurve("", typeof(Material), "_BaseColor.r", AnimationCurve.Constant(0.0f, 1.0f, diffuseColor.x));
-                    clips[i].SetCurve("", typeof(Material), "_BaseColor.g", AnimationCurve.Constant(0.0f, 1.0f, diffuseColor.y));
-                    clips[i].SetCurve("", typeof(Material), "_BaseColor.b", AnimationCurve.Constant(0.0f, 1.0f, diffuseColor.z));
-                }
-            }
-        }
-
-        static void ConvertKeys(AnimationCurve curve, System.Func<float, float> convertionDelegate)
-        {
-            Keyframe[] keyframes = curve.keys;
-            for (int i = 0; i < keyframes.Length; i++)
-            {
-                keyframes[i].value = convertionDelegate(keyframes[i].value);
-            }
-            curve.keys = keyframes;
         }
 
         static void SetMaterialTextureProperty(string propertyName, Material material, TexturePropertyDescription textureProperty)

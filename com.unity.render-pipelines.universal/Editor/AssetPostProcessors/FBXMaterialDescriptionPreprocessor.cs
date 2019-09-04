@@ -1,10 +1,10 @@
-﻿using System.IO;
+using System.IO;
 using UnityEditor.AssetImporters;
 using UnityEngine;
 
 namespace UnityEditor.Rendering.Universal
 {
-    public class PFBXMaterialDescriptionPreprocessor : AssetPostprocessor
+    public class FBXMaterialDescriptionPreprocessor : AssetPostprocessor
     {
         static readonly uint k_Version = 1;
         static readonly int k_Order = 2;
@@ -20,8 +20,8 @@ namespace UnityEditor.Rendering.Universal
 
         public void OnPreprocessMaterialDescription(MaterialDescription description, Material material, AnimationClip[] clips)
         {
-            var lowerCasePath = Path.GetExtension(assetPath).ToLower();
-            if (lowerCasePath != ".fbx")
+            var lowerCaseExtension = Path.GetExtension(assetPath).ToLower();
+            if (lowerCaseExtension != ".fbx" && lowerCaseExtension != ".obj" && lowerCaseExtension != ".blend" && lowerCaseExtension != ".mb" && lowerCaseExtension != ".ma" && lowerCaseExtension != ".max")
                 return;
             
             var shader = Shader.Find("Universal Render Pipeline/Lit");
@@ -68,6 +68,7 @@ namespace UnityEditor.Rendering.Universal
                 material.SetInt("_ZWrite", 0);
                 material.EnableKeyword("_ALPHAPREMULTIPLY_ON");
                 material.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
+                material.SetInt("_Surface", 1);
             }
             else
             {
@@ -80,9 +81,10 @@ namespace UnityEditor.Rendering.Universal
                 material.DisableKeyword("_ALPHABLEND_ON");
                 material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
                 material.renderQueue = -1;
+                material.SetInt("_Surface", 0);
             }
 
-            if (description.TryGetProperty("DiffuseColor", out textureProperty))
+            if (description.TryGetProperty("DiffuseColor", out textureProperty) && textureProperty.texture!=null)
             {
                 Color diffuseColor = new Color(1.0f, 1.0f, 1.0f, 1.0f);
                 if (description.TryGetProperty("DiffuseFactor", out floatProperty))
@@ -90,15 +92,13 @@ namespace UnityEditor.Rendering.Universal
                 diffuseColor.a = opacity;
 
                 SetMaterialTextureProperty("_BaseMap", material, textureProperty);
-                material.SetColor("_BaseColor", PlayerSettings.colorSpace == ColorSpace.Gamma ? diffuseColor.gamma : diffuseColor);
+                material.SetColor("_BaseColor", PlayerSettings.colorSpace == ColorSpace.Linear ? diffuseColor.gamma : diffuseColor);
             }
             else if (description.TryGetProperty("DiffuseColor", out vectorProperty))
             {
                 Color diffuseColor = vectorProperty;
-                if (description.TryGetProperty("DiffuseFactor", out floatProperty))
-                    diffuseColor *= floatProperty;
                 diffuseColor.a = opacity;
-                material.SetColor("_BaseColor", PlayerSettings.colorSpace == ColorSpace.Gamma ? diffuseColor.gamma : diffuseColor);
+                material.SetColor("_BaseColor", PlayerSettings.colorSpace == ColorSpace.Linear ? diffuseColor.gamma : diffuseColor);
             }
 
             if (description.TryGetProperty("Bump", out textureProperty))
@@ -148,7 +148,7 @@ namespace UnityEditor.Rendering.Universal
 
             material.SetFloat("_Glossiness", 0.0f);
 
-            if (PlayerSettings.colorSpace == ColorSpace.Gamma)
+            if (PlayerSettings.colorSpace == ColorSpace.Linear)
                 RemapAndTransformColorCurves(description, clips, "DiffuseColor", "_BaseColor", ConvertFloatLinearToGamma);
             else
                 RemapColorCurves(description, clips, "DiffuseColor", "_BaseColor");

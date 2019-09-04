@@ -51,6 +51,7 @@ namespace UnityEditor.Rendering.Universal
                 material.SetInt("_ZWrite", 0);
                 material.EnableKeyword("_ALPHAPREMULTIPLY_ON");
                 material.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
+                material.SetInt("_Surface", 1);
             }
             else
             {
@@ -63,6 +64,7 @@ namespace UnityEditor.Rendering.Universal
                 material.DisableKeyword("_ALPHABLEND_ON");
                 material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
                 material.renderQueue = -1;
+                material.SetInt("_Surface", 0);
             }
 
             if (floatProperty > .0f)
@@ -70,8 +72,8 @@ namespace UnityEditor.Rendering.Universal
 
             Color diffuseColor = vectorProperty;
 
-            material.SetColor("_Color", diffuseColor.linear);
-            material.SetColor("_BaseColor", diffuseColor.linear);
+            material.SetColor("_Color", PlayerSettings.colorSpace == ColorSpace.Linear ? diffuseColor.gamma : diffuseColor);
+            material.SetColor("_BaseColor", PlayerSettings.colorSpace == ColorSpace.Linear ? diffuseColor.gamma : diffuseColor);
 
             if (description.TryGetProperty("EmissiveColor", out vectorProperty))
             {
