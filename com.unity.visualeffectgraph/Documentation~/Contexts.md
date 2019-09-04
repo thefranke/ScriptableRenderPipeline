@@ -1,0 +1,127 @@
+# Contexts
+
+Contexts are the main elements of the Graph Workflow logic (vertical) and define the succession and the relationships of operations and simulations. Every context defines one stage of computing, for example computing how many particles need to be spawned, creating new particles or updating all living particles. 
+
+Context connect to each other when there is meaning : After creating new particles, an Initialize context can connect to a Particle Update context, or directly to a Particle Output Context to render the particles without simulating them.
+
+## Creating and Connecting Contexts
+
+Contexts are Graph elements, so they can be created using the Right Click > Add Node Menu, Spacebar Menu or by making a workflow (vertical) connection from another context (providing only compatible contexts)
+
+Contexts connect to each other using the Ports at the top and the bottom.
+
+## Context Compatibility
+
+Not all contexts can be connected altogether. Some rules apply to keep a consistent workflow.
+
+The general rule is based on simulation data type, which defines the colors of the outline of a context and some other rules specific to some contexts.
+
+ Here is a recap of the context compatibility.
+
+
+
+| Context            | Input Data Type                      | Output Data Type | Specific Comments                                            |
+| ------------------ | ------------------------------------ | ---------------- | ------------------------------------------------------------ |
+| Event              | None                                 | SpawnEvent (1+)  |                                                              |
+| Spawn              | SpawnEvent (1+)                      | SpawnEvent (1+)  | Two input pins, start and stop the spawn context             |
+| GPU Event          | None                                 | SpawnEvent       | Outputs to Initialize Context                                |
+| Initialize         | SpawnEvent (1+) / GPUSpawnEvent (1+) | Particle (1)     | Can output to Particle Update or Particle Output. Input types SpawnEvent/GPUSpawnEvent are mutually exclusive. |
+| Update             | Particle (1)                         | Particle (1+)    | Can output to a Particle Update or Particle Output           |
+| Particle Output    | Particle (1)                         | None             | Can either have input from an Initialize or Update           |
+| Static Mesh Output | None                                 | None             | Standalone Context                                           |
+
+
+
+# Context Reference
+
+This section covers all the common settings of every kind of context. For more details about specific contexts, see [Context Library]()
+
+## Event
+
+Event Contexts only display a Name as a string that need to be called on the Component API in order to Send this event to the graph and activate a workflow from this node.
+
+## Spawn
+
+Spawn Contexts are standalone systems that have three States : Playing, Stopped and Delayed. 
+
+* Playing state means that the blocks are computed and will perform spawn of new particles
+* Stopped state means that the spawn machine is off and will not spawn particles
+* Delayed state stops spawning particles until the end of a user-set delay, then restarts spawning particles.
+
+Spawn contexts can be customized using compatible **Blocks**.
+
+### Turning On and Off 
+
+Every Spawn context can be turned on and off using the two workflow ports at the top:
+
+* Start will trigger a reset of the spawn context, resetting the time. Hitting Start many times has the same effect as pushing it once.
+* Stop will change the state of the spawn context to Stopped.
+
+### Looping and Delaying
+
+Spawn contexts contains a state and will perform spawning particles based on a looping system.
+
+![Figure explaining the Loop/Delay System]()
+
+* The spawn context can perform loops of defined duration (meaning the internal spawn time will reset at each loop's beginning) . 
+  * In order to set the loop mode, select the context in the graph and change the loop duration popup in the inspector. (Possible Values : Infinite, Constant, Random)
+* Spawn contexts can perform one, many or an infinity of loops. 
+  * In order to set this setting, select the spawn context in the graph and change the Loop count popup in the inspector (Possible Values : Infinite, Constant, Random)
+* Spawn contexts can perform delay before and/or after each loop. During a delay, the spawn time elapses normally but no spawn is performed.
+  * In order to set these setting, select the spawn context in the graph and change the Delay Before Loop and Delay After Loop popups in the inspector (Possible Values: None, Constant, Random)
+
+Setting a loop count, loop duration and / or delays will display new connectable properties on the context's header. Evaluation of these values will follow these rules:
+
+* If set : Loop Count is evaluated when the Start workflow input of the context is hit.
+* If set : Loop Duration is evaluated every time a loop starts
+* If set : Loop Delay (Before/After) is evaluated every time a delay starts.
+
+## GPU Event
+
+GPU Event contexts are experimental contexts that connect inputs to output GPU Events from other systems. They differ from Traditional Spawn as they are computed by the GPU. 
+
+Therefore, only one kind of Spawn can be connected to an Initialize Context (GPU Event and Spawn/Events are mutually Exclusive) 
+
+GPU Event contexts cannot be customized.
+
+## Initialize
+
+Initialize Contexts will generate new particles based on **SpawnEvent** Data, computed from Events, Spawn or GPU Event contexts.
+
+> For example: upon receiving an order of creation of 200 new particles from a spawn context, the context will be processed and will result in executing the context's blocks for all 200 new particles.
+
+Initialize contexts can be customized using compatible **Blocks**.
+
+Initialize contexts are the entry point of new systems. As such, they display information and configuration in their header:
+
+| Property/Setting   | Description                                 |
+| ------------------ | ------------------------------------------- |
+| Bounds (Property)  | Controls the Bounding box of the System     |
+| Capacity (Setting) | Controls the allocation count of the System |
+
+
+
+## Update
+
+Update contexts update all living particles based on **Particle** Data computed from Initialize and Update Contexts. These contexts are executed every frame and will update every particle.
+
+Particle Update Contexts also process automatically some computations for particles in order to simplify common editing tasks.
+
+Update contexts can be customized using compatible **Blocks**.
+
+
+| Setting             | Description                                                  |
+| ------------------- | ------------------------------------------------------------ |
+| Integration         | None : No velocity Integration <br/>Euler : Applies simple Euler velocity integration to the particles positions every frame. |
+| Angular Integration | None : No velocity Integration <br/>Euler : Applies simple Euler angular velocity integration to the particles angles every frame. |
+| Age Particles       | If Age attribute is used, Controls whether update will make particles age over time |
+| Reap Particles      | If Age and Lifetime attributes are used, Control whether update will kill all particles which age is greater than its lifetime. |
+
+
+## Output
+
+Output Contexts renders a system with different modes and settings depending on Particle Data incoming from an **Initialize** or **Update** context. Every element will be rendered using a specific configuration as a specific primitive.
+
+Output contexts can be customized using compatible **Blocks**.
+
+For more information, and a comprehensive list of all output contexts and their settings, see [Output Contexts Reference]()
