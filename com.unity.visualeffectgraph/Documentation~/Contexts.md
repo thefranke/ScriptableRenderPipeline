@@ -10,15 +10,17 @@ Contexts are Graph elements, so they can be created using the Right Click > Add 
 
 Contexts connect to each other using the Ports at the top and the bottom.
 
-## Context Compatibility
+## Flow Compatibility
 
-Not all contexts can be connected altogether. Some rules apply to keep a consistent workflow.
+Not all contexts can be connected altogether, in any order. Some rules apply to keep a consistent workflow:
 
-The general rule is based on simulation data type, which defines the colors of the outline of a context and some other rules specific to some contexts.
+* Contexts connect by compatible input/output data type.
+* Events can connect to one or many events / initialize contexts.
+* Initialize contexts can have one or many SpawnEvent source or one or many GPUSpawnEvent source, but these data type are mutually exclusive.
+* Only One Initialize can be connected to one Update Context
+* You can connect any Output Contexts to a Initialize / Update context.
 
- Here is a recap of the context compatibility.
-
-
+ Here is a recap table of the context compatibility:
 
 | Context            | Input Data Type                      | Output Data Type | Specific Comments                                            |
 | ------------------ | ------------------------------------ | ---------------- | ------------------------------------------------------------ |
@@ -30,8 +32,6 @@ The general rule is based on simulation data type, which defines the colors of t
 | Particle Output    | Particle (1)                         | None             | Can either have input from an Initialize or Update           |
 | Static Mesh Output | None                                 | None             | Standalone Context                                           |
 
-
-
 # Context Reference
 
 This section covers all the common settings of every kind of context. For more details about specific contexts, see [Context Library]()
@@ -39,6 +39,8 @@ This section covers all the common settings of every kind of context. For more d
 ## Event
 
 Event Contexts only display a Name as a string that need to be called on the Component API in order to Send this event to the graph and activate a workflow from this node.
+
+
 
 ## Spawn
 

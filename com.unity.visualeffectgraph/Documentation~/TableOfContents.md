@@ -1,12 +1,13 @@
 * [Visual Effect Graph](Index.md) 
 * [Getting Started](GettingStarted.md) 
-  * Visual Effect Graph Assets
-  * The Visual Effect Graph Window
+  * [Visual Effect Graph Assets](VisualEffectGraphAsset.md) 
+  * [The Visual Effect Graph Window](VisualEffectGraphWindow.md) 
 * [Graph Logic & Philosophy](GraphLogicAndPhilosophy.md)
   * Systems
   * [Contexts](Contexts.md) 
   * Blocks
   * Operators
+  *  [Subgraph](VisualEffectSubgraph.md) 
   * [Properties & Blackboard](PropertiesAndBlackboard.md) 
   * Events
 * [Visual Effect Game Objects](VisualEffectComponent.md) 
@@ -15,10 +16,10 @@
   * C# Component API
   * Property Binders
   * Event Binders
-* Utilities
+* Pipeline Tools
   * Point Cache Bake Tool
-  * Importing Vector Fields
-  * Importing Point Caches 
+  * Vector Field Importer
+  * Point Cache Importer
 * Node Library
   * Contexts
   * Blocks

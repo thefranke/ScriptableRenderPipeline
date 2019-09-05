@@ -21,9 +21,11 @@ The Visual Effect Inspector helps you configure every instance of a Visual Effec
 | Asset Template     | Object Field that references the Visual Effect Graph being used for this Instance. (Edit Button Opens the Graph and Connects this instance to the Target Game Object panel) |
 | Random Seed        | Integer Field that displays the current random seed used for this instance. (Reseed button enables computing a new random seed for this component) |
 | Reseed On Play     | Boolean setting that computes a new seed at random every time the Play Event is sent to the Visual Effect |
-| Initial Event Name | Overrides the Default Event name (string) sent to the component when it becomes enabled. |
+| Initial Event Name | Enables overriding the Default Event name (string) sent to the component when it becomes enabled. (Default : *OnPlay* ) |
 
 #### Rendering Properties
+
+Rendering properties controls how the visual effect instance will render and receive lighting. These properties are stored per-instance in the scene and do not apply modifications to the Visual Effect Graph.
 
 | Item                  | Description                                                  |
 | --------------------- | ------------------------------------------------------------ |
@@ -33,12 +35,13 @@ The Visual Effect Inspector helps you configure every instance of a Visual Effec
 | Anchor Override       | (Visible Only using Blend Probes option for Light Probes) : Defines an alternative transform to compute the position of the probe sampling. |
 | Proxy Volume Override | (Visible Only using Proxy Volume option for Light Probes) : Defines an alternative Light Probe Proxy volume in order to compute the probe sampling. |
 
-#### Exposed Properties
+#### Properties
+
+The properties category display any Property that have been defined in the Visual Effect Graph blackboard as Exposed Property. Every property can be overridden from its default value in order to customize the Visual Effect instance in the scene. Some properties can also be edited using Gizmos directly in the scene.
 
 | Item                 | Description                                                  |
 | -------------------- | ------------------------------------------------------------ |
 | Show Property Gizmos | Toggles the display of the editing gizmos used to set up some exposed properties (Spheres, Boxes, Cylinders, Transforms, Positions). Each gizmo can then be accessed using its dedicated button next to its property. |
 | Properties           | All properties that have been exposed in the Visual Effect Graph Asset.  You can edit these properties for this instance of the Visual Effect. For more information see [Exposed Properties](PropertiesAndBlackboard.md#Exposed Properties) |
 
-In order to access property values you can use the [C# API](https://docs.unity3d.com/2019.3/Documentation/ScriptReference/VFX.VisualEffect.html) or use Property Binders
-
+In order to access property values you can edit them using the inspector, use the [C# API](https://docs.unity3d.com/2019.3/Documentation/ScriptReference/VFX.VisualEffect.html) or use Property Binders.
