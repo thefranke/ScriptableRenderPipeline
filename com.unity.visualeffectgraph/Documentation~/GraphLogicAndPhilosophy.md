@@ -16,18 +16,26 @@ You can customize how particles behave by connecting horizontal nodes to a block
 To create a custom expression from nodes, you can add nodes through the Add Node Context Menu, connect them to block properties and change their values in order to define the behavior you expect.
 ## Graph Elements
 
+A Visual Effect Graph provides a workspace where you can create Graph Elements and connect them together to define effect behaviors.
+
+* 
+
+## Standard Graph Elements 
+
+A Visual Effect Graph provides a workspace where you can create Graph Elements and connect them together to define effect behaviors.
+
 ![The vertical workflow contains Systems, which then contain Contexts, which then contain Blocks. Together, they determine when something happens during the “lifecycle” of the visual effect.](Images/SystemVisual.png)
 
 ### Systems
-Systems are the main components of a visual effect. Every system defines one distinct part that the render pipeline simulates and renders alongside other systems. In the graph, systems appear as dashed outlines that connect Contexts (see image above).
 
-Generally, a Particle System is composed of a succession of an Initialize, then Update, then Output context. If you don’t want any simulation to happen, but just want to render your particles, you can skip the __Update__ context and directly connect the Initialize context to the Output Context.
+[Systems](Systems.md) are the main components of a Visual Effect : every system defines one distinct part that the render pipeline simulates and renders alongside other systems. In the graph, systems that are defined by a succession of contexts appear as dashed outlines (see image above).
 
-If you want to perform multi-pass simulation, you can chain together multiple __Update__ contexts. 
+* **Spawn System** is composed of a single Spawn Context.
+* **Particle System** is composed of a succession of an Initialize, then Update, then Output context. 
+* **Mesh Output System** is composed of a single Mesh Output Context.
 
-Finally, in some other cases, multiple outputs can be connected to the same simulation in order to compose the rendering of one particle (eg: butterfly particles made of two quads for the wings and a particle mesh for the body)
 ### Contexts
-Contexts are parts of the Systems that define one stage of processing. 
+[Contexts](Contexts.md) are parts of the Systems that define one stage of processing. 
 
 Here are the 4 common contexts in a Visual Effect Graph graph:
 
@@ -39,15 +47,22 @@ Here are the 4 common contexts in a Visual Effect Graph graph:
 **Note:** Some context, for example Output Mesh, do not connect to any other contexts as they do not relate to other systems.
 
 ### Blocks
-Blocks are nodes that you can stack into a Context. Every Block is in charge of one operation. For example, it can apply a force to the velocity, collide with a sphere, or set a random color.
+[Blocks](Blocks.md) are nodes that you can stack into a Context. Every Block is in charge of one operation. For example, it can apply a force to the velocity, collide with a sphere, or set a random color.
 
-To configure and customize Blocks, you can:
+<u>Blocks, once created can be:</u>
+
+* Reordered in the context
+* Moved to and reordered in another compatible context
+
+<u>To configure and customize Blocks, you can:</u>
 
 
 * Adjust their Properties by connecting each property’s Port to another Node with an Edge. 
 * Adjusting the Settings for a property. Settings are editable values without ports that you cannot connect to other nodes.
-### Node Operators
-Node operators are low-level operations of the property workflow that you can connect to generate custom behaviors. Node networks connect to Ports that belong to Blocks or Contexts.
+### Operators
+[Operators](Operators.md) are nodes that compose the low-level operations of the **property workflow** that you can connect to generate custom behaviors. Node networks connect to Ports that belong to Blocks or Contexts.
+
+## Other Graph Elements
 
 ### Groups 
 
@@ -56,13 +71,3 @@ In addition to nodes, you can tidy up your graphs by creating groups of nodes th
 ### Sticky Notes
 
 Sticky Notes are draggable comment elements you can add to leave explanations and reminders to your co-workers or for yourself.
-
-### Adding Graph Elements
-
-You can add graph elements using various methods depending on what you need to do:
-
-* **Right Click Menu** : Using the right click menu, select Add Node, then select the Node you want to add from the menu. This action is context-sensitive, based on the element that stands below your cursor and will provide you only with the graph elements that are compatible.
-
-* **Spacebar Menu** : This shortcut is the equivalent of making a right-click, then selecting Add Node.
-
-* **Interactive Connections** : While creating an edge from a port (either property or workflow), drag the edge around and release the click into an empty space to display the Node Menu. This action is context-sensitive and will provide you only the compatible graph elements that you can connect to.

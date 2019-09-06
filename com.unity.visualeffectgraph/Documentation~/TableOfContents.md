@@ -3,23 +3,22 @@
   * [Visual Effect Graph Assets](VisualEffectGraphAsset.md) 
   * [The Visual Effect Graph Window](VisualEffectGraphWindow.md) 
 * [Graph Logic & Philosophy](GraphLogicAndPhilosophy.md)
-  * Systems
+  * [Systems](Systems.md) 
   * [Contexts](Contexts.md) 
-  * Blocks
-  * Operators
+  * [Blocks](Blocks.md) 
+  * [Operators](Operators.md) 
   *  [Subgraph](VisualEffectSubgraph.md) 
   * [Properties & Blackboard](PropertiesAndBlackboard.md) 
-  * Events
-* [Visual Effect Game Objects](VisualEffectComponent.md) 
-  * Editing Properties with Gizmos
-  * Using Visual Effects with Timeline
-  * C# Component API
-  * Property Binders
-  * Event Binders
+  * [Events](Events.md) 
+* [The Visual Effect Component](VisualEffectComponent.md) 
+  * [C# Component API](ComponentAPI.md)
+  * [Using Visual Effects with Timeline](Timeline.md) 
+  * [Property Binders](PropertyBinders.md)
+  * [Event Binders](EventBinders.md)
 * Pipeline Tools
-  * Point Cache Bake Tool
-  * Vector Field Importer
-  * Point Cache Importer
+  * [Vector Fields](VectorFields.md)
+  * [Point Caches](PointCaches.md)
+  * [Point Cache Bake Tool](PointCacheBakeTool.md)
 * Node Library
   * Contexts
   * Blocks

@@ -45,3 +45,8 @@ The properties category display any Property that have been defined in the Visua
 | Properties           | All properties that have been exposed in the Visual Effect Graph Asset.  You can edit these properties for this instance of the Visual Effect. For more information see [Exposed Properties](PropertiesAndBlackboard.md#Exposed Properties) |
 
 In order to access property values you can edit them using the inspector, use the [C# API](https://docs.unity3d.com/2019.3/Documentation/ScriptReference/VFX.VisualEffect.html) or use Property Binders.
+
+## The Play Controls Window
+
+## Editing Properties with Gizmos
+

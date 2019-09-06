@@ -2,7 +2,7 @@
 
 Contexts are the main elements of the Graph Workflow logic (vertical) and define the succession and the relationships of operations and simulations. Every context defines one stage of computing, for example computing how many particles need to be spawned, creating new particles or updating all living particles. 
 
-Context connect to each other when there is meaning : After creating new particles, an Initialize context can connect to a Particle Update context, or directly to a Particle Output Context to render the particles without simulating them.
+Context connect to each other when there is meaning : After creating new particles, an Initialize context can connect to a Update Particle context, or directly to a Output Particle Context to render the particles without simulating them.
 
 ## Creating and Connecting Contexts
 
@@ -40,8 +40,6 @@ This section covers all the common settings of every kind of context. For more d
 
 Event Contexts only display a Name as a string that need to be called on the Component API in order to Send this event to the graph and activate a workflow from this node.
 
-
-
 ## Spawn
 
 Spawn Contexts are standalone systems that have three States : Playing, Stopped and Delayed. 
@@ -63,28 +61,29 @@ Every Spawn context can be turned on and off using the two workflow ports at the
 
 Spawn contexts contains a state and will perform spawning particles based on a looping system.
 
-![Figure explaining the Loop/Delay System]()
-
-* The spawn context can perform loops of defined duration (meaning the internal spawn time will reset at each loop's beginning) . 
+* The spawn context can emit during **loops of defined duration** (meaning the internal spawn time will reset at each loop's beginning) . By default the duration is **infinite**.
   * In order to set the loop mode, select the context in the graph and change the loop duration popup in the inspector. (Possible Values : Infinite, Constant, Random)
-* Spawn contexts can perform one, many or an infinity of loops. 
+* Spawn contexts can perform **one**, **many** or an **infinity** of **loops**. 
   * In order to set this setting, select the spawn context in the graph and change the Loop count popup in the inspector (Possible Values : Infinite, Constant, Random)
-* Spawn contexts can perform delay before and/or after each loop. During a delay, the spawn time elapses normally but no spawn is performed.
+* Spawn contexts can perform a **delay** **before** and/or a**delay after** each loop. During a delay, the spawn time elapses normally but no spawn is performed.
   * In order to set these setting, select the spawn context in the graph and change the Delay Before Loop and Delay After Loop popups in the inspector (Possible Values: None, Constant, Random)
+
+Here is a visual illustration of the Looping and Delay System.
+
+![Figure explaining the Loop/Delay System](Images/LoopDelaySystem.png)
 
 Setting a loop count, loop duration and / or delays will display new connectable properties on the context's header. Evaluation of these values will follow these rules:
 
-* If set : Loop Count is evaluated when the Start workflow input of the context is hit.
-* If set : Loop Duration is evaluated every time a loop starts
-* If set : Loop Delay (Before/After) is evaluated every time a delay starts.
+* If set : **Loop Count** is evaluated when the Start workflow input of the context is hit.
+* If set : **Loop Duration** is evaluated every time a loop starts
+* If set : **Loop Delay** (Before/After) is evaluated every time a delay starts.
 
 ## GPU Event
 
-GPU Event contexts are experimental contexts that connect inputs to output GPU Events from other systems. They differ from Traditional Spawn as they are computed by the GPU. 
+GPU Event contexts are experimental contexts that connect inputs to output GPU Events from other systems. They differ from Traditional Spawn as they are computed by the GPU.  Only one kind of Spawn can be connected to an Initialize Context (GPU Event and Spawn/Events are mutually Exclusive) 
 
-Therefore, only one kind of Spawn can be connected to an Initialize Context (GPU Event and Spawn/Events are mutually Exclusive) 
-
-GPU Event contexts cannot be customized.
+> GPU Event contexts cannot be customized with blocks.
+>
 
 ## Initialize
 
