@@ -62,12 +62,6 @@ namespace UnityEngine.Rendering.HighDefinition
             return x / (ch * H);
         }
 
-        public float GetAirScaleHeight()
-        {
-            return ScaleHeightFromLayerDepth(airMaximumAltitude.value);
-
-        }
-
         static float ConvertOpacityToExtinction(float alpha, float H, float R)
         {
             float opacity    = Mathf.Min(alpha, 0.99999f);
@@ -75,6 +69,12 @@ namespace UnityEngine.Rendering.HighDefinition
             float extinction = InvertOpticalDepth(optDepth, H, R);
 
             return extinction;
+        }
+
+        public float GetAirScaleHeight()
+        {
+            return ScaleHeightFromLayerDepth(airMaximumAltitude.value);
+
         }
 
         public Vector3 GetAirExtinctionCoefficient()
