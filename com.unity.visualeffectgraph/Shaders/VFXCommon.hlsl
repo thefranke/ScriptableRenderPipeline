@@ -78,6 +78,24 @@ float4 SampleTexture(VFXSampler2D s,float2 coords,float level = 0.0f)
     return s.t.SampleLevel(s.s,coords, level);
 }
 
+float3 VFXGetPositionRWS(float3 posWS)
+{
+#if VFX_WORLD_SPACE
+    return GetCameraRelativePositionWS(posWS);
+#else
+    return posWS;
+#endif
+}
+
+float3 VFXGetPositionAWS(float3 posWS)
+{
+#if VFX_LOCAL_SPACE
+    return GetAbsolutePositionWS(posWS);
+#else
+    return posWS;
+#endif
+}
+
 float4 SampleTexture(VFXSampler2DArray s,float2 coords,float slice,float level = 0.0f)
 {
     return s.t.SampleLevel(s.s,float3(coords,slice),level);
