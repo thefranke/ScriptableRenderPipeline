@@ -70,6 +70,11 @@ Shader "Hidden/HDRP/Sky/PbrSky"
         float3 N; float r; // These params correspond to the entry point
         float tEntry = IntersectAtmosphere(O, V, N, r).x;
 
+        if (r <= R)
+        {
+            return 0; // The camera is below ground.
+        }
+
         float NdotV  = dot(N, V);
         float cosChi = -NdotV;
         float cosHor = ComputeCosineOfHorizonAngle(r);
