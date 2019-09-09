@@ -14,6 +14,7 @@ namespace UnityEditor.Rendering.HighDefinition
         static readonly GUIContent k_PostProcessSectionTitle = EditorGUIUtility.TrTextContent("Post-processing");
         static readonly GUIContent k_XrTitle = EditorGUIUtility.TrTextContent("XR");
         static readonly GUIContent k_LightLoopSubTitle = EditorGUIUtility.TrTextContent("Lights");
+        static readonly GUIContent k_PostProcessQualitySubTitle = EditorGUIUtility.TrTextContent("Post-processing Quality Settings");
 
         static readonly GUIContent k_CookiesSubTitle = EditorGUIUtility.TrTextContent("Cookies");
         static readonly GUIContent k_ReflectionsSubTitle = EditorGUIUtility.TrTextContent("Reflections");
@@ -31,6 +32,19 @@ namespace UnityEditor.Rendering.HighDefinition
         static readonly GUIContent k_DirectionalLightsShadowTiers = EditorGUIUtility.TrTextContent("Directional Shadow Resolution Tiers");
         static readonly GUIContent k_DynamicResolutionSubTitle = EditorGUIUtility.TrTextContent("Dynamic resolution");
         static readonly GUIContent k_LowResTransparencySubTitle = EditorGUIUtility.TrTextContent("Low res Transparency");
+
+        static readonly GUIContent k_MotionBlurQualitySettings = EditorGUIUtility.TrTextContent("Motion Blur");
+        static readonly GUIContent k_BloomQualitySettings = EditorGUIUtility.TrTextContent("Bloom");
+        static readonly GUIContent k_ChromaticAberrationQualitySettings = EditorGUIUtility.TrTextContent("Chromatic Aberration");
+
+        static readonly GUIContent k_DepthOfFieldQualitySettings = EditorGUIUtility.TrTextContent("Depth Of Field");
+        static readonly GUIContent k_FarBlurSubTitle = EditorGUIUtility.TrTextContent("Far Blur");
+        static readonly GUIContent k_NearBlurSubTitle = EditorGUIUtility.TrTextContent("Near Blur");
+        static readonly GUIContent k_MaxRadiusQuality = EditorGUIUtility.TrTextContent("Max Radius");
+        static readonly GUIContent k_SampleCountQuality = EditorGUIUtility.TrTextContent("Sample Count");
+        static readonly GUIContent k_ResolutionQuality = EditorGUIUtility.TrTextContent("Resolution");
+        static readonly GUIContent k_HighQualityFiltering = EditorGUIUtility.TrTextContent("High Quality Filtering");
+        static readonly GUIContent k_MaxSamplesQuality = EditorGUIUtility.TrTextContent("Max Samples");
 
         static readonly GUIContent k_DefaultFrameSettingsContent = EditorGUIUtility.TrTextContent("Default Frame Settings For");
 
@@ -64,6 +78,8 @@ namespace UnityEditor.Rendering.HighDefinition
         static readonly GUIContent k_SupportTransparentDepthPostpass = EditorGUIUtility.TrTextContent("Transparent Depth Postpass", "When disabled, HDRP removes all transparent depth postpass Shader variants when you build for the Unity Player. This decreases build time.");
         static readonly GUIContent k_SupportRaytracing = EditorGUIUtility.TrTextContent("Realtime Raytracing");
         static readonly GUIContent k_RaytracingTier = EditorGUIUtility.TrTextContent("Raytracing Tier");
+        static readonly GUIContent k_MaximumLODLevel = EditorGUIUtility.TrTextContent("Maximum LOD Level");
+        static readonly GUIContent k_LODBias = EditorGUIUtility.TrTextContent("LOD Bias");
 
         const string k_CacheErrorFormat = "This configuration will lead to more than 2 GB reserved for this cache at runtime! ({0} requested) Only {1} element will be reserved instead.";
         const string k_CacheInfoFormat = "Reserving {0} in memory at runtime.";
@@ -106,6 +122,7 @@ namespace UnityEditor.Rendering.HighDefinition
         static readonly GUIContent k_HighQualityContent = EditorGUIUtility.TrTextContent("High", "Specifies the resolution of the shadows set to high quality.");
         static readonly GUIContent k_VeryHighQualityContent = EditorGUIUtility.TrTextContent("Very High", "Specifies the resolution of the shadows set to very high quality.");
 
+        static readonly GUIContent k_UseContactShadows = EditorGUIUtility.TrTextContent("Use Contact Shadows", "Use contact shadows for lights.");
         static readonly GUIContent k_SupportScreenSpaceShadows = EditorGUIUtility.TrTextContent("Screen Space Shadows", "Enables the support of screen space shadows in HDRP.");
         static readonly GUIContent k_MaxScreenSpaceShadows = EditorGUIUtility.TrTextContent("Maximum", "Sets the maximum number of screen space shadows HDRP can handle on screen at once.");
         static readonly GUIContent k_MaxShadowResolution = EditorGUIUtility.TrTextContent("Max shadow resolution", "Specifies the maximum resolution for any single shadow map.");
