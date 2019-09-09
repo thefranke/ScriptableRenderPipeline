@@ -122,11 +122,12 @@ Shader "Hidden/HDRP/Sky/PbrSky"
             if (tGround < tFrag)
             {
                 // Closest so far.
-                tFrag = tGround;
+                // Make it negative to communicate to EvaluatePbrAtmosphere that we intersected the ground.
+                tFrag = -tGround;
 
                 radiance = 0;
 
-                float3 gP = O + tFrag * -V;
+                float3 gP = O + tGround * -V;
                 float3 gN = normalize(gP);
 
                 if (_HasGroundEmissionTexture)
