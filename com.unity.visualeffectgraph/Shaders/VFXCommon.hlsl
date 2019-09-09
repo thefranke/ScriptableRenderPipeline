@@ -78,6 +78,24 @@ float4 SampleTexture(VFXSampler2D s,float2 coords,float level = 0.0f)
     return s.t.SampleLevel(s.s,coords, level);
 }
 
+float3 VFXGetPositionRWS(float3 posWS)
+{
+#if VFX_WORLD_SPACE
+    return GetCameraRelativePositionWS(posWS);
+#else
+    return posWS;
+#endif
+}
+
+float3 VFXGetPositionAWS(float3 posWS)
+{
+#if VFX_LOCAL_SPACE
+    return GetAbsolutePositionWS(posWS);
+#else
+    return posWS;
+#endif
+}
+
 // Invert 3D transformation matrix (not perspective). Adapted from graphics gems 2.
 // Inverts upper left by calculating its determinant and multiplying it to the symmetric
 // adjust matrix of each element. Finally deals with the translation by transforming the
