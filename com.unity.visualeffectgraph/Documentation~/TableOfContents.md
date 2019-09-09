@@ -7,7 +7,7 @@
   * [Contexts](Contexts.md) 
   * [Blocks](Blocks.md) 
   * [Operators](Operators.md) 
-  *  [Subgraph](VisualEffectSubgraph.md) 
+  *  [Subgraph](Subgraph.md) 
   * [Properties & Blackboard](PropertiesAndBlackboard.md) 
   * [Events](Events.md) 
 * [The Visual Effect Component](VisualEffectComponent.md) 
