@@ -1,0 +1,50 @@
+# Attributes
+
+Attributes are data attached to elements present in Systems. For instance, the color of a particle, its position, or the amount of particles that a spawn system need to create.
+
+Attributes can be read or written in systems in order to perform custom behavior and differentiate elements.
+
+Attributes are stored in systems whenever needed so only the necessary data are stored in order to save memory. 
+
+## Accessing Attributes
+
+### Writing Attributes
+
+Attributes can be written using [Blocks](Blocks.md). Blocks are the only graph elements that can write attributes to the system.
+
+Attributes, when written, are stored into simulation data if needed in another, later context :
+
+* Attributes written in Initialize / Update contexts will be stored only if read in Update / Output Contexts.
+* Attributes written in Output Contexts do not store into simulation data and are only used for rendering.
+
+### Reading Attributes
+
+Reading attributes can be done through Operators and Blocks:
+
+* Using a Get [Attribute] Operator.
+* Using Different Composition Modes in Set [Attribute] Blocks (Add, Multiply, Blend) that depends on the previous value of the attribute.
+
+> Reading an attribute that is not stored into the simulation will result in reading its default, constant value.
+
+> **WARNING**: It is currently only possible to read attributes in Particle and ParticleStrip Systems. Reading attributes in Spawn Systems can only be achieved using [Spawner Callbacks](SpawnerCallbacks.md) .
+
+## Attribute Locations
+
+Attributes are stored in data containers specific to every system. However, Reading an attribute can be achieved on the current simulation data pool or in another data pool if the system depends on.
+
+### Current
+
+Current Attribute Location refers to the **current** system data where the value is read from. 
+
+* Particle Data from a Particle System
+* ParticleStrip Data from a ParticleStrip System
+* SpawnEvent Data from a Spawn context or sent through [SendEvent](https://docs.unity3d.com/2019.2/Documentation/ScriptReference/Experimental.VFX.VisualEffect.SendEvent.html) [EventAttribute](https://docs.unity3d.com/2019.2/Documentation/ScriptReference/Experimental.VFX.VFXEventAttribute.html) Payload.
+
+### Source
+
+Source Attribute Location refers to the previous system data where the value is read from. Source attributes can be read only in the first context.
+
+* In Initialize Particle / Initalize Particle Strips Contexts:
+  * From incoming Spawn Contexts.
+  * From other Particle Systems, through GPUEvent spawn.
+

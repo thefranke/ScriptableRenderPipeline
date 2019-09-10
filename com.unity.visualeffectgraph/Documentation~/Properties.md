@@ -53,7 +53,7 @@ Depending on the [System Simulation Space](Systems.md#system-spaces), the value 
 
 ## Property Nodes
 
-Property Nodes are special  [Operators](Operators.md)  nodes that enable accessing Graph-Wide Properties defined in the [Blackboard](Blackboard.md). Using these properties enable you reuse the same value throughout the graph at different places.
+Property Nodes are special  [Operators](Operators.md) nodes that enable accessing Graph-Wide Properties defined in the [Blackboard](Blackboard.md). Using these properties enable you reuse the same value throughout the graph at different places.
 
 ![](Images/PropertyNodes.png)
 

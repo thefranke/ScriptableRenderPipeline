@@ -21,6 +21,7 @@
   * [Vector Fields](VectorFields.md)
   * [Point Caches](PointCaches.md)
   * [Point Cache Bake Tool](PointCacheBakeTool.md)
+  *  [Spawner Callbacks](SpawnerCallbacks.md)
 * Node Library
   * Contexts
   * Blocks
