@@ -1,7 +1,7 @@
 * [Visual Effect Graph](Index.md) 
 * [Getting Started](GettingStarted.md) 
   * [Visual Effect Graph Assets](VisualEffectGraphAsset.md) 
-  * [The Visual Effect Graph Window](VisualEffectGraphWindow.md) 
+  * [Visual Effect Graph Window](VisualEffectGraphWindow.md) 
 * [Graph Logic & Philosophy](GraphLogicAndPhilosophy.md)
   * [Systems](Systems.md) 
   * [Contexts](Contexts.md) 

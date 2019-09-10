@@ -12,7 +12,7 @@ Systems are compounds of one or many  [Contexts](Contexts.md) that define a stan
 
   
 
-# Creating System from Templates
+## Creating System from Templates
 
 Visual Effect Graph comes with Built-in templates that you can add to your graph using the following:
 
@@ -22,3 +22,11 @@ Visual Effect Graph comes with Built-in templates that you can add to your graph
 
 ![](Images/SystemAddTemplate.png)
 
+## System Spaces
+
+Some systems embed a Space property that will define the reference space that will be used to simulate its contents:
+
+* Local Space will simulate locally to the Game Object that holds the  [Visual Effect Component](VisualEffectComponent.md) 
+* World space will simulate independently of the Game Object that holds the [Visual Effect Component](VisualEffectComponent.md) 
+
+> Regardless of the System's Simulation Space you can use [Spaceable Properties](Properties.md#Spaceable Properties) in order to access Local or World Values.
