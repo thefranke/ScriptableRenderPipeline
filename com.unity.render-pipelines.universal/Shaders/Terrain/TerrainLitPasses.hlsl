@@ -36,12 +36,12 @@ struct Varyings
 #endif
 
 #if defined(_NORMALMAP) && !defined(ENABLE_TERRAIN_PERPIXEL_NORMAL)
-    half4 normal                    : TEXCOORD3;    // xyz: normal, w: viewDir.x
-    half4 tangent                   : TEXCOORD4;    // xyz: tangent, w: viewDir.y
-    half4 bitangent                 : TEXCOORD5;    // xyz: bitangent, w: viewDir.z
+    float4 normal                   : TEXCOORD3;    // xyz: normal, w: viewDir.x
+    float4 tangent                  : TEXCOORD4;    // xyz: tangent, w: viewDir.y
+    float4 bitangent                : TEXCOORD5;    // xyz: bitangent, w: viewDir.z
 #else
-    half3 normal                    : TEXCOORD3;
-    half3 viewDir                   : TEXCOORD4;
+    float3 normal                   : TEXCOORD3;
+    float3 viewDir                  : TEXCOORD4;
     half3 vertexSH                  : TEXCOORD5; // SH
 #endif
 
@@ -123,8 +123,8 @@ void SplatmapMix(float4 uvMainAndLM, float4 uvSplat01, float4 uvSplat23, inout h
     // Now that splatControl has changed, we can compute the final weight and normalize
     weight = dot(splatControl, 1.0h);
 
-#if !defined(SHADER_API_MOBILE) && !defined(SHADER_API_SWITCH) && defined(TERRAIN_SPLAT_ADDPASS)
-    clip(weight == 0.0h ? -1.0h : 1.0h);
+#ifdef TERRAIN_SPLAT_ADDPASS
+    clip(weight <= 0.005h ? -1.0h : 1.0h);
 #endif
 
 #ifndef _TERRAIN_BASEMAP_GEN
@@ -145,7 +145,14 @@ void SplatmapMix(float4 uvMainAndLM, float4 uvSplat01, float4 uvSplat23, inout h
     nrm += splatControl.g * UnpackNormalScale(SAMPLE_TEXTURE2D(_Normal1, sampler_Normal0, uvSplat01.zw), _NormalScale1);
     nrm += splatControl.b * UnpackNormalScale(SAMPLE_TEXTURE2D(_Normal2, sampler_Normal0, uvSplat23.xy), _NormalScale2);
     nrm += splatControl.a * UnpackNormalScale(SAMPLE_TEXTURE2D(_Normal3, sampler_Normal0, uvSplat23.zw), _NormalScale3);
-    nrm.z += 1e-5f;     // avoid risk of NaN when normalizing.
+
+    // avoid risk of NaN when normalizing.
+#if HAS_HALF
+    nrm.z += 0.01h;     
+#else
+    nrm.z += 1e-5f;
+#endif
+
     mixedNormal = normalize(nrm.xyz);
 #endif
 }
@@ -284,7 +291,8 @@ half4 SplatmapFragment(Varyings IN) : SV_TARGET
 
     half4 masks[4];
     half4 hasMask = half4(_LayerHasMask0, _LayerHasMask1, _LayerHasMask2, _LayerHasMask3);
-    splatControl = SAMPLE_TEXTURE2D(_Control, sampler_Control, IN.uvMainAndLM.xy);
+    float2 splatUV = (IN.uvMainAndLM.xy * (_Control_TexelSize.zw - 1.0f) + 0.5f) * _Control_TexelSize.xy;
+    splatControl = SAMPLE_TEXTURE2D(_Control, sampler_Control, splatUV);
 
     masks[0] = 1.0h;
     masks[1] = 1.0h;
@@ -335,7 +343,7 @@ half4 SplatmapFragment(Varyings IN) : SV_TARGET
 
     InputData inputData;
     InitializeInputData(IN, normalTS, inputData);
-    half4 color = UniversalFragmentPBR(inputData, albedo, metallic, half3(0.0h, 0.0h, 0.0h), smoothness, occlusion, /* emission */ half3(0, 0, 0), alpha);
+    half4 color = UniversalFragmentPBR(inputData, albedo, metallic, /* specular */ half3(0.0h, 0.0h, 0.0h), smoothness, occlusion, /* emission */ half3(0, 0, 0), alpha);
 
     SplatmapFinalColor(color, inputData.fogCoord);
 
