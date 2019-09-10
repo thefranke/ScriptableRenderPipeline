@@ -16,13 +16,11 @@ You can customize how particles behave by connecting horizontal nodes to a block
 To create a custom expression from nodes, you can add nodes through the Add Node Context Menu, connect them to block properties and change their values in order to define the behavior you expect.
 ## Graph Elements
 
-A Visual Effect Graph provides a workspace where you can create Graph Elements and connect them together to define effect behaviors.
+A Visual Effect Graph provides a workspace where you can create Graph Elements and connect them together to define effect behaviors. Visual Effect Graph comes with many different types of Graph Elements that fit into the workspace.
 
-* 
+### Workspace
 
-## Standard Graph Elements 
-
-A Visual Effect Graph provides a workspace where you can create Graph Elements and connect them together to define effect behaviors.
+A Visual Effect Graph provides a **Workspace** where you can create Graph Elements and connect them together to define effect behaviors.
 
 ![The vertical workflow contains Systems, which then contain Contexts, which then contain Blocks. Together, they determine when something happens during the “lifecycle” of the visual effect.](Images/SystemVisual.png)
 
@@ -35,7 +33,7 @@ A Visual Effect Graph provides a workspace where you can create Graph Elements a
 * **Mesh Output System** is composed of a single Mesh Output Context.
 
 ### Contexts
-[Contexts](Contexts.md) are parts of the Systems that define one stage of processing. 
+[Contexts](Contexts.md) are parts of the Systems that define one stage of processing. They connect vertically to define and connect systems together.
 
 Here are the 4 common contexts in a Visual Effect Graph graph:
 
@@ -61,6 +59,23 @@ Here are the 4 common contexts in a Visual Effect Graph graph:
 * Adjusting the Settings for a property. Settings are editable values without ports that you cannot connect to other nodes.
 ### Operators
 [Operators](Operators.md) are nodes that compose the low-level operations of the **property workflow** that you can connect to generate custom behaviors. Node networks connect to Ports that belong to Blocks or Contexts.
+
+### Graph Common Elements
+
+While the graph elements are different, their content and behavior tend to be the same : Graph elements share the following features and layout items :
+
+#### Settings
+
+Settings are Fields that the user cannot connect using Property Workflow,  they are displayed for every Graph Element:
+
+* In the **Graph** : Between the Title and the property Container in the Graph.
+* In the **Inspector** : When a node is selected, the inspector can display additional, advanced settings.
+
+> Changing a setting's value will request a graph recompilation
+
+#### Properties
+
+[Properties](Properties.md) are Fields that the user can edit and connect using the Property Workflow (Horizontal) to other properties contained by other graph elements.
 
 ## Other Graph Elements
 

@@ -1,6 +1,8 @@
-# Properties and Blackboard
+# Blackboard
 
-Properties are global variables that can be shared throughout the graph in order to factorize usage of the same values. For example a bounding box property can be set once and used for many particle systems. Properties can be defined, ordered and categorized in a blackboard window.
+The Blackboard panel is an utility panel in the [Visual Effect Graph Window](VisualEffectGraphWindow.md) that enables managing local and exposed **properties**.
+
+Properties you define in blackboard are global variables that can be used throughout the graph in order to factorize usage of the same values. For example a bounding box property can be set once and used for many particle systems. Properties can be defined, ordered and categorized in a blackboard window.
 
 ![Blackboard-Properties](Images/Blackboard-Properties.png)
 
