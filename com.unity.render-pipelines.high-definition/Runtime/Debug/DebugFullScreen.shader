@@ -218,7 +218,7 @@ Shader "Hidden/HDRP/DebugFullScreen"
                     mv_arrow = SampleMotionVectors(center * _ScreenSize.zw * _RTHandleScale.xy);
 #else
                     for (int i = -1; i <= 1; ++i) for (int j = -1; j <= 1; ++j)
-                        mv_arrow += SampleMotionVectors((center + float2(i, j)*0.0f) * _RTHandleScale.xy * _ScreenSize.zw);
+                        mv_arrow += SampleMotionVectors((center + float2(i, j)) * _RTHandleScale.xy * _ScreenSize.zw);
                     mv_arrow /= 9.0f;
 #endif
                     mv_arrow.y *= -1;
