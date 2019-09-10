@@ -12,7 +12,7 @@ namespace UnityEditor.VFX.Block
 
         public class InputProperties
         {
-            [Tooltip("The torus used for positioning particles.")]
+            [Tooltip("Sets the torus used for positioning the particles.")]
             public ArcTorus Torus = new ArcTorus() { majorRadius = 1.0f, minorRadius = 0.2f, arc = Mathf.PI * 2.0f };
         }
 

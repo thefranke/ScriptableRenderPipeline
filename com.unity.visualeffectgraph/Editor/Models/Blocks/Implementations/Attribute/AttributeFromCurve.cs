@@ -73,7 +73,7 @@ namespace UnityEditor.VFX.Block
         [VFXSetting(VFXSettingAttribute.VisibleFlags.InInspector)]
         public AttributeCompositionMode AlphaComposition = AttributeCompositionMode.Overwrite;
 
-        [VFXSetting, Tooltip("How to sample the curve")]
+        [VFXSetting, Tooltip("Specifies the method by which to sample the curve. This can be over the particle’s lifetime, its speed, randomly, or through a user-specified value.")]
         public CurveSampleMode SampleMode = CurveSampleMode.OverLife;
 
         [VFXSetting(VFXSettingAttribute.VisibleFlags.InInspector)]
