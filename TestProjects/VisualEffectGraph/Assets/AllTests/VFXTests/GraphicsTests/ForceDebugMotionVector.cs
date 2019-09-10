@@ -36,6 +36,9 @@ public class ForceDebugMotionVector : MonoBehaviour
             return;
 
         var hdInstance = RenderPipelineManager.currentPipeline as HDRenderPipeline;
-        hdInstance.debugDisplaySettings.data.fullScreenDebugMode = FullScreenDebugMode.None;
+        if (hdInstance != null)
+        {
+            hdInstance.debugDisplaySettings.data.fullScreenDebugMode = FullScreenDebugMode.None;
+        }
     }
 }
