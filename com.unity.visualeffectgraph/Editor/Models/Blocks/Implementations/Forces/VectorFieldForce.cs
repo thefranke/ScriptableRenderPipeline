@@ -21,7 +21,7 @@ namespace UnityEditor.VFX.Block
         [VFXSetting, SerializeField, Tooltip("Signed: Field data is used as is (typically for float formats)\nUnsigned Normalized: Field data are centered on gray and scaled/biased (typically for 8 bits per component formats)")]
         TextureDataEncoding DataEncoding = TextureDataEncoding.UnsignedNormalized;
 
-        [VFXSetting, SerializeField]
+        [VFXSetting, SerializeField, Tooltip("Specifies whether the added force is relative to the current particle velocity or is an absolute value.")]
         ForceMode Mode = ForceMode.Relative;
 
         [VFXSetting(VFXSettingAttribute.VisibleFlags.InInspector), SerializeField, Tooltip("True to consider the field to be closed. Particles outside the box will not be affected by the vector field, else wrap mode of the texture is used.")]

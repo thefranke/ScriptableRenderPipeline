@@ -17,16 +17,16 @@ namespace UnityEditor.VFX
         }
 
         [Header("Particle Update Options")]
-        [VFXSetting(VFXSettingAttribute.VisibleFlags.InInspector)]
-        public VFXIntegrationMode integration = VFXIntegrationMode.Euler;
+        [VFXSetting(VFXSettingAttribute.VisibleFlags.InInspector), Tooltip("When enabled, particle positions are automatically updated using their velocity.")]
+        public bool updatePosition = true;
 
-        [VFXSetting(VFXSettingAttribute.VisibleFlags.InInspector)]
-        public VFXIntegrationMode angularIntegration = VFXIntegrationMode.Euler;
+        [VFXSetting(VFXSettingAttribute.VisibleFlags.InInspector), Tooltip("When enabled, particle rotations are automatically updated using their angular velocity.")]
+        public bool updateRotation = true;
 
-        [VFXSetting(VFXSettingAttribute.VisibleFlags.InInspector), Tooltip("Automatically increase particle age every frame, based on deltaTime")]
+        [VFXSetting(VFXSettingAttribute.VisibleFlags.InInspector), Tooltip("When enabled, the particle age attribute will increase every frame based on deltaTime.")]
         public bool ageParticles = true;
 
-        [VFXSetting(VFXSettingAttribute.VisibleFlags.InInspector), Tooltip("Destroy particles if age > lifetime")]
+        [VFXSetting(VFXSettingAttribute.VisibleFlags.InInspector), Tooltip("When enabled, particles whose age exceeds their lifetime will be destroyed.")]
         public bool reapParticles = true;
 
         public VFXBasicUpdate() : base(VFXContextType.Update, VFXDataType.None, VFXDataType.None) {}
@@ -73,10 +73,10 @@ namespace UnityEditor.VFX
             {
                 var data = GetData();
 
-                if (integration != VFXIntegrationMode.None && data.IsCurrentAttributeWritten(VFXAttribute.Velocity))
+                if (updatePosition && data.IsCurrentAttributeWritten(VFXAttribute.Velocity))
                     yield return VFXBlock.CreateImplicitBlock<EulerIntegration>(data);
 
-                if (angularIntegration != VFXIntegrationMode.None &&
+                if (updateRotation &&
                     (
                         data.IsCurrentAttributeWritten(VFXAttribute.AngularVelocityX) ||
                         data.IsCurrentAttributeWritten(VFXAttribute.AngularVelocityY) ||
