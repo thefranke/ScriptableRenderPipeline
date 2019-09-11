@@ -667,6 +667,15 @@ namespace UnityEngine.Rendering.HighDefinition
             }
             else // if the build target does not match the editor OS, then we have to check using the graphic api list
             {
+                // For iOS, force Metal as it is the only thing that makes sense for HDRP
+                if (activeBuildTarget == UnityEditor.BuildTarget.iOS)
+                {
+                    unsupportedGraphicDevice = GraphicsDeviceType.Null;
+                    GraphicsDeviceType[] metalOnlyType = new GraphicsDeviceType[1];
+                    metalOnlyType[0] = GraphicsDeviceType.Metal;
+                    UnityEditor.PlayerSettings.SetGraphicsAPIs(activeBuildTarget, metalOnlyType);
+                    return true;
+                }
                 return HDUtils.AreGraphicsAPIsSupported(activeBuildTarget, out unsupportedGraphicDevice);
             }
 
@@ -3293,7 +3302,7 @@ namespace UnityEngine.Rendering.HighDefinition
                 return;
 
             bool msaa = hdCamera.frameSettings.IsEnabled(FrameSettingsField.MSAA);
-                
+
             var customPassTargets = new CustomPass.RenderTargets
             {
                 cameraColorBuffer = m_CameraColorBuffer,
@@ -3697,7 +3706,7 @@ namespace UnityEngine.Rendering.HighDefinition
                 cmd.SetGlobalVector(HDShaderIDs._DebugLightingAlbedo, debugAlbedo);
                 cmd.SetGlobalVector(HDShaderIDs._DebugLightingSmoothness, debugSmoothness);
                 cmd.SetGlobalVector(HDShaderIDs._DebugLightingNormal, debugNormal);
-                cmd.SetGlobalVector(HDShaderIDs._DebugLightingAmbientOcclusion, debugAmbientOcclusion);                
+                cmd.SetGlobalVector(HDShaderIDs._DebugLightingAmbientOcclusion, debugAmbientOcclusion);
                 cmd.SetGlobalVector(HDShaderIDs._DebugLightingSpecularColor, debugSpecularColor);
                 cmd.SetGlobalVector(HDShaderIDs._DebugLightingEmissiveColor, debugEmissiveColor);
                 cmd.SetGlobalColor(HDShaderIDs._DebugLightingMaterialValidateHighColor, materialDebugSettings.materialValidateHighColor);
