@@ -24,7 +24,7 @@ namespace UnityEngine.VFX.Test
         int m_previousCaptureFrameRate;
         float m_previousFixedTimeStep;
         float m_previousMaxDeltaTime;
-        [SetUp]
+        [OneTimeSetUp]
         public void Init()
         {
             m_previousCaptureFrameRate = Time.captureFramerate;
@@ -188,12 +188,18 @@ namespace UnityEngine.VFX.Test
         [TearDown]
         public void TearDown()
         {
-            Time.captureFramerate = m_previousCaptureFrameRate;
-            UnityEngine.VFX.VFXManager.fixedTimeStep = m_previousFixedTimeStep;
-            UnityEngine.VFX.VFXManager.maxDeltaTime = m_previousMaxDeltaTime;
 #if UNITY_EDITOR
             UnityEditor.TestTools.Graphics.ResultsUtility.ExtractImagesFromTestProperties(TestContext.CurrentContext.Test);
 #endif
+        }
+
+        [OneTimeTearDown]
+        public void OneTimeTearDown()
+        {
+            Time.captureFramerate = m_previousCaptureFrameRate;
+            UnityEngine.VFX.VFXManager.fixedTimeStep = m_previousFixedTimeStep;
+            UnityEngine.VFX.VFXManager.maxDeltaTime = m_previousMaxDeltaTime;
+
         }
     }
 }
