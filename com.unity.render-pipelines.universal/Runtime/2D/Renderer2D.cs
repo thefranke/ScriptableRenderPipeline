@@ -92,7 +92,7 @@ namespace UnityEngine.Experimental.Rendering.Universal
                         RenderTargetHandle.CameraTarget,
                         m_ColorGradingLutHandle,
                         false,
-						false
+                        false
                     );
                     EnqueuePass(m_PostProcessPass);
 
@@ -108,7 +108,7 @@ namespace UnityEngine.Experimental.Rendering.Universal
                         RenderTargetHandle.CameraTarget,
                         m_ColorGradingLutHandle,
                         true,
-						false
+                        false
                     );
                     EnqueuePass(m_PostProcessPass);
 
@@ -126,7 +126,7 @@ namespace UnityEngine.Experimental.Rendering.Universal
                         RenderTargetHandle.CameraTarget,
                         m_ColorGradingLutHandle,
                         false,
-						true
+                        true
                     );
                     EnqueuePass(m_PostProcessPass);
 

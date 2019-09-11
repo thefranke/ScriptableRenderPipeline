@@ -225,7 +225,7 @@ namespace UnityEngine.Rendering.Universal
             // we need to stay in a RT
             if (afterRenderExists)
             {
-				bool willRenderFinalPass = (m_ActiveCameraColorAttachment != RenderTargetHandle.CameraTarget);
+                bool willRenderFinalPass = (m_ActiveCameraColorAttachment != RenderTargetHandle.CameraTarget);
                 // perform post with src / dest the same
                 if (postProcessEnabled)
                 {

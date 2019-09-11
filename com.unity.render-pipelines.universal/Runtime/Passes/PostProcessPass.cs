@@ -67,7 +67,7 @@ namespace UnityEngine.Rendering.Universal.Internal
 		
 		// Some Android devices do not support sRGB backbuffer
 		// We need to do the conversion manually on those
-		bool m_EnableSRGBConversionIfNeeded;
+        bool m_EnableSRGBConversionIfNeeded;
 
         public PostProcessPass(RenderPassEvent evt, PostProcessData data)
         {
@@ -120,7 +120,7 @@ namespace UnityEngine.Rendering.Universal.Internal
             m_InternalLut = internalLut;
             m_IsFinalPass = false;
             m_HasFinalPass = hasFinalPass;
-			m_EnableSRGBConversionIfNeeded = enableSRGBConversion;
+            m_EnableSRGBConversionIfNeeded = enableSRGBConversion;
         }
 
         public void SetupFinalPass(in RenderTargetHandle source, bool enableSRGBConversion)
@@ -129,7 +129,7 @@ namespace UnityEngine.Rendering.Universal.Internal
             m_Destination = RenderTargetHandle.CameraTarget;
             m_IsFinalPass = true;
             m_HasFinalPass = false;
-			m_EnableSRGBConversionIfNeeded = enableSRGBConversion;
+            m_EnableSRGBConversionIfNeeded = enableSRGBConversion;
         }
 
         public override void Configure(CommandBuffer cmd, RenderTextureDescriptor cameraTextureDescriptor)
@@ -317,8 +317,8 @@ namespace UnityEngine.Rendering.Universal.Internal
                 SetupGrain(cameraData.camera, m_Materials.uber);
                 SetupDithering(ref cameraData, m_Materials.uber);
 				
-				if (Display.main.requiresSrgbBlitToBackbuffer && m_EnableSRGBConversionIfNeeded)
-					m_Materials.uber.EnableKeyword(ShaderKeywordStrings.LinearToSRGBConversion);
+                if (Display.main.requiresSrgbBlitToBackbuffer && m_EnableSRGBConversionIfNeeded)
+                    m_Materials.uber.EnableKeyword(ShaderKeywordStrings.LinearToSRGBConversion);
 
                 // Done with Uber, blit it
                 cmd.SetGlobalTexture("_BlitTex", GetSource());
@@ -960,8 +960,8 @@ namespace UnityEngine.Rendering.Universal.Internal
             SetupGrain(cameraData.camera, material);
             SetupDithering(ref cameraData, material);
 			
-			if (Display.main.requiresSrgbBlitToBackbuffer && m_EnableSRGBConversionIfNeeded)
-				material.EnableKeyword(ShaderKeywordStrings.LinearToSRGBConversion);
+            if (Display.main.requiresSrgbBlitToBackbuffer && m_EnableSRGBConversionIfNeeded)
+                material.EnableKeyword(ShaderKeywordStrings.LinearToSRGBConversion);
 
             cmd.SetGlobalTexture("_BlitTex", m_Source.Identifier());
 
