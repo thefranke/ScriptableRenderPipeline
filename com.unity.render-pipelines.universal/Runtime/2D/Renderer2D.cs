@@ -91,7 +91,8 @@ namespace UnityEngine.Experimental.Rendering.Universal
                         m_AfterPostProcessColorHandle,
                         RenderTargetHandle.CameraTarget,
                         m_ColorGradingLutHandle,
-                        false
+                        false,
+						false
                     );
                     EnqueuePass(m_PostProcessPass);
 
@@ -106,11 +107,12 @@ namespace UnityEngine.Experimental.Rendering.Universal
                         m_AfterPostProcessColorHandle,
                         RenderTargetHandle.CameraTarget,
                         m_ColorGradingLutHandle,
-                        true
+                        true,
+						false
                     );
                     EnqueuePass(m_PostProcessPass);
 
-                    m_FinalPostProcessPass.SetupFinalPass(m_AfterPostProcessColorHandle);
+                    m_FinalPostProcessPass.SetupFinalPass(m_AfterPostProcessColorHandle, true);
                     EnqueuePass(m_FinalPostProcessPass);
 
                     requireFinalBlitPass = false;
@@ -123,7 +125,8 @@ namespace UnityEngine.Experimental.Rendering.Universal
                         RenderTargetHandle.CameraTarget,
                         RenderTargetHandle.CameraTarget,
                         m_ColorGradingLutHandle,
-                        false
+                        false,
+						true
                     );
                     EnqueuePass(m_PostProcessPass);
 
