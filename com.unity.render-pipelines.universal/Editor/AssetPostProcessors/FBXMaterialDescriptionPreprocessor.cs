@@ -92,7 +92,7 @@ namespace UnityEditor.Rendering.Universal
                 diffuseColor.a = opacity;
 
                 SetMaterialTextureProperty("_BaseMap", material, textureProperty);
-                material.SetColor("_BaseColor", PlayerSettings.colorSpace == ColorSpace.Linear ? diffuseColor.gamma : diffuseColor);
+                material.SetColor("_BaseColor", diffuseColor);
             }
             else if (description.TryGetProperty("DiffuseColor", out vectorProperty))
             {

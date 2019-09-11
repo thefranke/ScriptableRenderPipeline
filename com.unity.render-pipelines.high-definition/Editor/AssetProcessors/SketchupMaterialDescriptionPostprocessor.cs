@@ -39,24 +39,22 @@ namespace UnityEditor.Rendering.HighDefinition
             material.SetShaderPassEnabled("TransparentDepthPostpass", false);
             material.SetShaderPassEnabled("TransparentBackface", false);
             material.SetShaderPassEnabled("MOTIONVECTORS", false);
-
-            if (description.TryGetProperty("DiffuseColor", out vectorProperty))
-            {
-                vectorProperty.x = Mathf.GammaToLinearSpace(vectorProperty.x);
-                vectorProperty.y = Mathf.GammaToLinearSpace(vectorProperty.y);
-                vectorProperty.z = Mathf.GammaToLinearSpace(vectorProperty.z);
-                material.SetColor("_BaseColor", vectorProperty);
-                material.SetColor("_Color", vectorProperty);
-            }
-
-            if (description.TryGetProperty("DiffuseMap", out textureProperty))
+			
+			if (description.TryGetProperty("DiffuseMap", out textureProperty) && textureProperty.texture!=null)
             {
                 SetMaterialTextureProperty("_BaseColorMap", material, textureProperty);
                 SetMaterialTextureProperty("_MainTex", material, textureProperty);
-                material.SetColor("_BaseColor", new Color(1.0f, 1.0f, 1.0f, 1.0f));
-                material.SetColor("_Color", new Color(1.0f, 1.0f, 1.0f, 1.0f));
+				var color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+                material.SetColor("_BaseColor", color);
+                material.SetColor("_Color", color);
             }
-
+			else if (description.TryGetProperty("DiffuseColor", out vectorProperty))
+            {
+				Color diffuseColor = vectorProperty;
+				diffuseColor = PlayerSettings.colorSpace == ColorSpace.Linear ? diffuseColor.gamma : diffuseColor;
+                material.SetColor("_BaseColor", diffuseColor);
+                material.SetColor("_Color", diffuseColor);
+            }
             if (description.TryGetProperty("IsTransparent", out floatProperty) && floatProperty == 1.0f)
             {
                 material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);

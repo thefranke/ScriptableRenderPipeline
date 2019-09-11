@@ -38,14 +38,16 @@ namespace UnityEditor.Rendering.Universal
             {
                 SetMaterialTextureProperty("_BaseMap", material, textureProperty);
                 SetMaterialTextureProperty("_MainTex", material, textureProperty);
-                material.SetColor("_BaseColor", new Color(1.0f, 1.0f, 1.0f, 1.0f));
-                material.SetColor("_Color", new Color(1.0f, 1.0f, 1.0f, 1.0f));
+                var color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+                material.SetColor("_BaseColor", color);
+                material.SetColor("_Color", color);
             }
             else if (description.TryGetProperty("DiffuseColor", out vectorProperty))
             {
                 Color diffuseColor = vectorProperty;
-                material.SetColor("_BaseColor", PlayerSettings.colorSpace == ColorSpace.Linear ? diffuseColor.gamma : diffuseColor);
-                material.SetColor("_Color", PlayerSettings.colorSpace == ColorSpace.Linear ? diffuseColor.gamma : diffuseColor);
+                diffuseColor = PlayerSettings.colorSpace == ColorSpace.Linear ? diffuseColor.gamma : diffuseColor;
+                material.SetColor("_BaseColor", diffuseColor);
+                material.SetColor("_Color", diffuseColor);
             }
 
             if (description.TryGetProperty("IsTransparent", out floatProperty) && floatProperty == 1.0f)

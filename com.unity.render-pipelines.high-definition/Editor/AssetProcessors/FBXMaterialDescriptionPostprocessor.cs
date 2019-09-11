@@ -91,7 +91,7 @@ namespace UnityEditor.Rendering.HighDefinition
                 diffuseColor.a = opacity;
 
                     SetMaterialTextureProperty("_BaseColorMap", material, textureProperty);
-                    material.SetColor("_BaseColor", PlayerSettings.colorSpace == ColorSpace.Linear ? diffuseColor.gamma : diffuseColor);
+                    material.SetColor("_BaseColor", diffuseColor);
                 }
                 else if (description.TryGetProperty("DiffuseColor", out vectorProperty))
                 {
