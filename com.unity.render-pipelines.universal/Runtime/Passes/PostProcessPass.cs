@@ -65,8 +65,8 @@ namespace UnityEngine.Rendering.Universal.Internal
         // If yes, Film Grain and Dithering are setup in the final pass, otherwise they are setup in this pass.
         bool m_HasFinalPass;
 		
-		// Some Android devices do not support sRGB backbuffer
-		// We need to do the conversion manually on those
+        // Some Android devices do not support sRGB backbuffer
+        // We need to do the conversion manually on those
         bool m_EnableSRGBConversionIfNeeded;
 
         public PostProcessPass(RenderPassEvent evt, PostProcessData data)
