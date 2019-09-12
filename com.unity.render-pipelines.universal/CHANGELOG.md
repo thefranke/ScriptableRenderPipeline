@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [7.2.0] - 2019-XX-XX
 ### Fixed
 - Fixed an issue where there were 2 widgets showing the outer angle of a spot light.
-- Fixed an issue where linear to sRGB conversion happened twice on certain Android devices.
+- Fixed an issue where linear to sRGB conversion occurred twice on certain Android devices.
 
 ## [7.1.1] - 2019-09-05
 ### Upgrade Guide
