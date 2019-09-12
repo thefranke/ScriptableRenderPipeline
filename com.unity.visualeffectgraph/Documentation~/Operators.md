@@ -18,6 +18,12 @@ You can add operator nodes:
   * Using **Duplicate** from Context menu (or Ctrl+D)
   * Using **Copy**, **Cut** and **Paste** from Context menu (or Ctrl+C/Ctrl+X then Ctrl+V)
 
+## Configuring Operators
+
+Adjusting Operator [Settings](GraphLogicAndPhilosophy.md#settings) in the Node UI or the Inspector can change the way the Operator looks and behaves. 
+
+> For instance, Changing the Cull Mode of a `Position (Depth)` Operator  from *None* to *Range* will add an extra *Depth Range* property to the Operator.
+
 ## Uniform Operators
 
 Some operators can be used with **single input of Variable Type** : for instance Absolute values can be used for a float, a Vector3 or an Integer. These nodes are called **Uniform Operators**.
@@ -71,10 +77,6 @@ Pressing the Options icon in the top-left corner switches the node view to Confi
 * Reorder Inputs by dragging the Handle on the left of each input line
 * Manually Add Inputs using the + button
 * Delete Selected Input using the - button
-
-
-
-
 
 
 

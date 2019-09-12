@@ -10,6 +10,12 @@ Contexts are Graph elements, so they can be created using the Right Click > Add 
 
 Contexts connect to each other using the Ports at the top and the bottom.
 
+## Configuring Contexts
+
+Adjusting Context [Settings](GraphLogicAndPhilosophy.md#settings) in the Node UI or the Inspector can change the way the Operator looks and behaves. 
+
+> For instance, Changing the UV Mode of a `Quad Output` Context, from *Simple* to *FlipbookMotionBlend* will add Extra *Flipbook Size*, *Motion Vector Map* and *Motion Vector Scale* Properties to the Context Header.
+
 ## Flow Compatibility
 
 Not all contexts can be connected altogether, in any order. Some rules apply to keep a consistent workflow:
@@ -32,7 +38,7 @@ Not all contexts can be connected altogether, in any order. Some rules apply to 
 | Particle Output    | Particle (1)                         | None             | Can either have input from an Initialize or Update           |
 | Static Mesh Output | None                                 | None             | Standalone Context                                           |
 
-# Context Reference
+# Context Type Overview
 
 This section covers all the common settings of every kind of context. For more details about specific contexts, see [Context Library]()
 

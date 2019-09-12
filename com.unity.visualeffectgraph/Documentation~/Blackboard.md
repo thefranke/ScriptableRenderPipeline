@@ -57,7 +57,7 @@ Property nodes have a slightly different visual than standard nodes : They displ
 
 ![PropertyNode](Images/PropertyNode.png)
 
-## Exposed Properties on Inspector
+## Exposed Properties in Inspector
 
 Exposed properties become visible on a [Visual Effect Inspector](VisualEffectComponent.md), in the Properties area, if their Exposed flag is checked in the blackboard. They appear in the same order and categories as they are defined in the blackboard.
 
