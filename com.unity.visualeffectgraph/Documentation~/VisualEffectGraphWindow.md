@@ -60,16 +60,16 @@ This panel can be resized by dragging its bottom-right corner and dragged around
 
 The workspace can be navigated using common controls, here is a recap of all actions used to navigate the graph:
 
-####Pan the graph around :
+#### Pan the graph around :
 
 * Dragging Middle Mouse button
 * Dragging Left Mouse button while holding **Alt** Key.
 
-####Zoom in and out using :
+#### Zoom in and out using :
 
 * Mouse Wheel
 
-####Select Elements:
+#### Select Elements:
 
 * By clicking on them individually:
   * Add to/Remove from current selection by holding **Ctrl** key
@@ -81,15 +81,15 @@ The workspace can be navigated using common controls, here is a recap of all act
   - Start dragging from a point in an empty space while holding **Shift** key
   - Then release the click to select all elements touched by the marquee.
 
-####Clear Selection:
+#### Clear Selection:
 
 * By clicking into an empty space
 
-####Focus on selected nodes
+#### Focus on selected nodes
 
 *  Press the F key (or on the full graph when nothing is selected)
 
-####Copy, Cut and Paste, and Duplicate elements:
+#### Copy, Cut and Paste, and Duplicate elements:
 
 * Right Click Context Menu items
 * Keyboard Shortcuts:
