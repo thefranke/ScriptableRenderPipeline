@@ -332,11 +332,9 @@ void EvaluateAtmosphericScattering(PositionInputs posInput, float3 V, out float3
 
             fogColor   = volFog.rgb; // Pre-multiplied by design
             fogOpacity = volFog.a;
-            break;
+            break;                   // Already pre-exposed
         }
     }
-
-    fogColor *= GetCurrentExposureMultiplier();
 
     // Rendering of fog and atmospheric scattering cannot really be decoupled.
 #if 0
