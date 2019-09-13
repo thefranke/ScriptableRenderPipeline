@@ -3,11 +3,15 @@ The Visual Effect Graph uses two distinct workflows: a _processing_ logic and a 
 ## Processing workflow (vertical logic)
 The processing workflow links together a succession of customizable stages to define the complete system logic. This is where you can determine when the spawn, initialization, update, and rendering of the particles in the effect.
 
-The processing logic defines the different stages of processing of a visual effect. They are defined by large colored containers called [Contexts]. Each context connects to another compatible context, which defines how the current context is used for the next stage of processing.
+Processing Workflow connect together Contexts using their **Flow Slots** at the top and the bottom of the nodes.
+
+The processing logic defines the different stages of processing of a visual effect. They are defined by large colored containers called Contexts](Contexts.md) . Each context connects to another compatible context, which defines how the current context is used for the next stage of processing.
 
 You can add one or many Blocks to any context. Every block is a stackable node that is in charge of one operation. You can reorder blocks to change the order in which things happen. 
 ## Property workflow (horizontal logic)
 In the horizontal property workflow, you can enhance the processing workflow by defining from simple to highly technical math operations. This affects how the particles look.
+
+Property Workflow connect together Contexts using their **Property Slots** at the left and the right the nodes.
 
 The Visual Effect Graph comes with a block library that is ready to use. The horizontal flow controls the render pipeline passes data to the Blocks and Contexts through a network of connected Nodes.
 

@@ -18,10 +18,11 @@
   * [Property Binders](PropertyBinders.md)
   * [Event Binders](EventBinders.md)
 * Pipeline Tools
+  * [ExposedProperty Helper](ExposedPropertyHelper.md)
   * [Vector Fields](VectorFields.md)
   * [Point Caches](PointCaches.md)
   * [Point Cache Bake Tool](PointCacheBakeTool.md)
-  *  [Spawner Callbacks](SpawnerCallbacks.md)
+  * [Spawner Callbacks](SpawnerCallbacks.md)
 * Node Library
   * Contexts
   * Blocks

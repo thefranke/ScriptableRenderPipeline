@@ -50,18 +50,18 @@ Event Contexts only display a Name as a string that need to be called on the Com
 
 Spawn Contexts are standalone systems that have three States : Playing, Stopped and Delayed. 
 
-* Playing state means that the blocks are computed and will perform spawn of new particles
-* Stopped state means that the spawn machine is off and will not spawn particles
-* Delayed state stops spawning particles until the end of a user-set delay, then restarts spawning particles.
+* **Playing** state means that the blocks are computed and will perform spawn of new particles
+* **Stopped** state means that the spawn machine is off and will not spawn particles
+* **Delayed** state stops spawning particles until the end of a user-set delay, then restarts spawning particles.
 
 Spawn contexts can be customized using compatible **Blocks**.
 
 ### Turning On and Off 
 
-Every Spawn context can be turned on and off using the two workflow ports at the top:
+Spawn Contexts expose two [Flow Input Slots](GraphLogicAndPhilosophy.md#processing-workflow-vertical-logic): Start and Stop:
 
-* Start will trigger a reset of the spawn context, resetting the time. Hitting Start many times has the same effect as pushing it once.
-* Stop will change the state of the spawn context to Stopped.
+- Start input **Resets** and/or **Start** the Spawn System : if not connected, it is implicitly bound to the `OnPlay` [Event](Events.md) . Hitting Start many times has the same effect as pushing it once.
+- Stop input **Stops** the Spawn System : if not connected, it is implicitly bound to the `OnStop` [Event](Events.md) 
 
 ### Looping and Delaying
 
