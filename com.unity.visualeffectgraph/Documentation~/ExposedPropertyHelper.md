@@ -2,7 +2,7 @@
 
 `ExposedProperty` class is a helper class that caches a property ID based on its name. You can assign a string name to the class, and It will automatically cache the integer value from `Shader.PropertyToID(string name)`and cast implicitly to this integer when used in Property, Event or EventAttr methods of the [Component API](ComponentAPI.md) 
 
-Example Usage: 
+## Example Usage
 
 ```C#
 ExposedProperty m_MyProperty;
@@ -20,4 +20,3 @@ void Update()
 }
 ```
 
-## 
