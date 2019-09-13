@@ -78,6 +78,14 @@ float4 SampleTexture(VFXSampler2D s,float2 coords,float level = 0.0f)
     return s.t.SampleLevel(s.s,coords, level);
 }
 
+#if !VFX_WORLD_SPACE && !VFX_LOCAL_SPACE
+#error VFXCommon.hlsl should be include after space defines
+#endif
+
+#if VFX_WORLD_SPACE && VFX_LOCAL_SPACE
+#error VFX_WORLD_SPACE & VFX_LOCAL_SPACE are both enabled
+#endif
+
 float3 VFXGetPositionRWS(float3 posWS)
 {
 #if VFX_WORLD_SPACE
