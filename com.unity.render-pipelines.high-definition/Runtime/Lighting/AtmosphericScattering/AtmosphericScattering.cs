@@ -37,8 +37,21 @@ namespace UnityEngine.Rendering.HighDefinition
             var visualEnvironment = VolumeManager.instance.stack.GetComponent<VisualEnvironment>();
             Debug.Assert(visualEnvironment != null);
 
+            bool isPbrSkyActive = visualEnvironment.skyType.value == (int)SkyType.PhysicallyBased;
+
+            if (isPbrSkyActive)
+            {
+                var skySettings = VolumeManager.instance.stack.GetComponent<PhysicallyBasedSky>();
+                Debug.Assert(skySettings != null);
+
+                float r = Vector3.Distance(hdCamera.camera.transform.position, skySettings.planetCenterPosition.value);
+                float R = skySettings.planetaryRadius.value;
+
+                isPbrSkyActive = r > R; // Disable atmospheric scattering below the ground
+            }
+
             // The PBR sky contributes to atmospheric scattering.
-            physicallyBasedSkyAtmosphereFlag = visualEnvironment.skyType.value == (int)SkyType.PhysicallyBased ? 128 : 0;
+            physicallyBasedSkyAtmosphereFlag = isPbrSkyActive ? 128 : 0;
 
             cmd.SetGlobalInt(HDShaderIDs._AtmosphericScatteringType, physicallyBasedSkyAtmosphereFlag | (int)type);
             cmd.SetGlobalFloat(HDShaderIDs._MaxFogDistance, maxFogDistance.value);

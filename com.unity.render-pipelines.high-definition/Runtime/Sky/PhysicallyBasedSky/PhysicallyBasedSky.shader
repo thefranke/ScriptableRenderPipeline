@@ -70,11 +70,6 @@ Shader "Hidden/HDRP/Sky/PbrSky"
         float3 N; float r; // These params correspond to the entry point
         float tEntry = IntersectAtmosphere(O, V, N, r).x;
 
-        if (r <= R)
-        {
-            return 0; // The camera is below ground.
-        }
-
         float NdotV  = dot(N, V);
         float cosChi = -NdotV;
         float cosHor = ComputeCosineOfHorizonAngle(r);
@@ -200,6 +195,11 @@ Shader "Hidden/HDRP/Sky/PbrSky"
         return value;
     }
 
+    float4 FragBlack(Varyings input) : SV_Target
+    {
+        return 0;
+    }
+
     ENDHLSL
 
     SubShader
@@ -214,7 +214,18 @@ Shader "Hidden/HDRP/Sky/PbrSky"
             HLSLPROGRAM
                 #pragma fragment FragBaking
             ENDHLSL
+        }
 
+        Pass
+        {
+            ZWrite Off
+            ZTest Always
+            Blend Off
+            Cull Off
+
+            HLSLPROGRAM
+                #pragma fragment FragBlack
+            ENDHLSL
         }
 
         Pass
@@ -226,6 +237,18 @@ Shader "Hidden/HDRP/Sky/PbrSky"
 
             HLSLPROGRAM
                 #pragma fragment FragRender
+            ENDHLSL
+        }
+
+        Pass
+        {
+            ZWrite Off
+            ZTest LEqual
+            Blend Off
+            Cull Off
+
+            HLSLPROGRAM
+                #pragma fragment FragBlack
             ENDHLSL
         }
 

@@ -248,8 +248,8 @@ void EvaluateAtmosphericScattering(PositionInputs posInput, float3 V, out float3
 
     bool hasPbrSkyAtmosphere = (_AtmosphericScatteringType & 128) == 128;
 
-    // We apply atmospheric scattering to all celestial bodies during the sky pass.
-    // Unfortunately, they don't write depth.
+    // Sky pass already applies atmospheric scattering to the far plane.
+    // This pass only handles geometry.
     if (hasPbrSkyAtmosphere && (posInput.deviceDepth != UNITY_RAW_FAR_CLIP_VALUE))
     {
         // Convert it to distance along the ray. Doesn't work with tilt shift, etc.
