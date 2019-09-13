@@ -36,7 +36,7 @@ real IntegrateEdge(real3 V1, real3 V2)
     return ComputeEdgeFactor(V1, V2).z;
 }
 
-// 'sinSqSigma' is the sine^2 of the real of the opening angle of the sphere as seen from the shaded point.
+// 'sinSqSigma' is the sine^2 of the half-angle subtended by the sphere (aperture) as seen from the shaded point.
 // 'cosOmega' is the cosine of the angle between the normal and the direction to the center of the light.
 // N.b.: this function accounts for horizon clipping.
 real DiffuseSphereLightIrradiance(real sinSqSigma, real cosOmega)
@@ -123,18 +123,18 @@ real DiffuseSphereLightIrradiance(real sinSqSigma, real cosOmega)
 #endif
 }
 
+// This function does not check whether light's contribution is 0.
 real3 PolygonFormFactor(real4x3 L)
 {
-    UNITY_UNROLL
-    for (uint i = 0; i < 4; i++)
-    {
-        L[i] = normalize(L[i]);
-    }
+    L[0] = normalize(L[0]);
+    L[1] = normalize(L[1]);
+    L[2] = normalize(L[2]);
+    L[3] = normalize(L[3]);
 
-    real3 F  = ComputeEdgeFactor( L[0], L[1] );
-          F += ComputeEdgeFactor( L[1], L[2] );
-          F += ComputeEdgeFactor( L[2], L[3] );
-          F += ComputeEdgeFactor( L[3], L[0] );
+    real3 F  = ComputeEdgeFactor(L[0], L[1]);
+          F += ComputeEdgeFactor(L[1], L[2]);
+          F += ComputeEdgeFactor(L[2], L[3]);
+          F += ComputeEdgeFactor(L[3], L[0]);
 
     return INV_TWO_PI * F;
 }
@@ -143,29 +143,18 @@ real3 PolygonFormFactor(real4x3 L)
 real PolygonIrradiance(real4x3 L)
 {
 #ifdef APPROXIMATE_POLY_LIGHT_AS_SPHERE_LIGHT
-    UNITY_UNROLL
-    for (uint i = 0; i < 4; i++)
-    {
-        L[i] = normalize(L[i]);
-    }
+    if (cross(L[1] - L[0], L[2] - L[0]).z <= 0) return 0; // Light is back-facing
 
-    real3 F = real3(0, 0, 0);
+    if (max(max(max(L[0].z, L[1].z), L[2].z), L[3].z) <= 0) return 0; // Light is below the horizon
 
-    UNITY_UNROLL
-    for (uint edge = 0; edge < 4; edge++)
-    {
-        real3 V1 = L[edge];
-        real3 V2 = L[(edge + 1) % 4];
+    real3 F = PolygonFormFactor(L);
 
-        F += INV_TWO_PI * ComputeEdgeFactor(V1, V2);
-    }
+    real sff = saturate(dot(F, F));
 
-    // Clamp invalid values to avoid visual artifacts.
-    real f2         = saturate(dot(F, F));
-    real sinSqSigma = min(sqrt(f2), 0.999);
-    real cosOmega   = clamp(F.z * rsqrt(f2), -1, 1);
+    real formFactor        = sqrt(sff);
+    real cosElevationAngle = F.z * rsqrt(sff);
 
-    return DiffuseSphereLightIrradiance(sinSqSigma, cosOmega);
+    return DiffuseSphereLightIrradiance(formFactor, cosElevationAngle);
 #else
     // 1. ClipQuadToHorizon
 
