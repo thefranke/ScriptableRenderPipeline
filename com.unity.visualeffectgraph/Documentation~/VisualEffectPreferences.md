@@ -1,0 +1,2 @@
+# Visual Effect Graph Preferences
+

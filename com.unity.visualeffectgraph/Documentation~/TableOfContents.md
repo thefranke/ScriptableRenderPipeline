@@ -12,6 +12,8 @@
   * [Attributes](Attributes.md) 
   * [Subgraph](Subgraph.md) 
   * [Blackboard](Blackboard.md) 
+  * [Project Settings](VisualEffectProjectSettings.md) 
+  * [Preferences](VisualEffectPreferences.md) 
 * [The Visual Effect Component](VisualEffectComponent.md) 
   * [C# Component API](ComponentAPI.md)
   * [Using Visual Effects with Timeline](Timeline.md) 

@@ -1,0 +1,2 @@
+# Visual Effect Project Settings
+
