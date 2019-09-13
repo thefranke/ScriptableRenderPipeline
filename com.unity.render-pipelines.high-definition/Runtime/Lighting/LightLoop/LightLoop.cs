@@ -1988,6 +1988,10 @@ namespace UnityEngine.Rendering.HighDefinition
                     m_CurrentScreenSpaceShadowData[i].valid = false;
                 }
 
+                m_CurrentSunLight = null;
+                m_CurrentSunLightAdditionalLightData = null;
+                m_CurrentShadowSortedSunLightIndex = -1;
+
                 // Note: Light with null intensity/Color are culled by the C++, no need to test it here
                 if (cullResults.visibleLights.Length != 0 || cullResults.visibleReflectionProbes.Length != 0)
                 {
