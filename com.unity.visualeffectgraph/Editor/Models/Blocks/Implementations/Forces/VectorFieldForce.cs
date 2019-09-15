@@ -10,11 +10,11 @@ namespace UnityEditor.VFX.Block
     {
         public class InputProperties
         {
-            [Tooltip("The vector field used as a force for particles")]
+            [Tooltip("Sets the vector field used to apply force to the particles.")]
             public Texture3D VectorField = VFXResources.defaultResources.vectorField;
-            [Tooltip("The position, rotation and scale of the field")]
+            [Tooltip("Sets the transform with which to position, scale, or rotate the field.")]
             public OrientedBox FieldTransform = OrientedBox.defaultValue;
-            [Tooltip("Intensity of the field. Vectors are multiplied by the intensity")]
+            [Tooltip("Sets the intensity of the field. Higher values increase the particle velocity.")]
             public float Intensity = 1.0f;
         }
 

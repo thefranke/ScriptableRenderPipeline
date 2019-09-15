@@ -19,7 +19,7 @@ namespace UnityEditor.VFX.Block
 
         [VFXSetting, SerializeField, Tooltip("Specifies whether the added force is relative to the current particle velocity or is an absolute value.")]
         ForceMode Mode = ForceMode.Relative;
-        [VFXSetting, SerializeField, Tooltip("")]
+        [VFXSetting, SerializeField, Tooltip("Specifies the type of noise used in generating the turbulence.")]
         VFX.Operator.NoiseBase.NoiseType NoiseType = VFX.Operator.NoiseBase.NoiseType.Value;
 
 

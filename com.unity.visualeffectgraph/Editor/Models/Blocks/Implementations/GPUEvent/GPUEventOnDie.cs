@@ -34,6 +34,7 @@ namespace UnityEditor.VFX.Block
 
         public class InputProperties
         {
+            [Tooltip("Sets the number of particles spawned via a GPU event when this block is triggered.")]
             public uint count = 1u;
         }
 
