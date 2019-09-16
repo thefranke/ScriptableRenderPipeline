@@ -291,21 +291,14 @@ namespace UnityEngine.Rendering.HighDefinition
             using (new ProfilingSample(cmd, "XR Mirror View"))
             {
                 cmd.SetRenderTarget(BuiltinRenderTextureType.CameraTarget);
-
-            #if UNITY_2020_1_OR_NEWER
+                
                 int mirrorBlitMode = display.GetPreferredMirrorBlitMode();
                 if (display.GetMirrorViewBlitDesc(null, out var blitDesc, mirrorBlitMode))
-            #else
-                if (display.GetMirrorViewBlitDesc(null, out var blitDesc))
-            #endif
                 {
                     if (blitDesc.nativeBlitAvailable)
                     {
-                    #if UNITY_2020_1_OR_NEWER
                         display.AddGraphicsThreadMirrorViewBlit(cmd, blitDesc.nativeBlitInvalidStates, mirrorBlitMode);
-                    #else
-                        display.AddGraphicsThreadMirrorViewBlit(cmd, blitDesc.nativeBlitInvalidStates);
-                    #endif
+
                     }
                     else
                     {
