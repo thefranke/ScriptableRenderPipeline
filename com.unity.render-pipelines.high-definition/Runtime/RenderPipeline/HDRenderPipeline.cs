@@ -654,6 +654,7 @@ namespace UnityEngine.Rendering.HighDefinition
                 GraphicsDeviceType[] metalOnlyType = new GraphicsDeviceType[1];
                 metalOnlyType[0] = GraphicsDeviceType.Metal;
                 UnityEditor.PlayerSettings.SetGraphicsAPIs(activeBuildTarget, metalOnlyType);
+                Debug.Log("HDRP: Setting graphics API to Metal for iOS");
                 return true;
             }
             // If the build target matches the operating system of the editor
