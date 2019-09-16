@@ -36,7 +36,7 @@ namespace UnityEngine.Rendering.HighDefinition
             // Once render graph move is implemented, we can probably remove the branch and this.
             ShadowResult shadowResult = new ShadowResult();
 
-            if (m_CurrentDebugDisplaySettings.IsDebugMaterialDisplayEnabled() || m_CurrentDebugDisplaySettings.IsMaterialValidationEnabled())
+            if (m_CurrentDebugDisplaySettings.IsDebugMaterialDisplayEnabled() || m_CurrentDebugDisplaySettings.IsMaterialValidationEnabled() || CoreUtils.IsSceneLightingDisabled(hdCamera.camera))
             {
                 StartSinglePass(m_RenderGraph, hdCamera);
                 RenderDebugViewMaterial(m_RenderGraph, cullingResults, hdCamera, colorBuffer);
