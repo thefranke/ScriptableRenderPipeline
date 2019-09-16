@@ -10,7 +10,7 @@ real3 ComputeEdgeFactor(real3 V1, real3 V2)
     real  V1oV2 = dot(V1, V2);
     real3 V1xV2 = cross(V1, V2);
 #if 0
-    return V1xV2 * (rsqrt(1.0 - V1oV2 * V1oV2) * acos(V1oV2));
+    return normalize(V1xV2) * acos(V1oV2));
 #else
     // Approximate: { y = rsqrt(1.0 - V1oV2 * V1oV2) * acos(V1oV2) } on [0, 1].
     // Fit: HornerForm[MiniMaxApproximation[ArcCos[x]/Sqrt[1 - x^2], {x, {0, 1 - $MachineEpsilon}, 6, 0}][[2, 1]]].
@@ -139,22 +139,34 @@ real3 PolygonFormFactor(real4x3 L)
     return INV_TWO_PI * F;
 }
 
+// See "Real-Time Area Lighting: a Journey from Research to Production", slide 102.
+// Turns out, despite the authors claiming that this function "calculates an approximation of
+// the clipped sphere form factor", that is simply not true.
+// First of all, above horizon, the function should then just return 'F.z', which it does not.
+// Secondly, if we use the correct function called DiffuseSphereLightIrradiance(), it results
+// in severe light leaking if the light is placed vertically behind the camera.
+// So this function is clearly a hack designed to work around these problems.
+real PolygonIrradianceFromVectorFormFactor(float3 F)
+{
+#if 1
+    float l = length(F);
+    return max(0, (l * l + F.z) / (l + 1));
+#else
+    real sff               = saturate(dot(F, F));
+    real sinSqAperture     = sqrt(sff);
+    real cosElevationAngle = F.z * rsqrt(sff);
+
+    return DiffuseSphereLightIrradiance(sinSqAperture, cosElevationAngle);
+#endif
+}
+
 // Expects non-normalized vertex positions.
 real PolygonIrradiance(real4x3 L)
 {
 #ifdef APPROXIMATE_POLY_LIGHT_AS_SPHERE_LIGHT
-    if (cross(L[1] - L[0], L[2] - L[0]).z <= 0) return 0; // Light is back-facing
-
-    if (max(max(max(L[0].z, L[1].z), L[2].z), L[3].z) <= 0) return 0; // Light is below the horizon
-
     real3 F = PolygonFormFactor(L);
 
-    real sff = saturate(dot(F, F));
-
-    real formFactor        = sqrt(sff);
-    real cosElevationAngle = F.z * rsqrt(sff);
-
-    return DiffuseSphereLightIrradiance(formFactor, cosElevationAngle);
+    return PolygonIrradianceFromVectorFormFactor(F);
 #else
     // 1. ClipQuadToHorizon
 
