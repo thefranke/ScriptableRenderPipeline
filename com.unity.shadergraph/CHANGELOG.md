@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - You can now save your graph as a new Asset.
 
 ### Fixed
-- When saving a Shader Graph, edges no longer produce errors.
+- Edges no longer produce errors when you save a Shader Graph.
 
 ## [7.1.1] - 2019-09-05
 ### Added
