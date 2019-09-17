@@ -48,3 +48,6 @@ Source Attribute Location refers to the previous system data where the value is 
   * From incoming Spawn Contexts.
   * From other Particle Systems, through GPUEvent spawn.
 
+## Variadic Attributes
+
+Some attributes possess **Variadic** Properties : they can be of multiple types depending on the simulation Space. For instance, the `scale` of a Quad particle can be expressed as a `Vector2` (width, and length of the quad), whereas the `scale` of a Box particle will be expressed as a `Vector3` (width, length and depth of the cube). When setting variadic attributes, a Drop Down of all channel combinations will enable you to write only the necessary channels.

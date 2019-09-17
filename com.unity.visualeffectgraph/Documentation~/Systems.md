@@ -30,3 +30,19 @@ Some systems embed a Space property that will define the reference space that wi
 * World space will simulate independently of the Game Object that holds the [Visual Effect Component](VisualEffectComponent.md) 
 
 > Regardless of the System's Simulation Space you can use [Spaceable Properties](Properties.md#Spaceable Properties) in order to access Local or World Values.
+
+### Setting a System Space
+
+In order to know the Space of a System, you can look at the Top-Right corner of its contexts and look for the **System Space Identifier**. If the Context does not compute anything regarding to space, its top-right corner will not display any System Space identifier.
+
+![](Images/SystemSpaceIdentifier.png)
+
+In order to change the System space, just click the System Space Identifier to cycle through the compatible spaces.
+
+![](Images/SystemSpaceLocalWorld.png)
+
+### System Space Identifiers in Properties
+
+Some [Spaceable Properties](Properties.md) display a smaller version of the System Space Identifier. This doesn't change the system simulation space but instead enable expressing a value in a space tha't s different from the System simulation Space. (For instance, a local position while system is simulating in world space).
+
+![](Images/SystemSpaceLocalWorldSmall.png)
