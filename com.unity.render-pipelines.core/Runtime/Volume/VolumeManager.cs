@@ -8,17 +8,30 @@ namespace UnityEngine.Rendering
 {
     using UnityObject = UnityEngine.Object;
 
+    /// <summary>
+    /// A global manager that tracks all the volumes in the currently loaded scenes and does all the
+    /// interpolation work.
+    /// </summary>
     public sealed class VolumeManager
     {
         internal static bool needIsolationFilteredByRenderer = false;
 
         static readonly Lazy<VolumeManager> s_Instance = new Lazy<VolumeManager>(() => new VolumeManager());
+
+        /// <summary>
+        /// The current singleton instance of <see cref="VolumeManager"/>.
+        /// </summary>
         public static VolumeManager instance => s_Instance.Value;
 
-        // Internal stack
+        /// <summary>
+        /// A reference to the main <see cref="VolumeStack"/>.
+        /// </summary>
+        /// <seealso cref="VolumeStack"/>
         public VolumeStack stack { get; private set; }
 
-        // Current list of tracked component types
+        /// <summary>
+        /// The current list of all the available types derived from <see cref="VolumeComponent"/>.
+        /// </summary>
         public IEnumerable<Type> baseComponentTypes { get; private set; }
 
         // Max amount of layers available in Unity
@@ -54,6 +67,13 @@ namespace UnityEngine.Rendering
             stack = CreateStack();
         }
 
+        /// <summary>
+        /// Creates and returns a new <see cref="VolumeStack"/> to be used when you need to store
+        /// the result of the volume blending pass in a separate stack.
+        /// </summary>
+        /// <returns></returns>
+        /// <seealso cref="VolumeStack"/>
+        /// <seealso cref="Update(VolumeStack,Transform,LayerMask)"/>
         public VolumeStack CreateStack()
         {
             var stack = new VolumeStack();
@@ -80,6 +100,14 @@ namespace UnityEngine.Rendering
             }
         }
 
+        /// <summary>
+        /// Registers a new volume in the manager. This is done automatically when a new volume is
+        /// enabled or its layer changes but this can be used to force-register a disabled volume if
+        /// needed.
+        /// </summary>
+        /// <param name="volume">The volume to register</param>
+        /// <param name="layer">The layer mask that this volume is in</param>
+        /// <seealso cref="Unregister"/>
         public void Register(Volume volume, int layer)
         {
             m_Volumes.Add(volume);
@@ -94,6 +122,14 @@ namespace UnityEngine.Rendering
             SetLayerDirty(layer);
         }
 
+        /// <summary>
+        /// Unregisters a volume from the manager. This is done automatically when a volume is
+        /// disabled or goes out of scope but this can be used to force-unregister a volume that was
+        /// manually added while being disabled.
+        /// </summary>
+        /// <param name="volume">The volume to unregister</param>
+        /// <param name="layer">The layer mask that this volume is in</param>
+        /// <seealso cref="Register"/>
         public void Unregister(Volume volume, int layer)
         {
             m_Volumes.Remove(volume);
@@ -108,6 +144,13 @@ namespace UnityEngine.Rendering
             }
         }
 
+        /// <summary>
+        /// Checks if a <see cref="VolumeComponent"/> is active in a given layer mask.
+        /// </summary>
+        /// <typeparam name="T">A type derived from <see cref="VolumeComponent"/></typeparam>
+        /// <param name="layerMask">The layer mask to check against</param>
+        /// <returns><c>true</c> if the component is active in the layer mask, <c>false</c>
+        /// otherwise</returns>
         public bool IsComponentActiveInMask<T>(LayerMask layerMask)
             where T : VolumeComponent
         {
@@ -123,8 +166,7 @@ namespace UnityEngine.Rendering
                     if (!volume.enabled || volume.profileRef == null)
                         continue;
 
-                    T component;
-                    if (volume.profileRef.TryGet(out component) && component.active)
+                    if (volume.profileRef.TryGet(out T component) && component.active)
                         return true;
                 }
             }
@@ -209,14 +251,28 @@ namespace UnityEngine.Rendering
             }
         }
 
-        // Update the global state - should be called once per frame per transform/layer mask combo
-        // in the update loop before rendering
+        /// <summary>
+        /// Updates the global state of the volume manager. This is usually called once per camera
+        /// in the update loop before rendering happens.
+        /// </summary>
+        /// <param name="trigger">A reference transform to consider for positional volume blending
+        /// </param>
+        /// <param name="layerMask">The layer mask used to filter volumes that should be considered
+        /// for blending</param>
         public void Update(Transform trigger, LayerMask layerMask)
         {
             Update(stack, trigger, layerMask);
         }
 
-        // Update a specific stack - can be used to manage your own stack and store it for later use
+        /// <summary>
+        /// Updates the volume manager and stores the result in a custom <see cref="VolumeStack"/>.
+        /// </summary>
+        /// <param name="stack">The stack to store the result of the blending into</param>
+        /// <param name="trigger">A reference transform to consider for positional volume blending
+        /// </param>
+        /// <param name="layerMask">The layer mask used to filter volumes that should be considered
+        /// for blending</param>
+        /// <seealso cref="VolumeStack"/>
         public void Update(VolumeStack stack, Transform trigger, LayerMask layerMask)
         {
             Assert.IsNotNull(stack);
@@ -364,12 +420,12 @@ namespace UnityEngine.Rendering
     }
     
     /// <summary>
-    /// Scope in which is volume is filtered by its rendering camera.
+    /// A scope in which is volume is filtered by its rendering camera.
     /// </summary>
     public struct VolumeIsolationScope : IDisposable
     {
         /// <summary>
-        /// Construct a scope in which is volume is filtered by its rendering camera.
+        /// Constructs a scope in which is volume is filtered by its rendering camera.
         /// </summary>
         /// <param name="unused">Unused parameter</param>
         public VolumeIsolationScope(bool unused)

@@ -6,6 +6,9 @@ using UnityEngine.SceneManagement;
 
 namespace UnityEditor.Rendering
 {
+    /// <summary>
+    /// An utility class to create volume profile and components.
+    /// </summary>
     public static class VolumeProfileFactory
     {
         [MenuItem("Assets/Create/Volume Profile", priority = 201)]
@@ -20,6 +23,11 @@ namespace UnityEditor.Rendering
                 );
         }
 
+        /// <summary>
+        /// Creates a <see cref="VolumeProfile"/> asset and saves it at the given path.
+        /// </summary>
+        /// <param name="path">The path to save the asset to, relative to the project folder</param>
+        /// <returns>The newly created <see cref="VolumeProfile"/></returns>
         public static VolumeProfile CreateVolumeProfileAtPath(string path)
         {
             var profile = ScriptableObject.CreateInstance<VolumeProfile>();
@@ -30,6 +38,12 @@ namespace UnityEditor.Rendering
             return profile;
         }
 
+        /// <summary>
+        /// Creates a <see cref="VolumeProfile"/> asset and saves it in a folder next to the scene.
+        /// </summary>
+        /// <param name="scene">The scene the profile will be saved next to</param>
+        /// <param name="targetName">A name to use for the asset filename</param>
+        /// <returns>The newly created <see cref="VolumeProfile"/></returns>
         public static VolumeProfile CreateVolumeProfile(Scene scene, string targetName)
         {
             string path;
@@ -60,6 +74,16 @@ namespace UnityEditor.Rendering
             return profile;
         }
 
+        /// <summary>
+        /// Creates a <see cref="VolumeComponent"/> in an existing <see cref="VolumeProfile"/>.
+        /// </summary>
+        /// <typeparam name="T">A type of <see cref="VolumeComponent"/></typeparam>
+        /// <param name="profile">The profile to store the new component in</param>
+        /// <param name="overrides">Should the parameters in the component be overriden?</param>
+        /// <param name="saveAsset">Should the asset be saved? This is useful when you need to
+        /// create several components in a row and only want to save the profile after the latest
+        /// one has been added, as saving assets to disk can be slow.</param>
+        /// <returns></returns>
         public static T CreateVolumeComponent<T>(VolumeProfile profile, bool overrides = false, bool saveAsset = true)
             where T : VolumeComponent
         {

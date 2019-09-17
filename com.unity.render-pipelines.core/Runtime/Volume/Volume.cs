@@ -2,32 +2,66 @@ using System.Collections.Generic;
 
 namespace UnityEngine.Rendering
 {
-    //Volumes are documented in HDRP for now
+    /// <summary>
+    /// A generic volume component holding a <see cref="VolumeProfile"/>.
+    /// </summary>
     [HelpURL(Documentation.baseURLHDRP + Documentation.version + Documentation.subURL + "Volumes" + Documentation.endURL)]
     [ExecuteAlways]
     public class Volume : MonoBehaviour
     {
+        /// <summary>
+        /// Should this volume be applied to the whole scene?
+        /// </summary>
         [Tooltip("A global volume is applied to the whole scene.")]
         public bool isGlobal = true;
 
+        /// <summary>
+        /// The volume priority in the stack. Higher number means higher priority. Negative values
+        /// are supported.
+        /// </summary>
         [Tooltip("Volume priority in the stack. Higher number means higher priority. Negative values are supported.")]
         public float priority = 0f;
 
+        /// <summary>
+        /// The outer distance to start blending from. A value of 0 means no blending and the volume
+        /// overrides will be applied immediately upon entry.
+        /// </summary>
         [Tooltip("Outer distance to start blending from. A value of 0 means no blending and the volume overrides will be applied immediately upon entry.")]
         public float blendDistance = 0f;
 
+        /// <summary>
+        /// The total weight of this volume in the scene. 0 means it won't do anything, 1 means full
+        /// effect.
+        /// </summary>
         [Range(0f, 1f), Tooltip("Total weight of this volume in the scene. 0 means it won't do anything, 1 means full effect.")]
         public float weight = 1f;
-        
-        // Modifying sharedProfile will change the behavior of all volumes using this profile, and
-        // change profile settings that are stored in the project too
+
+        /// <summary>
+        /// The shared profile used by this volume.
+        /// Modifying <c>sharedProfile</c> will change all volumes using this profile and change
+        /// profile settings that are stored in the project too.
+        /// </summary>
+        /// <remarks>
+        /// It is not recommended to modify profiles returned by <c>sharedProfile</c>. If you want
+        /// to modify the profile of a volume use <see cref="profile"/> instead.
+        /// </remarks>
+        /// <seealso cref="profile"/>
         public VolumeProfile sharedProfile = null;
 
-        // This property automatically instantiates the profile and makes it unique to this volume
-        // so you can safely edit it via scripting at runtime without changing the original asset
-        // in the project.
-        // Note that if you pass in your own profile, it is your responsibility to destroy it once
-        // it's not in use anymore.
+        /// <summary>
+        /// Returns the first instantiated <see cref="VolumeProfile"/> assigned to the volume.
+        /// Modifying <c>profile</c> will change the profile for this volume only. If the profile is
+        /// used by any other volume, this will clone the shared profile and start using it from
+        /// now on.
+        /// </summary>
+        /// <remarks>
+        /// This property automatically instantiates the profile and make it unique to this volume
+        /// so you can safely edit it via scripting at runtime without changing the original asset
+        /// in the project.
+        /// Note that if you pass your own profile, it is your responsibility to destroy it once
+        /// it's not in use anymore.
+        /// </remarks>
+        /// <seealso cref="sharedProfile"/>
         public VolumeProfile profile
         {
             get
@@ -53,6 +87,12 @@ namespace UnityEngine.Rendering
 
         internal VolumeProfile profileRef => m_InternalProfile == null ? sharedProfile : m_InternalProfile;
 
+        /// <summary>
+        /// Checks if the volume has an instantiated profile or is using a shared profile.
+        /// </summary>
+        /// <returns><c>true</c> if the profile has been instantiated</returns>
+        /// <seealso cref="profile"/>
+        /// <seealso cref="sharedProfile"/>
         public bool HasInstantiatedProfile() => m_InternalProfile != null;
 
         // Needed for state tracking (see the comments in Update)
