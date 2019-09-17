@@ -28,11 +28,17 @@ Connecting Event Contexts on the Start and Stop Flow inputs of a Spawn Contexts 
 
 Custom Events can be created inside Visual Effect Graphs using Event Contexts.
 
-Creating
+In order to create a custom event, create an event using the **Create Node** menu, then change its name in the **Event Name** field
 
 ## EventAttribute Payloads
 
+Event Attribute payloads are attributes attached on one event. You can set these attributes in Visual Effect Graph using the **Set [Attribute] Event Attribute>** blocks in Spawn Contexts, but you can also attach them to events sent from the scene using the [Component API](ComponentAPI.md#event-attributes) .
+
+EventAttribute Payloads are attributes that will implicitly travel through the graph from Events, through Spawn Systems, and that can be caught in Initialize Contexts using **Get Source Attribute Operators** and I**nherit [Attribute] Blocks**
+
 ## Default VisualEffect Event
 
+The default Visual Effect Event defines the name of the event that is implicitly sent when a `Reset` is performed on a [Visual Effect](VisualEffectComponent.md) instance (this can happen at first start or any restart of the effect).
 
+Default VisualEffect Event is defined in the [Visual Effect Graph Asset Inspector](VisualEffectGraphAsset.md) but can be overridden in any [Visual Effect Inspector](VisualEffectComponent.md) for any instance in the scene.
 

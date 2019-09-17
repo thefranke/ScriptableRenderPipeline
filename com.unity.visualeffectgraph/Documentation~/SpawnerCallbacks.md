@@ -2,7 +2,7 @@
 
 Spawner Callbacks is a C# API that enables defining custom runtime behavior and create new Blocks for use in Spawn Contexts.
 
-Spawner Callbacks enable you do the following:
+<u>Spawner Callbacks enable you do the following:</u>
 
 * Control the Spawn Context state (Playing, Stopped, Delayed)
 * Read/Write the Output Spawn Count
