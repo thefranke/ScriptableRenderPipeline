@@ -26,7 +26,8 @@ all_project_ci:
     image: cds-ops/ubuntu-18.04-agent:latest
     flavor: b1.small
   commands:
-  - dir
+  - curl https://artifactory.eu-cph-1.unityops.net/core-automation/tools/warlock/install.py | python -u -
+  - warlock -e "#srp-nightly-status" dir 
   dependencies:
   {% for project in projects %}
     - .yamato/upm-ci-{{ project.name | downcase }}.yml#All_{{ project.name }}
