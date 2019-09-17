@@ -72,9 +72,9 @@ namespace UnityEditor.ShaderGraph
 
         public void GenerateNodeCode(ShaderStringBuilder sb, GenerationMode generationMode)
         {
-            sb.AppendLine("$precision3 {0} = 0;", GetSlotValue(kPositionOutputSlotId, generationMode));
-            sb.AppendLine("$precision3 {0} = 0;", GetSlotValue(kNormalOutputSlotId, generationMode));
-            sb.AppendLine("$precision3 {0} = 0;", GetSlotValue(kTangentOutputSlotId, generationMode));
+            sb.AppendLine("$precision3 {0} = 0;", GetVariableNameForSlot(kPositionOutputSlotId));
+            sb.AppendLine("$precision3 {0} = 0;", GetVariableNameForSlot(kNormalOutputSlotId));
+            sb.AppendLine("$precision3 {0} = 0;", GetVariableNameForSlot(kTangentOutputSlotId));
             if (generationMode == GenerationMode.ForReals)
             {
                 sb.AppendLine("{0}(IN.BoneIndices, (int)(({1}).x), IN.BoneWeights, {2}, {3}, {4}, {5}, {6}, {7});",
@@ -83,9 +83,9 @@ namespace UnityEditor.ShaderGraph
                     GetSlotValue(kPositionSlotId, generationMode),
                     GetSlotValue(kNormalSlotId, generationMode),
                     GetSlotValue(kTangentSlotId, generationMode),
-                    GetSlotValue(kPositionOutputSlotId, generationMode),
-                    GetSlotValue(kNormalOutputSlotId, generationMode),
-                    GetSlotValue(kTangentOutputSlotId, generationMode));
+                    GetVariableNameForSlot(kPositionOutputSlotId),
+                    GetVariableNameForSlot(kNormalOutputSlotId),
+                    GetVariableNameForSlot(kTangentOutputSlotId));
             }
         }
 
