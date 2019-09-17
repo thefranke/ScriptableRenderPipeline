@@ -28,7 +28,7 @@ all_project_ci:
   commands:
   - curl https://artifactory.eu-cph-1.unityops.net/core-automation/tools/warlock/install.py | python -u -
   - warlock -e "#srp-nightly-status" dir 
-  dependencies:
+  #dependencies:
   #{% for project in projects %}
   #  - .yamato/upm-ci-{{ project.name | downcase }}.yml#All_{{ project.name }}
   #{% endfor %}
