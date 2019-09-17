@@ -25,9 +25,7 @@ namespace UnityEditor.Experimental.Rendering.Universal
             // Port mask
             vertexPorts = new List<int>()
             {
-                SpriteUnlitMasterNode.PositionSlotId,
-                SpriteUnlitMasterNode.VertNormalSlotId,
-                SpriteUnlitMasterNode.VertTangentSlotId
+                SpriteUnlitMasterNode.PositionSlotId
             },
             pixelPorts = new List<int>
             {
@@ -86,9 +84,7 @@ namespace UnityEditor.Experimental.Rendering.Universal
             var baseActiveFields = activeFields.baseInstance;
 
             // Graph Vertex
-            if(masterNode.IsSlotConnected(SpriteUnlitMasterNode.PositionSlotId) || 
-               masterNode.IsSlotConnected(SpriteUnlitMasterNode.VertNormalSlotId) || 
-               masterNode.IsSlotConnected(SpriteUnlitMasterNode.VertTangentSlotId))
+            if(masterNode.IsSlotConnected(SpriteUnlitMasterNode.PositionSlotId))
             {
                 baseActiveFields.Add("features.graphVertex");
             }
