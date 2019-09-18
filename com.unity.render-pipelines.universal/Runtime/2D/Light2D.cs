@@ -413,9 +413,6 @@ namespace UnityEngine.Experimental.Rendering.Universal
 
         private void Awake()
         {
-            if (m_ShapePath == null || m_ShapePath.Length == 0)
-                m_ShapePath = new Vector3[] { new Vector3(-0.5f, -0.5f), new Vector3(0.5f, -0.5f), new Vector3(0.5f, 0.5f), new Vector3(-0.5f, 0.5f) };
-
             GetMesh();
         }
 
@@ -543,6 +540,11 @@ namespace UnityEngine.Experimental.Rendering.Universal
         {
             Gizmos.color = Color.blue;
             Gizmos.DrawIcon(transform.position, s_LightIconPaths[(int)m_LightType], true);
+        }
+
+        void Reset()
+        {
+            m_ShapePath = new Vector3[] { new Vector3(-0.5f, -0.5f), new Vector3(0.5f, -0.5f), new Vector3(0.5f, 0.5f), new Vector3(-0.5f, 0.5f) };
         }
 #endif
     }
