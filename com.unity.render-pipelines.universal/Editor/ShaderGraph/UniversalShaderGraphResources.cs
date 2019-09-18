@@ -41,7 +41,7 @@ namespace UnityEditor.Rendering.Universal
             [Semantic("BLENDWEIGHTS")][Optional]
             Vector4 weights;
             [Semantic("BLENDINDICES")][Optional]
-            UInt32_4 indicies;
+            UInt32_4 indices;
             [Semantic("INSTANCEID_SEMANTIC")] [PreprocessorIf("UNITY_ANY_INSTANCING_ENABLED")]
             uint instanceID;
         };
@@ -217,7 +217,7 @@ namespace UnityEditor.Rendering.Universal
                 new Dependency("VertexDescriptionInputs.uv3",                       "Attributes.uv3"),
                 new Dependency("VertexDescriptionInputs.VertexColor",               "Attributes.color"),
                 new Dependency("VertexDescriptionInputs.BoneWeights",               "Attributes.weights"),
-                new Dependency("VertexDescriptionInputs.BoneIndices",               "Attributes.indicies")
+                new Dependency("VertexDescriptionInputs.BoneIndices",               "Attributes.indices")
             },
             // SurfaceDescriptionInputs
             new Dependency[]

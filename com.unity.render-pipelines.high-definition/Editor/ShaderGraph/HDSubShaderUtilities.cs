@@ -40,7 +40,7 @@ namespace UnityEditor.Rendering.HighDefinition
             [Semantic("TEXCOORD2")][Optional]       Vector4 uv2;
             [Semantic("TEXCOORD3")][Optional]       Vector4 uv3;
             [Semantic("BLENDWEIGHTS")][Optional]    Vector4 weights;
-            [Semantic("BLENDINDICES")][Optional]    UInt32_4 indicies;
+            [Semantic("BLENDINDICES")][Optional]    UInt32_4 indices;
             [Semantic("COLOR")][Optional]           Vector4 color;
             [Semantic("INSTANCEID_SEMANTIC")] [PreprocessorIf("UNITY_ANY_INSTANCING_ENABLED")] uint instanceID;
         };
@@ -280,7 +280,7 @@ namespace UnityEditor.Rendering.HighDefinition
                 new Dependency("VertexDescriptionInputs.VertexColor",               "AttributesMesh.color"),
 
                 new Dependency("VertexDescriptionInputs.BoneWeights",               "AttributesMesh.weights"),
-                new Dependency("VertexDescriptionInputs.BoneIndices",               "AttributesMesh.indicies")
+                new Dependency("VertexDescriptionInputs.BoneIndices",               "AttributesMesh.indices")
             };
         };
 

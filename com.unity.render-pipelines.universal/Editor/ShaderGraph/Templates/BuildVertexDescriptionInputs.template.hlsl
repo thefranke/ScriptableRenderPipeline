@@ -33,7 +33,7 @@ VertexDescriptionInputs BuildVertexDescriptionInputs(Attributes input)
     $VertexDescriptionInputs.VertexColor:               output.VertexColor =                 input.color;
     $VertexDescriptionInputs.TimeParameters:            output.TimeParameters =              _TimeParameters.xyz;
     $VertexDescriptionInputs.BoneWeights:               output.BoneWeights =                 input.weights;
-    $VertexDescriptionInputs.BoneIndices:               output.BoneIndices =                 input.indicies;
+    $VertexDescriptionInputs.BoneIndices:               output.BoneIndices =                 input.indices;
 
     return output;
 }
