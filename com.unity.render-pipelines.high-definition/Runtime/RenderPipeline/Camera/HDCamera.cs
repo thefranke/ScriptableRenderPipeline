@@ -465,7 +465,7 @@ namespace UnityEngine.Rendering.HighDefinition
                         combinedViewMatrix.SetColumn(3, combinedOrigin);
                     }
 
-                    projMatrix = combinedProjMatrix;
+                    projMatrix = GL.GetGPUProjectionMatrix(combinedProjMatrix, true);
                     invProjMatrix = projMatrix.inverse;
                     viewProjMatrix = projMatrix * combinedViewMatrix;
                 }

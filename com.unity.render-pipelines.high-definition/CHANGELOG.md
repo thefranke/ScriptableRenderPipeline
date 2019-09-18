@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Fixed rendering issues with material previews
 - Fixed NPE when using light module in Shuriken particle systems (1173348).
 - Refresh cached shadow on editor changes
+- Fixed zBufferParams with XR single-pass rendering
 
 ## [7.1.1] - 2019-09-05
 
