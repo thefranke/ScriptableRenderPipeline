@@ -1,4 +1,5 @@
 # Visual Effect Graph Logic
+
 The Visual Effect Graph uses two distinct workflows: a _processing_ logic and a _property_ logic. Each logic follows general behavior rules. This means that the Visual Effect Graph is both vertical and horizontal. 
 ## Processing workflow (vertical logic)
 The processing workflow links together a succession of customizable stages to define the complete system logic. This is where you can determine when the spawn, initialization, update, and rendering of the particles in the effect.

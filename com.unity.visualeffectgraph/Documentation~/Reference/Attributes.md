@@ -1,6 +1,6 @@
+<div style="border: solid 1px #999; border-radius:12px; background-color:#EEE; padding: 8px; padding-left:14px; color: #555; font-size:14px;"><b>Draft:</b> This page has its content written, but its formatting has not been reviewed at the moment.</div>
+
 # Standard Attribute Reference
-
-
 
 ## Standard Attributes
 
@@ -91,7 +91,7 @@ Angular Velocity integration basically used the following formula: `angle += ang
 
 #### AxisX, AxisY and AxisZ
 
-These three attributes define the **unit representation** 3d coordinate system. While these axis are expected to be normalized, you can use non-normalized lengths and non-orthogonal angles between all three axise.
+These three attributes define the **unit representation** 3d coordinate system. While these axis are expected to be normalized, you can use non-normalized lengths and non-orthogonal angles between all three axis.
 
 > Most of the time, these axis are set using the Orient Block (Output Context Only).
 

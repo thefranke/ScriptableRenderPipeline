@@ -1,3 +1,4 @@
+<div style="border: solid 1px #999; border-radius:12px; background-color:#EEE; padding: 8px; padding-left:14px; color: #555; font-size:14px;"><b>Draft:</b> The content on this page is complete, but it has not been reviewed yet.</div>
 # Visual Effect (Component)
 
 The Visual Effect Component creates an instance of a Visual Effect in the scene, based on a Visual Effect Graph Asset. It controls how the effect plays, renders and let the user customize the instance by editing [Exposed Properties](PropertiesAndBlackboard.md#Exposed Properties)
@@ -47,6 +48,12 @@ The properties category display any Property that have been defined in the Visua
 In order to access property values you can edit them using the inspector, use the [C# API](https://docs.unity3d.com/2019.3/Documentation/ScriptReference/VFX.VisualEffect.html) or use Property Binders.
 
 ## The Play Controls Window
+
+The Play Controls window displays UI Elements that enable control over the currently selected instance of a Visual Effect. It is displayed when a Visual Effect Game Object is selected.
+
+![](Images/PlayControls.png)
+
+The play Controls Window 
 
 ## Editing Properties with Gizmos
 

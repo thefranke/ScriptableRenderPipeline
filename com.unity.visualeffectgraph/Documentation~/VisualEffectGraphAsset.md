@@ -1,3 +1,4 @@
+<div style="border: solid 1px #999; border-radius:12px; background-color:#EEE; padding: 8px; padding-left:14px; color: #555; font-size:14px;"><b>Draft:</b> The content on this page is complete, but it has not been reviewed yet.</div>
 # Visual Effect Graph Assets
 
 Visual Effect Graph Assets are the data containers of Visual Effect Graph. They contain all the user-authored data required to play a Visual Effect Graph:

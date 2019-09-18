@@ -1,12 +1,11 @@
+<div style="border: solid 1px #999; border-radius:12px; background-color:#EEE; padding: 8px; padding-left:14px; color: #555; font-size:14px;"><b>Draft:</b> The content on this page is complete, but it has not been reviewed yet.</div>
 # Visual Effect Graph Preferences
 
 Visual Effect Graph Preferences is a Section in Unity Preferences Window. You can access these settings using the **Edit/Preferences** menu, then selecting **Visual Effects** section.
 
 ![](Images/VisualEffectPreferences.png)
 
-Visual Effects Preferences expose the following Settings:
-
-
+## Properties:
 
 | Name                                | Description                                                  |
 | ----------------------------------- | ------------------------------------------------------------ |

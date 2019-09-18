@@ -1,4 +1,5 @@
 # Getting started with Visual Effect Graph
+
 This page shows you how  to install Visual Effect Graph, and gives a brief overview of how to [create](Creating-Visual-Effect-Graphs), [edit](#Editing-a-Visual-Effect-Graph), and [preview](#Previewing-the-Graph’s-effects) effects with Visual Effect Graph. For an overview of how the graph works, see [Graph-Logic.md].
 Visual Effect Graph is a Unity package that uses a [Scriptable Render Pipeline](https://docs.unity3d.com/Manual/ScriptableRenderPipeline.html) to render visual effects. Visual Effect graph uses on compute Shaders to simulate effects.
 ## Requirements

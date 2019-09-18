@@ -1,5 +1,4 @@
-
-
+<div style="border: solid 1px #999; border-radius:12px; background-color:#EEE; padding: 8px; padding-left:14px; color: #555; font-size:14px;"><b>Draft:</b> This page has its content written, but its formatting has not been reviewed at the moment.</div>
 # Operators
 
 Operators are the atomic elements of the [Property Workflow](GraphLogicAndPhilosophy.md#property-workflow-horizontal-logic) : these nodes enable defining custom expressions in Visual Effect Graphs in order to create custom behaviors in the graph, for instance compute values from math operations and use the result of these operations to sample curves, gradients, to use the resulting values into [Block](Blocks.md) or [Context](Contexts.md) input [Properties](Properties.md).

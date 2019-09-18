@@ -1,3 +1,5 @@
+<div style="border: solid 1px #999; border-radius:12px; background-color:#EEE; padding: 8px; padding-left:14px; color: #555; font-size:14px;"><b>Draft:</b> This page has its content written, but its formatting has not been reviewed at the moment.</div>
+
 # Exposed Property Class
 
 `ExposedProperty` class is a helper class that caches a property ID based on its name. You can assign a string name to the class, and It will automatically cache the integer value from `Shader.PropertyToID(string name)`and cast implicitly to this integer when used in Property, Event or EventAttr methods of the [Component API](ComponentAPI.md) 

@@ -1,3 +1,4 @@
+<div style="border: solid 1px #999; border-radius:12px; background-color:#EEE; padding: 8px; padding-left:14px; color: #555; font-size:14px;"><b>Draft:</b> The content on this page is complete, but it has not been reviewed yet.</div>
 # The Visual Effect Graph Window
 
 The Visual Effect Graph Window is the main window of Visual Effect Graph, where users edit Visual Effect Graph assets, and subgraphs.  The window displays the workspace of systems, contexts and operators contained in a  [Visual Effect Graph Asset](VisualEffectGraphAsset.md). 

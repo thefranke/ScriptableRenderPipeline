@@ -1,3 +1,5 @@
+<div style="border: solid 1px #999; border-radius:12px; background-color:#EEE; padding: 8px; padding-left:14px; color: #555; font-size:14px;"><b>Draft:</b> This page has its content written, but its formatting has not been reviewed at the moment.</div>
+
 # Event Binders
 
 Event Binders is a set of **MonoBehaviour** Scripts that help sending [Events](Events.md) to [Visual Effects](VisualEffectComponent.md) when a particular event happens in the scene. Event binders can also attach [Event Attribute Payloads](Events.md#eventattribute-payloads) to the events that are sent.
