@@ -9,20 +9,23 @@ using UnityEngine.XR;
 namespace UnityEngine.Rendering.HighDefinition
 {
     // XRTODO: custom user defined views + culling
-    internal enum XRLayoutOverride
+    public enum XRLayoutOverride
     {
         None,                       // default layout
         TestComposite,              // split the  into tiles to simulate multi-pass
         TestSinglePassOneEye,       // render only eye with single-pass path
     }
 
-    internal class XRSystem
+    public class XRSystem
     {
         // Valid empty pass when a camera is not using XR
         internal readonly XRPass emptyPass = new XRPass();
 
         // Display layout override property
-        internal XRLayoutOverride layoutOverride { get; set; } = XRLayoutOverride.None;
+        public static XRLayoutOverride layoutOverride { get; set; } = XRLayoutOverride.None;
+
+        // Used by test framework
+        public static bool testModeEnabled { get => Array.Exists(Environment.GetCommandLineArgs(), arg => arg == "-xr-tests"); }
 
         // Store active passes and avoid allocating memory every frames
         List<(Camera, XRPass)> framePasses = new List<(Camera, XRPass)>();
@@ -82,14 +85,8 @@ namespace UnityEngine.Rendering.HighDefinition
                 if (XRGraphics.stereoRenderingMode == XRGraphics.StereoRenderingMode.SinglePassInstanced)
                     maxViews = 2;
 
-#if UNITY_EDITOR
-                // Apply XR layout override if required
-                if (System.Array.Exists(System.Environment.GetCommandLineArgs(), arg => arg == "-xr-tests"))
-                {
-                    layoutOverride = XRLayoutOverride.TestSinglePassOneEye;
+                if (testModeEnabled)
                     maxViews = 2;
-                }
-#endif
             }
 
             return maxViews;
