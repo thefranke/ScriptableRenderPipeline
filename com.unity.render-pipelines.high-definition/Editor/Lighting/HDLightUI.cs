@@ -633,14 +633,19 @@ namespace UnityEditor.Rendering.HighDefinition
 
                     using (var change = new EditorGUI.ChangeCheckScope())
                     {
-                        var defaultResolution = new SerializedShadowResolutionSettingValueUI.FromScalableSetting(
-                            ScalableSettings.ShadowResolution(serialized.editorLightShape, hdrp),
-                            hdrp
-                        );
-                        serialized.serializedLightData.shadowResolution.LevelAndIntGUILayout(s_Styles.shadowResolution, defaultResolution);
+                        var hasEditorLightShapeMultipleValues = serialized.editorLightShape == (LightShape)(-1);
+                        if (hasEditorLightShapeMultipleValues)
+                            serialized.serializedLightData.shadowResolution.LevelAndIntGUILayout(s_Styles.shadowResolution, new SerializedShadowResolutionSettingValueUI.MultipleValues());
+                        else
+                            serialized.serializedLightData.shadowResolution.LevelAndIntGUILayout(
+                                s_Styles.shadowResolution,
+                                new SerializedShadowResolutionSettingValueUI.FromScalableSetting(
+                                    ScalableSettings.ShadowResolution(serialized.editorLightShape, hdrp),
+                                    hdrp
+                                ));
 
 
-                            if (change.changed)
+                        if (change.changed)
                             serialized.serializedLightData.shadowResolution.@override.intValue = Mathf.Max(HDShadowManager.k_MinShadowMapResolution, serialized.serializedLightData.shadowResolution.@override.intValue);
                         }
 

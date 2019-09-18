@@ -40,6 +40,12 @@ namespace UnityEditor.Rendering.HighDefinition
             public T GetValue(int level) => default;
         }
 
+        public struct MultipleValues: IValueGetter<int>
+        {
+            public string sourceDescription => "---";
+            public int GetValue(int level) => default;
+        }
+
         public struct FromScalableSetting: IValueGetter<int>
         {
             private ShadowResolutionSetting m_Value;
@@ -71,8 +77,12 @@ namespace UnityEditor.Rendering.HighDefinition
             enumRect.x -= k_EnumOffset;
             enumRect.width = k_EnumWidth + k_EnumOffset;
 
+            var showMixedValues = EditorGUI.showMixedValue;
+            EditorGUI.showMixedValue = self.level.hasMultipleDifferentValues;
             var (level, useOverride) = LevelFieldGUI(enumRect, self.level.intValue, self.useOverride.boolValue);
+            EditorGUI.showMixedValue = showMixedValues;
             self.useOverride.boolValue = useOverride;
+            if (!self.useOverride.boolValue)
                 self.level.intValue = level;
 
             // Return the rect fo user can render the field there
@@ -99,8 +109,14 @@ namespace UnityEditor.Rendering.HighDefinition
             where T: struct, IValueGetter<int>
         {
             var fieldRect = DoGUILayout(self, label);
+            
             if (self.useOverride.boolValue)
+            {
+                var showMixedValues = EditorGUI.showMixedValue;
+                EditorGUI.showMixedValue = self.@override.hasMultipleDifferentValues;
                 self.@override.intValue = EditorGUI.IntField(fieldRect, self.@override.intValue);
+                EditorGUI.showMixedValue = showMixedValues;
+            }
             else
                 EditorGUI.LabelField(fieldRect, $"{@default.GetValue(self.level.intValue)} ({@default.sourceDescription})");
         }

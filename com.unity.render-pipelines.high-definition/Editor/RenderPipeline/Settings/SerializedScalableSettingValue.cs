@@ -71,8 +71,11 @@ namespace UnityEditor.Rendering.HighDefinition
             enumRect.x -= k_EnumOffset;
             enumRect.width = k_EnumWidth + k_EnumOffset;
 
+            var showMixedValues = EditorGUI.showMixedValue;
+            EditorGUI.showMixedValue = self.level.hasMultipleDifferentValues;
             var (level, isOverride) =
                 LevelFieldGUI(enumRect, GUIContent.none, (ScalableSetting.Level)self.level.intValue, self.useOverride.boolValue);
+            EditorGUI.showMixedValue = showMixedValues;
             self.useOverride.boolValue = isOverride;
             if (!self.useOverride.boolValue)
                 self.level.intValue = (int)level;
@@ -98,7 +101,12 @@ namespace UnityEditor.Rendering.HighDefinition
         {
             var fieldRect = DoGUILayout(self, label);
             if (self.useOverride.boolValue)
+            {
+                var showMixedValues = EditorGUI.showMixedValue;
+                EditorGUI.showMixedValue = self.@override.hasMultipleDifferentValues;
                 self.@override.intValue = EditorGUI.IntField(fieldRect, self.@override.intValue);
+                EditorGUI.showMixedValue = showMixedValues;
+            }
             else
                 EditorGUI.LabelField(fieldRect, $"{@default.GetValue((ScalableSetting.Level)self.level.intValue)} ({@default.sourceDescription})");
         }
