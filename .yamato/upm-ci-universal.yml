@@ -44,7 +44,7 @@ projects:
     {% if testplatform.name == "Standalone" %}
     - cd TestProjects/{{ project.folder }} && utr/utr {{ testplatform.args }}OSX --testproject=. --editor-location=.Editor --artifacts_path=upm-ci~/test-results  --timeout=1200
     {% else %}
-    - cd TestProjects/{{ project.folder }} && utr/utr {{ testplatform.args }} --testproject=. --editor-location=.Editor --artifacts_path=upm-ci~/test-results
+    - warlock -e "#srp-nightly-status" -s "#srp-nightly-status" cd TestProjects/{{ project.folder }} && utr/utr {{ testplatform.args }} --testproject=. --editor-location=.Editor --artifacts_path=upm-ci~/test-results
     {% endif %}
   artifacts:
     logs:
