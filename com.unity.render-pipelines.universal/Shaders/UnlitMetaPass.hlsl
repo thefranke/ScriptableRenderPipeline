@@ -21,7 +21,6 @@ struct Varyings
     float2 uv           : TEXCOORD0;
 };
 
-
 Varyings UniversalVertexMeta(Attributes input)
 {
     Varyings output;
