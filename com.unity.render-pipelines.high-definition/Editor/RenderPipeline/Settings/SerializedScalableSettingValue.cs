@@ -72,7 +72,7 @@ namespace UnityEditor.Rendering.HighDefinition
             enumRect.width = k_EnumWidth + k_EnumOffset;
 
             var showMixedValues = EditorGUI.showMixedValue;
-            EditorGUI.showMixedValue = self.level.hasMultipleDifferentValues;
+            EditorGUI.showMixedValue = self.level.hasMultipleDifferentValues || self.useOverride.hasMultipleDifferentValues;
             var (level, isOverride) =
                 LevelFieldGUI(enumRect, GUIContent.none, (ScalableSetting.Level)self.level.intValue, self.useOverride.boolValue);
             EditorGUI.showMixedValue = showMixedValues;

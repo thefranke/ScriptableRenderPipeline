@@ -77,10 +77,8 @@ namespace UnityEditor.Rendering.HighDefinition
             enumRect.x -= k_EnumOffset;
             enumRect.width = k_EnumWidth + k_EnumOffset;
 
-            var showMixedValues = EditorGUI.showMixedValue;
-            EditorGUI.showMixedValue = self.level.hasMultipleDifferentValues;
-            var (level, useOverride) = LevelFieldGUI(enumRect, self.level.intValue, self.useOverride.boolValue);
-            EditorGUI.showMixedValue = showMixedValues;
+            var showMixedValues = self.level.hasMultipleDifferentValues || self.useOverride.hasMultipleDifferentValues;
+            var (level, useOverride) = LevelFieldGUI(enumRect, self.level.intValue, self.useOverride.boolValue, showMixedValues);
             self.useOverride.boolValue = useOverride;
             if (!self.useOverride.boolValue)
                 self.level.intValue = level;
@@ -93,16 +91,21 @@ namespace UnityEditor.Rendering.HighDefinition
             return fieldRect;
         }
 
-        public static (int level, bool useOverride) LevelFieldGUI(Rect rect, int level, bool useOverride)
+        public static (int level, bool useOverride) LevelFieldGUI(Rect rect, int level, bool useOverride, bool showMixedValues)
         {
             var enumValue = useOverride ? 0 : level + 1;
             var levelCount = 4; // TODO: the number of level defined in the setting
             var options = new GUIContent[levelCount + 1];
             options[0] = new GUIContent("Custom");
             Array.Copy(k_Options, 0, options, 1, levelCount);
+            EditorGUI.BeginChangeCheck();
+            var oldShowMixedValue = EditorGUI.showMixedValue;
+            EditorGUI.showMixedValue = showMixedValues;
             var newValue = EditorGUI.Popup(rect, GUIContent.none, enumValue, options);
-
-            return (newValue - 1, newValue == 0);
+            EditorGUI.showMixedValue = oldShowMixedValue;
+            return EditorGUI.EndChangeCheck() || !showMixedValues
+                ? (newValue - 1, newValue == 0)
+                : (level, useOverride);
         }
 
         public static void LevelAndIntGUILayout<T>(this SerializedShadowResolutionSettingValue self, GUIContent label, T @default)
@@ -110,7 +113,7 @@ namespace UnityEditor.Rendering.HighDefinition
         {
             var fieldRect = DoGUILayout(self, label);
             
-            if (self.useOverride.boolValue)
+            if (self.useOverride.boolValue && !self.useOverride.hasMultipleDifferentValues)
             {
                 var showMixedValues = EditorGUI.showMixedValue;
                 EditorGUI.showMixedValue = self.@override.hasMultipleDifferentValues;
