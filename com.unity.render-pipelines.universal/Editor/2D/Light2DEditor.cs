@@ -5,7 +5,6 @@ using UnityEditor.Experimental.Rendering.Universal.Path2D;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering.Universal;
 using UnityEngine.Rendering.Universal;
-using UnityEngine.UIElements;
 
 namespace UnityEditor.Experimental.Rendering.Universal
 {
@@ -144,8 +143,6 @@ namespace UnityEditor.Experimental.Rendering.Universal
 
         int m_LastLightType = 0;
 
-        HeaderModifier m_HeaderModifier;
-
         Analytics.Renderer2DAnalytics m_Analytics;
         HashSet<Light2D> m_ModifiedLights;
 
@@ -160,29 +157,6 @@ namespace UnityEditor.Experimental.Rendering.Universal
                         m_ModifiedLights.Add(light2d);
                 }
             }
-        }
-
-        public override VisualElement CreateInspectorGUI()
-        {
-            m_HeaderModifier = new HeaderModifier(OnInspectorGUI, () =>
-            {
-                if (Styles.lightIcons != null)
-                {
-                    Color skinColor = EditorGUIUtility.isProSkin ? new Color32(56, 56, 56, 255) : new Color32(194, 194, 194, 255);
-
-                    //GUISkin skin = EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector);
-
-                    // Rect iconRect = new Rect(16, 2, 16, 16);  // This needs a version define
-                    Rect iconRect = new Rect(20, 5, 16, 16);  // This needs a version define
-                    EditorGUI.DrawRect(iconRect, skinColor);
-
-                    if (Styles.lightIcons[m_LastLightType])
-                    {
-                        GUI.DrawTexture(iconRect, Styles.lightIcons[m_LastLightType]);
-                    }
-                }
-            });
-            return m_HeaderModifier;
         }
 
         void OnEnable()
