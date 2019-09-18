@@ -43,7 +43,7 @@ projects:
 
     {% if testplatform.name == "Standalone" %}
     #- cd TestProjects/{{ project.folder }} && ./warlock -e "#srp-nightly-status" utr/utr {{ testplatform.args }}Windows64 --testproject=. --editor-location=.Editor --artifacts_path=upm-ci~/test-results --timeout=1200
-    - ./warlock -e "#srp-nightly-status" cd TestProjects/{{ project.folder }} && powershell -command "utr/utr {{ testplatform.args }}Windows64 --testproject=. --editor-location=.Editor --artifacts_path=upm-ci~/test-results --timeout=1200"
+    - warlock -e "#srp-nightly-status" cd TestProjects/{{ project.folder }} && powershell -command "utr/utr {{ testplatform.args }}Windows64 --testproject=. --editor-location=.Editor --artifacts_path=upm-ci~/test-results --timeout=1200"
     {% else %}
     - cd TestProjects/{{ project.folder }} && powershell -command "./warlock -e "#srp-nightly-status" utr/utr {{ testplatform.args }} --testproject=. --editor-location=.Editor --artifacts_path=upm-ci~/test-results"
     {% endif %}
