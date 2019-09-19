@@ -387,7 +387,7 @@ namespace UnityEditor.Rendering.HighDefinition
                         if (EditorGUI.EndChangeCheck())
                         {
                             Undo.RecordObject(lightDataPairing[light].hdAdditionalLightData, "Changed light layer");
-                            lightDataPairing[light].hdAdditionalLightData.SetLightLayer(LightLayerEnum.LightLayer1, (LightLayerEnum)lightLayer);
+                            lightDataPairing[light].hdAdditionalLightData.lightlayersMask = (LightLayerEnum)lightLayer;
                         }
                     }
                 }),
