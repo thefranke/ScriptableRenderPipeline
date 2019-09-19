@@ -7,7 +7,7 @@ namespace UnityEditor.Rendering
     /// <summary>
     /// This attributes tells an <see cref="VolumeParameterDrawer"/> class which type of
     /// <see cref="VolumeParameter"/> it's an editor for.
-    /// When you make a custom drawer for a parameter, you need put this attribute on the drawer
+    /// When you make a custom drawer for a parameter, you need add this attribute to the drawer
     /// class.
     /// </summary>
     /// <seealso cref="VolumeParameterDrawer"/>
@@ -22,7 +22,7 @@ namespace UnityEditor.Rendering
         /// <summary>
         /// Creates a new <see cref="VolumeParameterDrawerAttribute"/> instance.
         /// </summary>
-        /// <param name="parameterType">A type derived from <see cref="VolumeParameter{T}"/></param>
+        /// <param name="parameterType">A type derived from <see cref="VolumeParameter{T}"/>.</param>
         public VolumeParameterDrawerAttribute(Type parameterType)
         {
             this.parameterType = parameterType;
@@ -35,8 +35,8 @@ namespace UnityEditor.Rendering
     /// parameter this drawer is for.
     /// </summary>
     /// <remarks>
-    /// If no custom editor is provided for a <see cref="VolumeParameter"/> then Unity will draw the
-    /// property as-is using the builtin default property drawers.
+    /// If you do not provide a custom editor for a <see cref="VolumeParameter"/>, Unity uses the buil-in property drawers to draw the
+    /// property as-is.
     /// </remarks>
     /// <example>
     /// Here's an example about how <see cref="ClampedFloatParameter"/> is implemented:
@@ -66,20 +66,20 @@ namespace UnityEditor.Rendering
         // else it'll automatically draw it and put the property content in a horizontal scope.
 
         /// <summary>
-        /// Override this and return <c>false</c> if you want to customize the override checkbox
-        /// position, else it will automatically draw it and put the property content in an
+        /// Override this and return <c>false</c> if you want to customize the position of the override
+        /// checkbox. If you don't, Unity automatically draws the checkbox and puts the property content in a
         /// horizontal scope.
         /// </summary>
-        /// <returns><c>true</c> if the override checkbox position is customized, <c>false</c>
+        /// <returns><c>false</c> if the override checkbox position is customized, <c>true</c>
         /// otherwise</returns>
         public virtual bool IsAutoProperty() => true;
 
         /// <summary>
         /// Draws the parameter in the editor. If the input parameter is invalid you should return
-        /// <c>false</c> so that Unity will display the default editor for this parameter.
+        /// <c>false</c> so that Unity displays the default editor for this parameter.
         /// </summary>
-        /// <param name="parameter">The parameter being drawn</param>
-        /// <param name="title">The label and tooltip of the parameter</param>
+        /// <param name="parameter">The parameter to draw.</param>
+        /// <param name="title">The label and tooltip of the parameter.</param>
         /// <returns><c>true</c> if the input parameter is valid, <c>false</c> otherwise in which
         /// case Unity will revert to the default editor for this parameter</returns>
         public abstract bool OnGUI(SerializedDataParameter parameter, GUIContent title);
