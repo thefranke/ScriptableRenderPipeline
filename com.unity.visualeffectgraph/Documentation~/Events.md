@@ -43,3 +43,19 @@ The default Visual Effect Event defines the name of the event that is implicitly
 
 Default VisualEffect Event is defined in the [Visual Effect Graph Asset Inspector](VisualEffectGraphAsset.md) but can be overridden in any [Visual Effect Inspector](VisualEffectComponent.md) for any instance in the scene.
 
+## GPU Events
+
+GPU Events is an **Experimental feature** of Visual Effect Graph : It enables particle spawn based on other Particles.  You can enable this option in [Visual Effect Preferences](VisualEffectPreferences.md) .
+
+![](Images/GPUEvent.png)
+
+GPU Events are Event Contexts that relies on Data sent from other Systems, for instance when a particle dies, or other conditions. The following Update blocks can send GPU Event Data:
+
+* **Trigger Event On Die** :  Spawns N Particles on another system when a particle dies
+* **Trigger Event Rate** : Spawn N Particles per second, based on a particle from a system
+* **Trigger Event Always** :  Spawns N Particles every Frame.
+
+These blocks connect to a **GPUEvent** Context. This context does not handle any blocks but instead connects to a Initialize Context of a child system.
+
+In order to gather data from the parent particle, the child system must refer to [Source Attributes](Attributes.md) in its Initialize Context, by using **Get Source Attribute Operator**, or **Inherit Attribute Block**,as shown as in the example above : The child System inherits the source position of the particle that created it, and inherits roughly 50% of its speed.
+
