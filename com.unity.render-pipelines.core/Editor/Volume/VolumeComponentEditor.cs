@@ -9,7 +9,7 @@ using UnityEngine.Rendering;
 namespace UnityEditor.Rendering
 {
     /// <summary>
-    /// This attributes tells an <see cref="VolumeComponentEditor"/> class which type of
+    /// This attributes tells a <see cref="VolumeComponentEditor"/> class which type of
     /// <see cref="VolumeComponent"/> it's an editor for.
     /// When you make a custom editor for a component, you need put this attribute on the editor
     /// class.
@@ -34,13 +34,13 @@ namespace UnityEditor.Rendering
     }
 
     /// <summary>
-    /// A custom editor class used to draw <see cref="VolumeComponent"/> in the inspector. If no
-    /// custom editor is provided for a <see cref="VolumeComponent"/> it will use the default one.
+    /// A custom editor class that draws a <see cref="VolumeComponent"/> in the Inspector. If you do not 
+    /// provide a custom editor for a <see cref="VolumeComponent"/>, Unity uses the default one.
     /// You must use a <see cref="VolumeComponentEditorAttribute"/> to let the editor know which
     /// component this drawer is for.
     /// </summary>
     /// <example>
-    /// Here's a an example of a custom <see cref="VolumeComponent"/>:
+    /// Below is an example of a custom <see cref="VolumeComponent"/>:
     /// <code>
     /// using UnityEngine.Rendering;
     /// 
@@ -76,7 +76,7 @@ namespace UnityEditor.Rendering
     public class VolumeComponentEditor
     {
         /// <summary>
-        /// The <see cref="VolumeComponent"/> this editor is drawing.
+        /// Specifies the <see cref="VolumeComponent"/> this editor is drawing.
         /// </summary>
         public VolumeComponent target { get; private set; }
 
@@ -87,7 +87,7 @@ namespace UnityEditor.Rendering
 
         /// <summary>
         /// The copy of the serialized property of the <see cref="VolumeComponent"/> being
-        /// inspected. This is used to track the collapsed state of the editor in the inspector.
+        /// inspected. Unity uses this to track whether the editor is collapsed in the Inspector or not.
         /// </summary>
         public SerializedProperty baseProperty { get; internal set; }
 
@@ -100,7 +100,7 @@ namespace UnityEditor.Rendering
         SerializedProperty m_AdvancedMode;
 
         /// <summary>
-        /// Override this property if your editor will make use of the "More Options" feature.
+        /// Override this property if your editor makes use of the "More Options" feature.
         /// </summary>
         public virtual bool hasAdvancedMode => false;
 
@@ -121,7 +121,7 @@ namespace UnityEditor.Rendering
         }
 
         /// <summary>
-        /// A reference to the parent editor in the inspector.
+        /// A reference to the parent editor in the Inspector.
         /// </summary>
         protected Editor m_Inspector;
 
@@ -162,7 +162,7 @@ namespace UnityEditor.Rendering
         }
 
         /// <summary>
-        /// Triggers an inspector repaint event.
+        /// Triggers an Inspector repaint event.
         /// </summary>
         public void Repaint()
         {
@@ -180,11 +180,11 @@ namespace UnityEditor.Rendering
         }
 
         /// <summary>
-        /// This method is called when the object is loaded.
+        /// Unity calls this method is called when the object loads.
         /// </summary>
         /// <remarks>
         /// You can safely override this method and not call <c>base.OnEnable()</c> unless you want
-        /// it to display all the properties from the <see cref="VolumeComponent"/> automatically.
+        /// Unity to display all the properties from the <see cref="VolumeComponent"/> automatically.
         /// </remarks>
         public virtual void OnEnable()
         {
@@ -212,7 +212,7 @@ namespace UnityEditor.Rendering
         }
 
         /// <summary>
-        /// This method is called when the object goes out of scope.
+        /// Unity calls this method when the object goes out of scope.
         /// </summary>
         public virtual void OnDisable()
         {
@@ -228,11 +228,11 @@ namespace UnityEditor.Rendering
         }
 
         /// <summary>
-        /// This method is called everytime the inspector is being redrawn.
+        /// Unity calls this method everytime it re-draws the Inspector.
         /// </summary>
         /// <remarks>
         /// You can safely override this method and not call <c>base.OnInspectorGUI()</c> unless you
-        /// want it to display all the properties from the <see cref="VolumeComponent"/>
+        /// want Unity to display all the properties from the <see cref="VolumeComponent"/>
         /// automatically.
         /// </remarks>
         public virtual void OnInspectorGUI()
@@ -243,10 +243,10 @@ namespace UnityEditor.Rendering
         }
 
         /// <summary>
-        /// Overrides this method to provide a custom label for the component header. If not, it
-        /// will be automatically inferred from the class name.
+        /// Sets the label for the component header. Override this method to provide
+        /// a custom label. If you don't, Unity automatically inferres one from the class name.
         /// </summary>
-        /// <returns>A label to display in the component header</returns>
+        /// <returns>A label to display in the component header.</returns>
         public virtual string GetDisplayTitle()
         {
             return target.displayName == "" ? ObjectNames.NicifyVariableName(target.GetType().Name) : target.displayName;
@@ -272,7 +272,7 @@ namespace UnityEditor.Rendering
         }
 
         /// <summary>
-        /// Generates and auto-populate a <see cref="SerializedDataParameter"/> from a serialized
+        /// Generates and auto-populates a <see cref="SerializedDataParameter"/> from a serialized
         /// <see cref="VolumeParameter{T}"/>.
         /// </summary>
         /// <param name="property">A serialized property holding a <see cref="VolumeParameter{T}"/>
@@ -298,8 +298,8 @@ namespace UnityEditor.Rendering
         /// Draws a given <see cref="SerializedDataParameter"/> in the editor using a custom label
         /// and tooltip.
         /// </summary>
-        /// <param name="property">The property to draw in the editor</param>
-        /// <param name="title">A custom label and/or tooltip</param>
+        /// <param name="property">The property to draw in the editor.</param>
+        /// <param name="title">A custom label and/or tooltip.</param>
         protected void PropertyField(SerializedDataParameter property, GUIContent title)
         {
             // Handle unity built-in decorators (Space, Header, Tooltip etc)
