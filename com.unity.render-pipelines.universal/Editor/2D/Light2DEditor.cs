@@ -55,12 +55,13 @@ namespace UnityEditor.Experimental.Rendering.Universal
             public static Texture lightCapBottomRight = Resources.Load<Texture>("LightCapBottomRight");
             public static Texture lightCapUp = Resources.Load<Texture>("LightCapUp");
             public static Texture lightCapDown = Resources.Load<Texture>("LightCapDown");
-            public static Texture parametricLightIcon = Resources.Load("InspectorIcons/ParametricLight") as Texture;
-            public static Texture freeformLightIcon = Resources.Load("InspectorIcons/FreeformLight") as Texture;
-            public static Texture spriteLightIcon = Resources.Load("InspectorIcons/SpriteLight") as Texture;
-            public static Texture pointLightIcon = Resources.Load("InspectorIcons/PointLight") as Texture;
-            public static Texture globalLightIcon = Resources.Load("InspectorIcons/GlobalLight") as Texture;
-            public static Texture[] lightIcons = new Texture[] { parametricLightIcon, freeformLightIcon, spriteLightIcon, pointLightIcon, globalLightIcon };
+
+            public static GUIContent lightTypeParametric = new GUIContent("Parametric", Resources.Load("InspectorIcons/ParametricLight") as Texture);
+            public static GUIContent lightTypeFreeform = new GUIContent("Freeform", Resources.Load("InspectorIcons/FreeformLight") as Texture);
+            public static GUIContent lightTypeSprite = new GUIContent("Sprite", Resources.Load("InspectorIcons/SpriteLight") as Texture);
+            public static GUIContent lightTypePoint = new GUIContent("Point", Resources.Load("InspectorIcons/PointLight") as Texture);
+            public static GUIContent lightTypeGlobal = new GUIContent("Global", Resources.Load("InspectorIcons/GlobalLight") as Texture);
+            public static GUIContent[] lightTypeOptions = new GUIContent[] { lightTypeParametric, lightTypeFreeform, lightTypeSprite, lightTypePoint, lightTypeGlobal };
 
             public static GUIContent generalLightType = EditorGUIUtility.TrTextContent("Light Type", "Specify the light type");
             public static GUIContent generalFalloffSize = EditorGUIUtility.TrTextContent("Falloff", "Specify the falloff of the light");
@@ -140,8 +141,6 @@ namespace UnityEditor.Experimental.Rendering.Universal
         SortingLayerDropDown m_SortingLayerDropDown;
 
         Light2D lightObject => target as Light2D;
-
-        int m_LastLightType = 0;
 
         Analytics.Renderer2DAnalytics m_Analytics;
         HashSet<Light2D> m_ModifiedLights;
@@ -565,8 +564,13 @@ namespace UnityEditor.Experimental.Rendering.Universal
 
             serializedObject.Update();
 
-            EditorGUILayout.PropertyField(m_LightType, Styles.generalLightType);
-            m_LastLightType = m_LightType.intValue;
+            Rect lightTypeRect = EditorGUILayout.GetControlRect();
+            EditorGUI.BeginProperty(lightTypeRect, GUIContent.none, m_LightType);
+            EditorGUI.BeginChangeCheck();
+            int newLightType = EditorGUI.Popup(lightTypeRect, Styles.generalLightType, m_LightType.intValue, Styles.lightTypeOptions);
+            if (EditorGUI.EndChangeCheck())
+                m_LightType.intValue = newLightType;
+            EditorGUI.EndProperty();
 
             switch (m_LightType.intValue)
             {
