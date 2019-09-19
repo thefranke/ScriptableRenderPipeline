@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [8.0.0] - 2019-XX-XX
 
+### Fixed
 - Fix/workaround a probable graphics driver bug in the GTAO shader.
 - Fixed Hair and PBR shader graphs double sided modes
 - Fixed an issue where updating an HDRP asset in the Quality setting panel would not recreate the pipeline.
@@ -31,6 +32,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Fixed Decal gizmo that become white after exiting play mode
 - Fixed Decal pivot position to behave like a spotlight
 - Fixed an issue where using the LightingOverrideMask would break sky reflection for regular cameras
+- Fixed an issue where Previews would reallocate History Buffers every frame
+
+### Changed
+- Color buffer pyramid is not allocated anymore if neither refraction nor distortion are enabled
 
 ## [7.1.1] - 2019-09-05
 
