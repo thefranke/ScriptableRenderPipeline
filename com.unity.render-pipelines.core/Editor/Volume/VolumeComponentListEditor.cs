@@ -8,8 +8,8 @@ using UnityEngine.Rendering;
 namespace UnityEditor.Rendering
 {
     /// <summary>
-    /// This class is used to draw the user interface in the inspector for all the settings
-    /// contained in a <see cref="VolumeProfile"/>/
+    /// Unity uses this class to draw the user interface for all the settings
+    /// contained in a <see cref="VolumeProfile"/> in the Inspector.
     /// </summary>
     /// <example>
     /// A minimal example of how to write a custom editor that displays the content of a profile
@@ -46,7 +46,7 @@ namespace UnityEditor.Rendering
     public sealed class VolumeComponentListEditor
     {
         /// <summary>
-        /// A direct reference to the <see cref="VolumeProfile"/> being displayed by this editor.
+        /// A direct reference to the <see cref="VolumeProfile"/> this editor displays.
         /// </summary>
         public VolumeProfile asset { get; private set; }
 
@@ -61,7 +61,7 @@ namespace UnityEditor.Rendering
         static VolumeComponent s_ClipboardContent;
 
         /// <summary>
-        /// Creates a new instance of <see cref="VolumeComponentListEditor"/> to be used in an
+        /// Creates a new instance of <see cref="VolumeComponentListEditor"/> to use in an
         /// existing editor.
         /// </summary>
         /// <param name="editor">A reference to the parent editor instance</param>
@@ -74,9 +74,9 @@ namespace UnityEditor.Rendering
         /// <summary>
         /// Initializes the editor.
         /// </summary>
-        /// <param name="asset">A direct reference to the profile asset</param>
+        /// <param name="asset">A direct reference to the profile Asset.</param>
         /// <param name="serializedObject">An instance of the <see cref="SerializedObject"/>
-        /// provided by the parent editor</param>
+        /// provided by the parent editor.</param>
         public void Init(VolumeProfile asset, SerializedObject serializedObject)
         {
             Assert.IsNotNull(asset);
@@ -165,8 +165,8 @@ namespace UnityEditor.Rendering
         }
 
         /// <summary>
-        /// Cleans up the editor and individual <see cref="VolumeComponentEditor"/> instances. This
-        /// must be called when the parent editor is disabled or destroyed.
+        /// Cleans up the editor and individual <see cref="VolumeComponentEditor"/> instances. You
+        /// must call this when the parent editor is disabled or destroyed.
         /// </summary>
         public void Clear()
         {
