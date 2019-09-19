@@ -41,13 +41,6 @@ namespace UnityEngine.Experimental.Rendering.Universal
             return changed;
         }
 
-        //public static bool CheckForChange<T>(T a, ref T b)
-        //{
-        //    bool changed = !Equals(a, b);
-        //    b = a;
-        //    return changed;
-        //}
-
         public static Bounds CalculateBoundingSphere(ref Vector3[] vertices, ref Color[] colors, float falloffDistance)
         {
             Bounds localBounds = new Bounds();

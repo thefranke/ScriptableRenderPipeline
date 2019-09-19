@@ -17,10 +17,22 @@ namespace UnityEngine.Experimental.Rendering.Universal
 
         static readonly string[] k_UseBlendStyleKeywords =
         {
-            "USE_SHAPE_LIGHT_TYPE_0",
-            "USE_SHAPE_LIGHT_TYPE_1",
-            "USE_SHAPE_LIGHT_TYPE_2",
-            "USE_SHAPE_LIGHT_TYPE_3"
+            "USE_SHAPE_LIGHT_TYPE_0", "USE_SHAPE_LIGHT_TYPE_1", "USE_SHAPE_LIGHT_TYPE_2", "USE_SHAPE_LIGHT_TYPE_3"
+        };
+
+        static readonly string[] k_BlendFactorsPropNames =
+        {
+            "_ShapeLightBlendFactors0", "_ShapeLightBlendFactors1", "_ShapeLightBlendFactors2", "_ShapeLightBlendFactors3"
+        };
+
+        static readonly string[] k_MaskFilterPropNames =
+        {
+            "_ShapeLightMaskFilter0", "_ShapeLightMaskFilter1", "_ShapeLightMaskFilter2", "_ShapeLightMaskFilter3"
+        };
+
+        static readonly string[] k_InvertedFilterPropNames =
+        {
+            "_ShapeLightInvertedFilter0", "_ShapeLightInvertedFilter1", "_ShapeLightInvertedFilter2", "_ShapeLightInvertedFilter3"
         };
 
         static Renderer2DData s_RendererData;
@@ -335,45 +347,26 @@ namespace UnityEngine.Experimental.Rendering.Universal
 
         static public void SetShapeLightShaderGlobals(CommandBuffer cmdBuffer)
         {
-            if (s_BlendStyles[0].enabled)
+            for (int i = 0; i < s_BlendStyles.Length; ++i)
             {
-                cmdBuffer.EnableShaderKeyword(k_UseBlendStyleKeywords[0]);
-                cmdBuffer.SetGlobalVector("_ShapeLightBlendFactors0", s_BlendStyles[0].blendFactors);
-                cmdBuffer.SetGlobalVector("_ShapeLightMaskFilter0", s_BlendStyles[0].maskTextureChannelFilter.mask);
-                cmdBuffer.SetGlobalVector("_ShapeLightInvertedFilter0", s_BlendStyles[0].maskTextureChannelFilter.inverted);
-            }
-            else
-                cmdBuffer.DisableShaderKeyword(k_UseBlendStyleKeywords[0]);
 
-            if (s_BlendStyles[1].enabled)
-            {
-                cmdBuffer.EnableShaderKeyword(k_UseBlendStyleKeywords[1]);
-                cmdBuffer.SetGlobalVector("_ShapeLightBlendFactors1", s_BlendStyles[1].blendFactors);
-                cmdBuffer.SetGlobalVector("_ShapeLightMaskFilter1", s_BlendStyles[1].maskTextureChannelFilter.mask);
-                cmdBuffer.SetGlobalVector("_ShapeLightInvertedFilter1", s_BlendStyles[1].maskTextureChannelFilter.inverted);
-            }
-            else
-                cmdBuffer.DisableShaderKeyword(k_UseBlendStyleKeywords[1]);
+                if (i >= k_UseBlendStyleKeywords.Length)
+                    break;
 
-            if (s_BlendStyles[2].enabled)
-            {
-                cmdBuffer.EnableShaderKeyword(k_UseBlendStyleKeywords[2]);
-                cmdBuffer.SetGlobalVector("_ShapeLightBlendFactors2", s_BlendStyles[2].blendFactors);
-                cmdBuffer.SetGlobalVector("_ShapeLightMaskFilter2", s_BlendStyles[2].maskTextureChannelFilter.mask);
-                cmdBuffer.SetGlobalVector("_ShapeLightInvertedFilter2", s_BlendStyles[2].maskTextureChannelFilter.inverted);
+                string keyword = k_UseBlendStyleKeywords[i];
+                if (!s_BlendStyles[i].enabled)
+                {
+                    cmdBuffer.DisableShaderKeyword(keyword);
+                    continue;
+                }
+                else
+                {
+                    cmdBuffer.EnableShaderKeyword(keyword);
+                    cmdBuffer.SetGlobalVector(k_BlendFactorsPropNames[i], s_BlendStyles[i].blendFactors);
+                    cmdBuffer.SetGlobalVector(k_MaskFilterPropNames[i], s_BlendStyles[i].maskTextureChannelFilter.mask);
+                    cmdBuffer.SetGlobalVector(k_InvertedFilterPropNames[i], s_BlendStyles[i].maskTextureChannelFilter.inverted);
+                }
             }
-            else
-                cmdBuffer.DisableShaderKeyword(k_UseBlendStyleKeywords[2]);
-
-            if (s_BlendStyles[3].enabled)
-            {
-                cmdBuffer.EnableShaderKeyword(k_UseBlendStyleKeywords[3]);
-                cmdBuffer.SetGlobalVector("_ShapeLightBlendFactors3", s_BlendStyles[3].blendFactors);
-                cmdBuffer.SetGlobalVector("_ShapeLightMaskFilter3", s_BlendStyles[3].maskTextureChannelFilter.mask);
-                cmdBuffer.SetGlobalVector("_ShapeLightInvertedFilter3", s_BlendStyles[3].maskTextureChannelFilter.inverted);
-            }
-            else
-                cmdBuffer.DisableShaderKeyword(k_UseBlendStyleKeywords[3]);
 
             cmdBuffer.SetGlobalTexture("_FalloffLookup", GetFalloffLookupTexture());
         }
