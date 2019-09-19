@@ -14,7 +14,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 - The icon that indicates the type of a Light 2D was moved from the Inspector header to the Light Type field.
-- Removed unnecessary slots from Sprite Lit and Sprite Unlit Shader Graph Master Nodes.
 - Eliminated some GC allocations from the 2D Renderer.
 
 ## [7.1.1] - 2019-09-05
