@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [8.0.0] - 2019-XX-XX
 ### Fixed
 - Fixed an issue where there were 2 widgets showing the outer angle of a spot light.
+- Fixed an issue where 2D lighting was broken for perspective cameras.
+- Fixed an issue where resetting a freeform 2D light would throw null reference exceptions. [case 1184536](https://issuetracker.unity3d.com/issues/lwrp-changing-light-type-to-freeform-after-clicking-on-reset-throws-multiple-arguementoutofrangeexception)
+- Fixed an issue where freeform 2D lights were not culled correctly when there is a falloff offset.
+- Fixed an issue where Tilemap palettes were invisible in the Tile Palette window when the 2D Renderer is in use. [case 1162550](https://issuetracker.unity3d.com/issues/adding-tiles-in-the-tile-palette-makes-the-tiles-invisible)
+
+### Changed
+- The icon that indicates the type of a Light 2D was moved from the Inspector header to the Light Type field.
+- Removed unnecessary slots from Sprite Lit and Sprite Unlit Shader Graph Master Nodes.
+- Eliminated some GC allocations from the 2D Renderer.
 
 ## [7.1.1] - 2019-09-05
 ### Upgrade Guide
