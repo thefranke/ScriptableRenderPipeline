@@ -29,6 +29,12 @@ namespace UnityEngine.Rendering.HighDefinition
             additionalCameraData.volumeAnchorOverride = camera.transform;
             additionalCameraData.volumeLayerMask = 1 << 31; //31 is the culling layer used in LookDev
 
+            additionalCameraData.customRenderingSettings = true;
+            additionalCameraData.renderingPathCustomFrameSettings.SetEnabled(FrameSettingsField.SSR, false);
+            // LookDev cameras are enabled/disabled all the time so history is destroyed each frame.
+            // In this case we know we want to keep history alive as long as the camera is.
+            additionalCameraData.hasPersistentHistory = true;
+
             Light light = SRI.sunLight;
             HDAdditionalLightData additionalLightData = light.gameObject.AddComponent<HDAdditionalLightData>();
 #if UNITY_EDITOR

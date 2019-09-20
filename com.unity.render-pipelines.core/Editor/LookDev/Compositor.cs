@@ -7,8 +7,7 @@ namespace UnityEditor.Rendering.LookDev
 {
     enum ShadowCompositionPass
     {
-        WithSun,
-        WithoutSun,
+        MainView,
         ShadowMask
     }
 
@@ -89,8 +88,7 @@ namespace UnityEditor.Rendering.LookDev
 
         public void UpdateSize(Rect rect, ViewIndex index, bool pixelPerfect, Camera renderingCamera)
         {
-            UpdateSize(computeIndex(index, ShadowCompositionPass.WithSun), rect, pixelPerfect, renderingCamera, $"LookDevRT-{index}-WithSun");
-            UpdateSize(computeIndex(index, ShadowCompositionPass.WithoutSun), rect, pixelPerfect, renderingCamera, $"LookDevRT-{index}-WithoutSun");
+            UpdateSize(computeIndex(index, ShadowCompositionPass.MainView), rect, pixelPerfect, renderingCamera, $"LookDevRT-{index}-MainView");
             UpdateSize(computeIndex(index, ShadowCompositionPass.ShadowMask), rect, pixelPerfect, renderingCamera, $"LookDevRT-{index}-ShadowMask");
         }
 
@@ -181,7 +179,7 @@ namespace UnityEditor.Rendering.LookDev
                 m_RenderDataCache[index]?.Dispose();
                 m_RenderDataCache[index] = null;
             }
-            
+
             m_RenderTextures.Dispose();
 
             m_Displayer.OnRenderDocAcquisitionTriggered -= RenderDocAcquisitionRequested;
@@ -245,9 +243,10 @@ namespace UnityEditor.Rendering.LookDev
             if (debugMode != -1)
                 LookDev.dataProvider.UpdateDebugMode(debugMode);
 
-            renderingData.output = m_RenderTextures[index, ShadowCompositionPass.WithSun];
-            m_Renderer.Acquire(renderingData, RenderingPass.First);
-            
+            renderingData.output = m_RenderTextures[index, ShadowCompositionPass.MainView];
+            m_Renderer.BeginRendering(renderingData);
+            m_Renderer.Acquire(renderingData);
+
             //get shadowmask betwen first and last pass to still be isolated
             RenderTexture tmp = m_RenderTextures[index, ShadowCompositionPass.ShadowMask];
             env?.UpdateSunPosition(renderingData.stage.sunLight);
@@ -256,13 +255,7 @@ namespace UnityEditor.Rendering.LookDev
             renderingData.stage.sunLight.intensity = 0f;
             m_RenderTextures[index, ShadowCompositionPass.ShadowMask] = tmp;
 
-            if (env != null)
-                m_DataProvider.UpdateSky(renderingData.stage.camera, env.shadowSky, renderingData.stage.runtimeInterface);
-            renderingData.output = m_RenderTextures[index, ShadowCompositionPass.WithoutSun];
-            m_Renderer.Acquire(renderingData, RenderingPass.Last);
-
-            if (env != null)
-                m_DataProvider.UpdateSky(renderingData.stage.camera, env.sky, renderingData.stage.runtimeInterface);
+            m_Renderer.EndRendering(renderingData);
 
             if (debugMode != -1)
                 LookDev.dataProvider.UpdateDebugMode(-1);
@@ -292,15 +285,13 @@ namespace UnityEditor.Rendering.LookDev
 
             if (rect.IsNullOrInverted()
                 || (m_Contexts.layout.viewLayout != Layout.FullSecondView
-                    && (m_RenderTextures[ViewIndex.First, ShadowCompositionPass.WithSun] == null
+                    && (m_RenderTextures[ViewIndex.First, ShadowCompositionPass.MainView] == null
                         || (!skipShadowComposition0
-                            && ( m_RenderTextures[ViewIndex.First, ShadowCompositionPass.WithoutSun] == null
-                                || m_RenderTextures[ViewIndex.First, ShadowCompositionPass.ShadowMask] == null))))
+                            && m_RenderTextures[ViewIndex.First, ShadowCompositionPass.ShadowMask] == null)))
                 || (m_Contexts.layout.viewLayout != Layout.FullFirstView
-                    && (m_RenderTextures[ViewIndex.Second, ShadowCompositionPass.WithSun] == null
+                    && (m_RenderTextures[ViewIndex.Second, ShadowCompositionPass.MainView] == null
                         || (!skipShadowComposition1
-                            && ( m_RenderTextures[ViewIndex.Second, ShadowCompositionPass.WithoutSun] == null
-                                || m_RenderTextures[ViewIndex.Second, ShadowCompositionPass.ShadowMask] == null)))))
+                            && m_RenderTextures[ViewIndex.Second, ShadowCompositionPass.ShadowMask] == null))))
             {
                 m_RenderTextures[finalBufferIndex] = null;
                 return;
@@ -318,24 +309,22 @@ namespace UnityEditor.Rendering.LookDev
             Environment env0 = m_Contexts.GetViewContent(ViewIndex.First).environment;
             Environment env1 = m_Contexts.GetViewContent(ViewIndex.Second).environment;
 
-            float exposureValue0 = env0?.sky.exposure ?? 0f;
-            float exposureValue1 = env1?.sky.exposure ?? 0f;
+            float exposureValue0 = env0?.exposure ?? 0f;
+            float exposureValue1 = env1?.exposure ?? 0f;
             float dualViewBlendFactor = gizmo.blendFactor;
             float isCurrentlyLeftEditting = m_Contexts.layout.lastFocusedView == ViewIndex.First ? 1f : -1f;
             float dragAndDropContext = 0f; //1f left, -1f right, 0f neither
             float toneMapEnabled = -1f; //1f true, -1f false
-            float shadowMultiplier0 = skipShadowComposition0 ? -1f : env0?.shadowIntensity ?? 0f;
-            float shadowMultiplier1 = skipShadowComposition1 ? -1f : env1?.shadowIntensity ?? 0f;
-            Color shadowColor0 = env0?.shadow.color ?? Color.white;
-            Color shadowColor1 = env1?.shadow.color ?? Color.white;
+            float shadowMultiplier0 = skipShadowComposition0 ? -1f : 1.0f;
+            float shadowMultiplier1 = skipShadowComposition1 ? -1f : 1.0f;
+            Color shadowColor0 = env0?.color ?? Color.white;
+            Color shadowColor1 = env1?.color ?? Color.white;
 
             //TODO: handle shadow not at compositing step but in rendering
-            Texture texWithSun0 = m_RenderTextures[ViewIndex.First, ShadowCompositionPass.WithSun];
-            Texture texWithoutSun0 = m_RenderTextures[ViewIndex.First, ShadowCompositionPass.WithoutSun];
+            Texture texMainView0 = m_RenderTextures[ViewIndex.First, ShadowCompositionPass.MainView];
             Texture texShadowsMask0 = m_RenderTextures[ViewIndex.First, ShadowCompositionPass.ShadowMask];
 
-            Texture texWithSun1 = m_RenderTextures[ViewIndex.Second, ShadowCompositionPass.WithSun];
-            Texture texWithoutSun1 = m_RenderTextures[ViewIndex.Second, ShadowCompositionPass.WithoutSun];
+            Texture texMainView1 = m_RenderTextures[ViewIndex.Second, ShadowCompositionPass.MainView];
             Texture texShadowsMask1 = m_RenderTextures[ViewIndex.Second, ShadowCompositionPass.ShadowMask];
 
             Vector4 compositingParams = new Vector4(dualViewBlendFactor, exposureValue0, exposureValue1, isCurrentlyLeftEditting);
@@ -362,12 +351,10 @@ namespace UnityEditor.Rendering.LookDev
 
             RenderTexture oldActive = RenderTexture.active;
             RenderTexture.active = m_RenderTextures[finalBufferIndex];
-            material.SetTexture("_Tex0WithSun", texWithSun0);
-            material.SetTexture("_Tex0WithoutSun", texWithoutSun0);
+            material.SetTexture("_Tex0MainView", texMainView0);
             material.SetTexture("_Tex0Shadows", texShadowsMask0);
             material.SetColor("_ShadowColor0", shadowColor0);
-            material.SetTexture("_Tex1WithSun", texWithSun1);
-            material.SetTexture("_Tex1WithoutSun", texWithoutSun1);
+            material.SetTexture("_Tex1MainView", texMainView1);
             material.SetTexture("_Tex1Shadows", texShadowsMask1);
             material.SetColor("_ShadowColor1", shadowColor1);
             material.SetVector("_CompositingParams", compositingParams);

@@ -807,7 +807,7 @@ namespace UnityEngine.Rendering.HighDefinition
                     continue;
 
                 // We keep preview camera around as they are generally disabled/enabled every frame. They will be destroyed later when camera.camera is null
-                if (camera.camera == null || (!camera.camera.isActiveAndEnabled && camera.camera.cameraType != CameraType.Preview))
+                if (camera.camera == null || (!camera.camera.isActiveAndEnabled && camera.camera.cameraType != CameraType.Preview && !camera.m_AdditionalCameraData.hasPersistentHistory))
                     s_Cleanup.Add(key);
             }
 
