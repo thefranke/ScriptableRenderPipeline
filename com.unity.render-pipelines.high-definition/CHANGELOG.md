@@ -42,6 +42,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 - Color buffer pyramid is not allocated anymore if neither refraction nor distortion are enabled
+- Removed second cubemaps used for shadowing in lookdev
 
 ## [7.1.1] - 2019-09-05
 
