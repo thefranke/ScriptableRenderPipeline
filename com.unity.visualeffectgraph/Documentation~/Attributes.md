@@ -43,7 +43,9 @@ Current Attribute Location refers to the **current** system data where the value
 
 ### Source
 
-Source Attribute Location refers to the previous system data where the value is read from. Source attributes can be read only in the first context.
+Source Attribute Location refers to the **previous system** data where the value is read from. 
+
+Source attributes can be **read only in the first context of a system, after a system data change**. (For instance : EventAttributes and GPU EventAttributes can only be accessed in Particle / ParticleStrip System Initialize Contexts).
 
 * In Initialize Particle / Initalize Particle Strips Contexts:
   * From incoming Spawn Contexts.

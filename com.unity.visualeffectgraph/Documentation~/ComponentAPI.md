@@ -137,16 +137,15 @@ If you manage multiple Visual Effect instances in scene and want to share event 
 VisualEffect visualEffect;
 VFXEventAttribute eventAttribute;
 
-readonly ExposedProperty positionAttribute = "Position"
-readonly ExposedProperty enteredTriggerEvent = "EnteredTrigger"
+static readonly ExposedProperty positionAttribute = "Position"
+static readonly ExposedProperty enteredTriggerEvent = "EnteredTrigger"
 
-void OnEnable()
+void Start()
 {
 	visualEffect = GetComponent<VisualEffect>();   
 	// Caches an Event Attribute matching the
 	// visualEffect.visualEffectAsset graph.
 	eventAttribute = visualEffect.CreateVFXEventAttribute();
-    position
 }
 
 void OnTriggerEnter()

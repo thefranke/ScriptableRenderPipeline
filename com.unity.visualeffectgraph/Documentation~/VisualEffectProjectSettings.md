@@ -17,3 +17,8 @@ Visual Effect Graph Project Settings is a Section in Unity Project Settings Wind
 | Sort Shader                        | (Automatically Set) Compute Shader used for Particle Sorting |
 | Strip Update Shader                | (Automatically Set) Compute Shader used for Particle Strips update |
 
+> **Note:** Fixed Delta time works in asynchronous update with `deltaTime = N * FixedTimeStep` (with `deltaTime = min(deltaTime , MaxDeltaTime)`). 
+>
+> N being determined by the current framerate.
+>
+> In this mode, deltaTime can equal 0 at certain frames.

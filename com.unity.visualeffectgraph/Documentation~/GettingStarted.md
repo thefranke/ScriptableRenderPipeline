@@ -19,7 +19,7 @@ To install the Visual Effect Graph package:
 2. Select the __Visual Effect Graph__ package.
 3. In the bottom right corner, click __Install__.
 
-![](Images/InstallVisuelEffectGraph.png)
+![](Images/InstallVisualEffectGraph.png)
 
 
 ### Using the correct version of Visual Effect Graph
@@ -29,19 +29,19 @@ For example, the Visual Effect Graph package version 6.5.3-preview in Package Ma
 version 6.5.3-preview. 
 
 ## Creating Visual Effect Graphs
-To use Visual Effect Graph, you must first create a Visual Effect Graph Asset. 
+To use Visual Effect Graph, you must first create a [Visual Effect Graph Asset](VisualEffectGraphAsset.md) . 
 
 To create a Visual Effect Graph Asset:
 
 1. In Unity, click __Assets__ &gt; __Create__ &gt; __Visual Effects__ &gt; __Visual Effect Graph__. 
 
-To make a copy of a Visual Effet Asset:
+To make a copy of a Visual Effect Graph Asset:
 
 1. In the Project window, select the Visual Effect Asset you want to make a copy of.
 2. In the top navigation bar, select __Edit__ &gt; __Duplicate__.  You’ve now created a copy.
 
 ## Using Visual Effect Graphs in Scenes
-To use a visual effect, you must add its [Visual Effect Graph Asset](#Creating-Visual-Effect-Graphs) to the Scene. 
+To use a Visual Effect Graph, you must add a [Visual Effect](#Creating-Visual-Effect-Graphs) to the Scene. 
 
 To do so, you can:
 
@@ -50,7 +50,7 @@ To do so, you can:
 
 When you’ve added the Visual Effect Graph Asset to you Hierarchy, Unity attaches the Asset to a [Visual Effect Component](https://docs.unity3d.com/2019.3/Documentation/ScriptReference/VFX.VisualEffect.html), which references the Asset. 
 ## Editing a Visual Effect Graph
-To edit Visual Effect Graph Assets in the Visual Effect Graph window:
+To edit Visual Effect Graph Assets in the  [Visual Effect Graph Window](VisualEffectGraphWindow.md) :
 
 * Open the Visual Effect Graph window (menu: __Window___ &gt; __Visual Effects__) with an empty graph. This prompts you to open a Visual Effect Graph Asset.
 * Select an existing Visual Effect Graph Asset, and click the __Edit__ button in the Inspector. This opens the Visual Effect Graph window with the graph contained in this Asset.
@@ -62,7 +62,7 @@ To preview an effect, you can:
 
 * Place your effect directly in the Scene as a Visual Effect GameObject. 
 
-This lets you edit parameters directly in the Scene, see the lighting on your effect, and use the Target GameObject Panel features for the specific target instance of your effect.
+This lets you edit parameters directly in the Scene, see the lighting on your effect, and use the [Target GameObject Panel](VisualEffectGraphWindow.md#target-visual-effect-gameobject) features for the specific target instance of your effect.
 
 ## Manipulating Graph Elements
 When you open an Asset inside the Visual Effect Graph Window, you can see and edit the graph for that specific Asset.

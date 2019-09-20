@@ -26,11 +26,17 @@ Blocks are nodes that you can manipulate in a bit different way than regular nod
 * You can cut, copy, paste, and duplicate blocks
   * Using the Right-click context menu
   * Using the following Keyboard Shortcuts:
-    * Ctrl + X : Cut
-    * Ctrl + C : Copy
-    * Ctrl + D : Duplicate
-    * Ctrl + V : Paste
-
+    * * On Windows 
+        - Ctrl + X : Cut
+        - Ctrl + C : Copy
+        - Ctrl + D : Duplicate
+      - Ctrl + V : Paste
+      * On OSX
+        - Cmd+ X : Cut
+        - Cmd + C : Copy
+        - Cmd+ D : Duplicate
+        - Cmd+ V : Paste
+  
 * You can Disable a block by unticking its enabled checkbox located in the top-right corner.
   * Disabling a block will disable it totally and will remove it from the compilation.
   * Toggling block will require a recompilation of the graph.
