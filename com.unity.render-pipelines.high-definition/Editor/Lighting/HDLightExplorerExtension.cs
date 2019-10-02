@@ -119,7 +119,7 @@ namespace UnityEditor.Rendering.HighDefinition
 
         protected virtual UnityEngine.Object[] GetHDLights()
         {
-            var lights = UnityEngine.Object.FindObjectsOfType<Light>();
+            var lights = Resources.FindObjectsOfTypeAll<Light>();
             foreach (Light light in lights)
             {
                 if (PrefabUtility.GetCorrespondingObjectFromSource(light) != null) // We have a prefab
@@ -137,7 +137,7 @@ namespace UnityEditor.Rendering.HighDefinition
 
         protected virtual UnityEngine.Object[] GetHDReflectionProbes()
         {
-            var reflectionProbes = Object.FindObjectsOfType<ReflectionProbe>();
+            var reflectionProbes = Resources.FindObjectsOfTypeAll<ReflectionProbe>();
             {
                 foreach (ReflectionProbe probe in reflectionProbes)
                 {
@@ -149,12 +149,12 @@ namespace UnityEditor.Rendering.HighDefinition
 
         protected virtual UnityEngine.Object[] GetPlanarReflections()
         {
-            return UnityEngine.Object.FindObjectsOfType<PlanarReflectionProbe>();
+            return Resources.FindObjectsOfTypeAll<PlanarReflectionProbe>();
         }
 
         protected virtual UnityEngine.Object[] GetVolumes()
         {
-            var volumes = UnityEngine.Object.FindObjectsOfType<Volume>();
+            var volumes = Resources.FindObjectsOfTypeAll<Volume>();
             foreach (var volume in volumes)
             {
                 bool hasStaticLightingSky = volume.GetComponent<StaticLightingSky>();
@@ -171,12 +171,12 @@ namespace UnityEditor.Rendering.HighDefinition
             {
                 new LightingExplorerTableColumn(LightingExplorerTableColumn.DataType.Name, HDStyles.Name, null, 200),                                               // 0: Name
                 new LightingExplorerTableColumn(LightingExplorerTableColumn.DataType.Checkbox, HDStyles.On, "m_Enabled", 25),                                       // 1: Enabled
-                new LightingExplorerTableColumn(LightingExplorerTableColumn.DataType.Enum, HDStyles.Type, "m_Type", 60),                                            // 2: Type
-                new LightingExplorerTableColumn(LightingExplorerTableColumn.DataType.Enum, HDStyles.Mode, "m_Lightmapping", 60),                                    // 3: Mixed mode
+                new LightingExplorerTableColumn(LightingExplorerTableColumn.DataType.Enum, HDStyles.Type, "m_Type", 95),                                            // 2: Type
+                new LightingExplorerTableColumn(LightingExplorerTableColumn.DataType.Enum, HDStyles.Mode, "m_Lightmapping", 80),                                    // 3: Mixed mode
                 new LightingExplorerTableColumn(LightingExplorerTableColumn.DataType.Enum, HDStyles.Range, "m_Range", 60),                                           // 4: Range
                 new LightingExplorerTableColumn(LightingExplorerTableColumn.DataType.Checkbox, HDStyles.ColorTemperatureMode, "m_UseColorTemperature", 100),         // 5: Color Temperature Mode
                 new LightingExplorerTableColumn(LightingExplorerTableColumn.DataType.Color, HDStyles.Color, "m_Color", 60),                                         // 6: Color
-                new LightingExplorerTableColumn(LightingExplorerTableColumn.DataType.Float, HDStyles.ColorTemperature, "m_ColorTemperature", 100,(r, prop, dep) =>  // 7: Color Temperature
+                new LightingExplorerTableColumn(LightingExplorerTableColumn.DataType.Float, HDStyles.ColorTemperature, "m_ColorTemperature", 100, (r, prop, dep) =>  // 7: Color Temperature
                 {
                     if (prop.serializedObject.FindProperty("m_UseColorTemperature").boolValue)
                     {
@@ -189,7 +189,7 @@ namespace UnityEditor.Rendering.HighDefinition
                     Light light = prop.serializedObject.targetObject as Light;
                     if(light == null || lightDataPairing[light].hdAdditionalLightData == null)
                     {
-                        EditorGUI.LabelField(r,"null");
+                        EditorGUI.LabelField(r, "null");
                         return;
                     }
                     float intensity = lightDataPairing[light].hdAdditionalLightData.intensity;
@@ -206,7 +206,7 @@ namespace UnityEditor.Rendering.HighDefinition
                     Light light = prop.serializedObject.targetObject as Light;
                     if(light == null || lightDataPairing[light].hdAdditionalLightData == null)
                     {
-                        EditorGUI.LabelField(r,"null");
+                        EditorGUI.LabelField(r, "null");
                         return;
                     }
                     LightUnit unit = lightDataPairing[light].hdAdditionalLightData.lightUnit;
@@ -232,7 +232,7 @@ namespace UnityEditor.Rendering.HighDefinition
                     Light light = prop.serializedObject.targetObject as Light;
                     if(light == null || lightDataPairing[light].hdAdditionalLightData == null)
                     {
-                        EditorGUI.LabelField(r,"null");
+                        EditorGUI.LabelField(r, "null");
                         return;
                     }
 
@@ -251,7 +251,7 @@ namespace UnityEditor.Rendering.HighDefinition
                     Light light = prop.serializedObject.targetObject as Light;
                     if(light == null || lightDataPairing[light].hdAdditionalLightData == null)
                     {
-                        EditorGUI.LabelField(r,"null");
+                        EditorGUI.LabelField(r, "null");
                         return;
                     }
 
@@ -273,7 +273,7 @@ namespace UnityEditor.Rendering.HighDefinition
                     Light light = prop.serializedObject.targetObject as Light;
                     if(light == null || lightDataPairing[light].hdAdditionalLightData == null)
                     {
-                        EditorGUI.LabelField(r,"null");
+                        EditorGUI.LabelField(r, "null");
                         return;
                     }
                     var shadowResolution = lightDataPairing[light].hdAdditionalLightData.shadowResolution;
@@ -291,7 +291,7 @@ namespace UnityEditor.Rendering.HighDefinition
                     Light light = prop.serializedObject.targetObject as Light;
                     if(light == null || lightDataPairing[light].hdAdditionalLightData == null || hdrp == null)
                     {
-                        EditorGUI.LabelField(r,"null");
+                        EditorGUI.LabelField(r, "null");
                         return;
                     }
                     var shadowResolution = lightDataPairing[light].hdAdditionalLightData.shadowResolution;
@@ -310,7 +310,7 @@ namespace UnityEditor.Rendering.HighDefinition
                     Light light = prop.serializedObject.targetObject as Light;
                     if(light == null || lightDataPairing[light].hdAdditionalLightData == null)
                     {
-                        EditorGUI.LabelField(r,"null");
+                        EditorGUI.LabelField(r, "null");
                         return;
                     }
                     bool affectDiffuse = lightDataPairing[light].hdAdditionalLightData.affectDiffuse;
@@ -326,7 +326,7 @@ namespace UnityEditor.Rendering.HighDefinition
                     Light light = prop.serializedObject.targetObject as Light;
                     if(light == null || lightDataPairing[light].hdAdditionalLightData == null)
                     {
-                        EditorGUI.LabelField(r,"null");
+                        EditorGUI.LabelField(r, "null");
                         return;
                     }
                     bool affectSpecular = lightDataPairing[light].hdAdditionalLightData.affectSpecular;
@@ -342,7 +342,7 @@ namespace UnityEditor.Rendering.HighDefinition
                     Light light = prop.serializedObject.targetObject as Light;
                     if(light == null || lightDataPairing[light].hdAdditionalLightData == null)
                     {
-                        EditorGUI.LabelField(r,"null");
+                        EditorGUI.LabelField(r, "null");
                         return;
                     }
                     float fadeDistance = lightDataPairing[light].hdAdditionalLightData.fadeDistance;
@@ -359,7 +359,7 @@ namespace UnityEditor.Rendering.HighDefinition
                     Light light = prop.serializedObject.targetObject as Light;
                     if(light == null || lightDataPairing[light].hdAdditionalLightData == null)
                     {
-                        EditorGUI.LabelField(r,"null");
+                        EditorGUI.LabelField(r, "null");
                         return;
                     }
                     float shadowFadeDistance = lightDataPairing[light].hdAdditionalLightData.shadowFadeDistance;
@@ -383,7 +383,7 @@ namespace UnityEditor.Rendering.HighDefinition
                     Light light = prop.serializedObject.targetObject as Light;
                     if(light == null)
                     {
-                        EditorGUI.LabelField(r,"null");
+                        EditorGUI.LabelField(r, "null");
                         return;
                     }
                     bool isPrefab = lightDataPairing[light].isPrefab;
@@ -414,7 +414,7 @@ namespace UnityEditor.Rendering.HighDefinition
                     Volume volume = prop.serializedObject.targetObject as Volume;
                     if(volume == null)
                     {
-                        EditorGUI.LabelField(r,"null");
+                        EditorGUI.LabelField(r, "null");
                         return;
                     }
                     bool hasVisualEnvironment = volumeDataPairing[volume].hasVisualEnvironment;
@@ -427,7 +427,7 @@ namespace UnityEditor.Rendering.HighDefinition
                     Volume volume = prop.serializedObject.targetObject as Volume;
                     if(volume == null)
                     {
-                        EditorGUI.LabelField(r,"null");
+                        EditorGUI.LabelField(r, "null");
                         return;
                     }
                     if (volumeDataPairing[volume].hasVisualEnvironment)
@@ -443,7 +443,7 @@ namespace UnityEditor.Rendering.HighDefinition
                     Volume volume = prop.serializedObject.targetObject as Volume;
                     if(volume == null)
                     {
-                        EditorGUI.LabelField(r,"null");
+                        EditorGUI.LabelField(r, "null");
                         return;
                     }
                     if (volumeDataPairing[volume].hasVisualEnvironment)
@@ -459,7 +459,7 @@ namespace UnityEditor.Rendering.HighDefinition
                     Volume volume = prop.serializedObject.targetObject as Volume;
                     if(volume == null)
                     {
-                        EditorGUI.LabelField(r,"null");
+                        EditorGUI.LabelField(r, "null");
                         return;
                     }
                     bool hasStaticLightingSky = volumeDataPairing[volume].hasStaticLightingSky;
@@ -485,7 +485,7 @@ namespace UnityEditor.Rendering.HighDefinition
                     ReflectionProbe probe = prop.serializedObject.targetObject as ReflectionProbe;
                     if(probe == null)
                     {
-                        EditorGUI.LabelField(r,"null");
+                        EditorGUI.LabelField(r, "null");
                         return;
                     }
                     InfluenceShape influenceShape = reflectionProbeDataPairing[probe].influenceVolume.shape;
