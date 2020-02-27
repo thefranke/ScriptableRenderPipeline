@@ -18,6 +18,12 @@ namespace UnityEngine.Rendering.HighDefinition
         public bool isGlobal;
 
         /// <summary>
+        /// Controls the order in which this CustomPassVolume will be evaluated relative to other CustomPassVolumes.
+        /// A CustomPassVolume who's renderOrder value is 0 will be drawn before any CustomPassVolumes who renderOrder value is > 0 
+        /// </summary>
+        public byte renderOrder;
+
+        /// <summary>
         /// List of custom passes to execute
         /// </summary>
         /// <typeparam name="CustomPass"></typeparam>
@@ -31,11 +37,21 @@ namespace UnityEngine.Rendering.HighDefinition
         public CustomPassInjectionPoint injectionPoint;
 
         // The current active custom pass volume is simply the smallest overlapping volume with the trigger transform
-        static HashSet<CustomPassVolume>    m_ActivePassVolumes = new HashSet<CustomPassVolume>();
+        static List<CustomPassVolume>    m_ActivePassVolumes = new List<CustomPassVolume>();
         static List<CustomPassVolume>       m_OverlappingPassVolumes = new List<CustomPassVolume>();
 
         List<Collider>          m_Colliders = new List<Collider>();
-        List<Collider>          m_OverlappingColliders = new List<Collider>();
+        
+        // Keep sorting array around to avoid garbage
+        static ulong[] m_SortKeys = null;
+        
+        static void UpdateSortKeysArray(int count)
+        {
+            if (m_SortKeys == null ||count > m_SortKeys.Length)
+            {
+                m_SortKeys = new ulong[count];
+            }
+        }
 
         void OnEnable()
         {
@@ -69,31 +85,126 @@ namespace UnityEngine.Rendering.HighDefinition
 
         static void UnRegister(CustomPassVolume volume) => m_ActivePassVolumes.Remove(volume);
 
+        
+        
+        internal static void PushVolumeToSortKeys(ref int sortCount, CustomPassVolume volume, int volumeIndex)
+        {
+            Debug.Assert(sortCount < (m_SortKeys.Length - 1));
+            Debug.Assert(volumeIndex < m_SortKeys.Length);
+
+            float volumeExtent
+            uint logExtentEncoded = CalculateLogExtentEncoded23Bits();
+            m_SortKeys[++sortCount] = PackSortKey(volume.isGlobal, volume.renderOrder, logExtentEncoded, volumeIndex);
+        }
+
+        internal static ulong PackSortKey(bool isGlobal, byte renderOrder, uint logExtentEncoded, int volumeIndex)
+        {
+            Debug.Assert(logExtent < ((1 << 23) - 1));
+
+            ulong bitsIsGlobal = (ulong)(isGlobal ? 1 : 0) << (64 - 1);
+            ulong bitsRenderOrder = (ulong)renderOrder << (64 - 1 - 8);
+            ulong bitsLogExtent = (ulong)logExtent << 32;
+            ulong bitsVolumeIndex = (ulong)volumeIndex;
+            
+            return bitsIsGlobal | bitsRenderOrder | bitsLogExtent | bitsVolumeIndex;
+        }
+        
+        internal static uint CalculateLogExtentEncoded23Bits(float extent)
+        {
+            //Notes:
+            // - 1+ term is to prevent having negative values in the log result
+            // - 1000* is too keep 3 digit after the dot while we truncate the result later
+            // - 8388607 is 2^23-1 as we pack the result on 23bit
+            float logVolume = Mathf.Clamp(Mathf.Log(1 + 8f * extent, 1.05f)*1000, 0, 8388607);
+            return (uint)Mathf.RoundToInt(logVolume);
+        }
+
+        internal static void UnpackSortKey(out bool isGlobal, out byte renderOrder, out int volumeIndex, uint sortKey)
+        {
+            isGlobal = (sortKey & (1 << 31)) > 0;
+            renderOrder = (byte)((sortKey >> 16) & ((1 << 8) - 1));
+            volumeIndex = (int)(sortKey & ((1 << 16) - 1));
+        }
+        
+        internal static float ComputeVolumeExtentFromOverlappingColliders(CustomPassVolume volume, Vector3 triggerPos)
+        {
+            float extent = 0;
+            foreach (var collider in volume.m_Colliders)
+            {
+                if (!collider || !collider.enabled)
+                    continue;
+                    
+                // We don't support concave colliders
+                if (collider is MeshCollider m && !m.convex)
+                    continue;
+
+                var closestPoint = collider.ClosestPoint(triggerPos);
+                var d = (closestPoint - triggerPos).sqrMagnitude;
+
+                // Update the list of overlapping colliders
+                if (d > 0)
+                    continue;
+
+                extent += collider.bounds.extents.magnitude;
+            }
+            return extent;
+        }
+
         internal static void Update(Transform trigger)
         {
             bool onlyGlobal = trigger == null;
             var triggerPos = onlyGlobal ? Vector3.zero : trigger.position;
 
             m_OverlappingPassVolumes.Clear();
+            
+            UpdateSortKeysArray(m_ActivePassVolumes.Count);
+            int sortCount = 0;
 
-            // Traverse all volumes
-            foreach (var volume in m_ActivePassVolumes)
+            // Traverse all volumes and generate their sort keys.
+            for (int volumeIndex = 0; volumeIndex < m_ActivePassVolumes.Count; ++volumeIndex)
             {
+                CustomPassVolume volume = m_ActivePassVolumes[volumeIndex];
+                
                 // Global volumes always have influence
                 if (volume.isGlobal)
                 {
-                    m_OverlappingPassVolumes.Add(volume);
+                    PushVolumeToSortKeys(ref sortCount, volume, volumeIndex);
                     continue;
                 }
-
+                
                 if (onlyGlobal)
                     continue;
-
+                
+                float volumeExtent = ComputeVolumeExtentFromOverlappingColliders(volume, triggerPos);
+                
                 // If volume isn't global and has no collider, skip it as it's useless
-                if (volume.m_Colliders.Count == 0)
+                if (volumeExtent == 0.0f)
                     continue;
-
-                volume.m_OverlappingColliders.Clear();
+                
+                PushVolumeToSortKeys(ref sortCount, volume, volumeIndex);
+            }
+            
+            CoreUnsafeUtils.QuickSort(m_SortKeys, 0, sortCount - 1); // Call our own quicksort instead of Array.Sort(sortKeys, 0, sortCount) so we don't allocate memory (note the SortCount-1 that is different from original call).
+            
+            foreach (var volume in m_ActivePassVolumes)
+            {
+                // // Global volumes always have influence
+                // if (volume.isGlobal)
+                // {
+                //     m_OverlappingPassVolumes.Add(volume);
+                //     continue;
+                // }
+                //
+                // if (onlyGlobal)
+                //     continue;
+                //
+                // // If volume isn't global and has no collider, skip it as it's useless
+                // if (volume.m_Colliders.Count == 0)
+                //     continue;
+                //
+                // volume.m_OverlappingColliders.Clear();
+                //
+                //
 
                 foreach (var collider in volume.m_Colliders)
                 {
