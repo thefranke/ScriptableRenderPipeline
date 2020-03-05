@@ -20,10 +20,28 @@ namespace UnityEngine.Rendering.HighDefinition
         }
         private ProbeVolumeManager()
         {
+            Debug.Log("Constructing ProbeVolumeManager");
             volumes = new List<ProbeVolume>();
+            OnEnable();
+        }
+        ~ProbeVolumeManager()
+        {
+            OnDisable();
         }
 
         public List<ProbeVolume> volumes = null;
+
+        protected void OnEnable()
+        {
+            Debug.Log("ProbeVolumeManager.OnEnable");
+            EnableBaking();
+        }
+
+        protected void OnDisable()
+        {
+            Debug.Log("ProbeVolumeManager.OnDisable");
+            DisableBaking();
+        }
 
         public void RegisterVolume(ProbeVolume volume)
         {
@@ -31,6 +49,8 @@ namespace UnityEngine.Rendering.HighDefinition
                 return;
 
             volumes.Add(volume);
+            if (volume.GetID() != -1)
+                volume.SetupPositions(true);
         }
         public void DeRegisterVolume(ProbeVolume volume)
         {
@@ -42,7 +62,77 @@ namespace UnityEngine.Rendering.HighDefinition
             HDRenderPipeline hdrp = RenderPipelineManager.currentPipeline as HDRenderPipeline;
             if (hdrp != null)
                 hdrp.ReleaseProbeVolumeFromAtlas(volume);
+
+            // if (volume.GetID() != -1)
+                // UnityEditor.Experimental.Lightmapping.SetAdditionalBakedProbes(volume.GetID(), null);
         }
+
+        void EnableBaking()
+        {
+            Debug.Log("EnableBaking?");
+            if (ShaderConfig.s_ProbeVolumes == 0)
+                return;
+
+            Debug.Log("EnableBaking");
+
+            UnityEditor.Experimental.Lightmapping.additionalBakedProbesCompleted += OnProbesBakeCompleted;
+            UnityEditor.Lightmapping.bakeCompleted += OnBakeCompleted;
+
+            UnityEditor.Lightmapping.lightingDataCleared += OnLightingDataCleared;
+            UnityEditor.Lightmapping.lightingDataAssetCleared += OnLightingDataAssetCleared;
+        }
+
+        void DisableBaking()
+        {
+            Debug.Log("DisableBaking?");
+            if (ShaderConfig.s_ProbeVolumes == 0)
+                return;
+
+            Debug.Log("DisableBaking");
+
+            UnityEditor.Experimental.Lightmapping.additionalBakedProbesCompleted -= OnProbesBakeCompleted;
+            UnityEditor.Lightmapping.bakeCompleted -= OnBakeCompleted;
+
+            UnityEditor.Lightmapping.lightingDataCleared -= OnLightingDataCleared;
+            UnityEditor.Lightmapping.lightingDataAssetCleared -= OnLightingDataAssetCleared;
+        }
+
+
+        public void OnProbesBakeCompleted()
+        {
+            // System.Threading.Thread.Sleep(10000);
+            Debug.Log("OnProbesBakeCompleted");
+            foreach (var volume in volumes)
+            {
+                Debug.Log("OnProbesBakeCompleted for volume: " + volume.GetID());
+                volume.OnProbesBakeCompleted();
+            }
+        }
+
+        public void OnBakeCompleted()
+        {
+            foreach (var volume in volumes)
+            {
+                volume.OnBakeCompleted();
+            }
+        }
+
+        public void OnLightingDataCleared()
+        {
+            foreach (var volume in volumes)
+            {
+                volume.OnLightingDataCleared();
+            }
+        }
+
+        public void OnLightingDataAssetCleared()
+        {
+            foreach (var volume in volumes)
+            {
+                volume.OnLightingDataAssetCleared();
+            }
+        }
+
 #if UNITY_EDITOR
         public void ReactivateProbes()
         {

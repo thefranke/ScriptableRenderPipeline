@@ -340,13 +340,19 @@ namespace UnityEngine.Rendering.HighDefinition
             return false;
         }
 
-        protected void OnLightingDataCleared()
+        public void OnLightingDataCleared()
         {
             probeVolumeAsset = null;
             dataUpdated = true;
+
+            if (GetID() != -1)
+            {
+                UnityEditor.Experimental.Lightmapping.SetAdditionalBakedProbes(GetID(), null);
+            }
+            SetupPositions(true);
         }
 
-        protected void OnLightingDataAssetCleared()
+        public void OnLightingDataAssetCleared()
         {
             if (probeVolumeAsset == null)
                 return;
@@ -359,7 +365,7 @@ namespace UnityEngine.Rendering.HighDefinition
             UnityEditor.AssetDatabase.Refresh();
         }
 
-        protected void OnProbesBakeCompleted()
+        public void OnProbesBakeCompleted()
         {
             if (this.gameObject == null || !this.gameObject.activeInHierarchy)
                 return;
@@ -369,12 +375,24 @@ namespace UnityEngine.Rendering.HighDefinition
             float[] dataValidity = new float[numProbes];
             float[] dataOctahedralDepth = new float[numProbes * 8 * 8];
 
-            var sh = new NativeArray<SphericalHarmonicsL2>(numProbes, Allocator.Temp, NativeArrayOptions.UninitializedMemory);
-            var validity = new NativeArray<float>(numProbes, Allocator.Temp, NativeArrayOptions.UninitializedMemory);
-            var octahedralDepth = new NativeArray<float>(numProbes * 8 * 8, Allocator.Temp, NativeArrayOptions.UninitializedMemory);
+            var sh = new NativeArray<SphericalHarmonicsL2>(numProbes, Allocator.Persistent);
+            var validity = new NativeArray<float>(numProbes, Allocator.Persistent);
+            var octahedralDepth = new NativeArray<float>(numProbes * 8 * 8, Allocator.Persistent);
 
-            if(UnityEditor.Experimental.Lightmapping.GetAdditionalBakedProbes(GetID(), sh, validity, octahedralDepth))
-            { 
+
+            bool isFound = false;
+            for (int i = 0; i < 10; ++i)
+            {
+                if(UnityEditor.Experimental.Lightmapping.GetAdditionalBakedProbes(GetID(), sh, validity, octahedralDepth))
+                {
+                    isFound = true;
+                    break;
+                }
+                // System.Threading.Thread.Sleep(1000);
+            }
+            //if(UnityEditor.Experimental.Lightmapping.GetAdditionalBakedProbes(GetID(), sh, validity, octahedralDepth))
+            if (isFound)
+            {
                 // TODO: Remove this data copy.
                 for (int i = 0, iLen = data.Length; i < iLen; ++i)
                 {
@@ -386,7 +404,7 @@ namespace UnityEngine.Rendering.HighDefinition
 
                     for (int j = 0; j < 64; ++j)
                     {
-                        dataOctahedralDepth[i * 64 + j] = octahedralDepth[i * 64 + j];
+                        dataOctahedralDepth[i * 64 + j] = octahedralDepth[i * 64 + j] * 1000.0f / 4.224234f;
                     }
                 }
 
@@ -425,41 +443,51 @@ namespace UnityEngine.Rendering.HighDefinition
 
         public void DisableBaking()
         {
-            if (ShaderConfig.s_ProbeVolumes == 0)
-                return;
+            // if (ShaderConfig.s_ProbeVolumes == 0)
+            //     return;
 
-            UnityEditor.Experimental.Lightmapping.additionalBakedProbesCompleted -= OnProbesBakeCompleted;
-            UnityEditor.Lightmapping.bakeCompleted -= OnBakeCompleted;
+            // Debug.Log("Disable baking");
 
-            UnityEditor.Lightmapping.lightingDataCleared -= OnLightingDataCleared;
-            UnityEditor.Lightmapping.lightingDataAssetCleared -= OnLightingDataAssetCleared;
+            // UnityEditor.Experimental.Lightmapping.additionalBakedProbesCompleted -= OnProbesBakeCompleted;
+            // UnityEditor.Lightmapping.bakeCompleted -= OnBakeCompleted;
 
-            if (GetID() != -1)
-                UnityEditor.Experimental.Lightmapping.SetAdditionalBakedProbes(GetID(), null);
+            // UnityEditor.Lightmapping.lightingDataCleared -= OnLightingDataCleared;
+            // UnityEditor.Lightmapping.lightingDataAssetCleared -= OnLightingDataAssetCleared;
+
+            // if (GetID() != -1)
+                // UnityEditor.Experimental.Lightmapping.SetAdditionalBakedProbes(GetID(), null);
         }
 
         public void EnableBaking()
         {
-            if (ShaderConfig.s_ProbeVolumes == 0)
-                return;
+            // if (ShaderConfig.s_ProbeVolumes == 0)
+            //     return;
 
-            UnityEditor.Experimental.Lightmapping.additionalBakedProbesCompleted += OnProbesBakeCompleted;
-            UnityEditor.Lightmapping.bakeCompleted += OnBakeCompleted;
+            // Debug.Log("Enable Baking");
 
-            UnityEditor.Lightmapping.lightingDataCleared += OnLightingDataCleared;
-            UnityEditor.Lightmapping.lightingDataAssetCleared += OnLightingDataAssetCleared;
+            // UnityEditor.Experimental.Lightmapping.additionalBakedProbesCompleted += OnProbesBakeCompleted;
+            // UnityEditor.Lightmapping.bakeCompleted += OnBakeCompleted;
 
-            // Reset matrices hash to recreate all positions
-            m_DebugProbeInputHash = new Hash128();
+            // UnityEditor.Lightmapping.lightingDataCleared += OnLightingDataCleared;
+            // UnityEditor.Lightmapping.lightingDataAssetCleared += OnLightingDataAssetCleared;
 
-            SetupPositions();
+            // // Reset matrices hash to recreate all positions
+            // m_DebugProbeInputHash = new Hash128();
+
+            // SetupPositions();
         }
 
         public Hash128 Hash { get; private set; } = new Hash128();
 
-        protected void SetupPositions()
+        public void SetupPositions(bool force = false)
         {
-            if (!this.gameObject.activeInHierarchy)
+            if (force)
+            {
+                // Reset matrices hash to recreate all positions
+                m_DebugProbeInputHash = new Hash128();
+            }
+
+            if (!this.gameObject.activeInHierarchy && !force)
                 return;
 
             float debugProbeSize = Gizmos.probeSize;
@@ -553,7 +581,9 @@ namespace UnityEngine.Rendering.HighDefinition
 
             m_DebugProbeInputHash = debugProbeInputHash;
 
-            UnityEditor.Experimental.Lightmapping.SetAdditionalBakedProbes(GetID(), positions);
+            int id = GetID();
+            Debug.Log("setting with ID = " + id + " and positions.Length = " + positions.Length);
+            UnityEditor.Experimental.Lightmapping.SetAdditionalBakedProbes(id, positions);
         }
 
         protected static bool ShouldDrawGizmos(ProbeVolume probeVolume)
